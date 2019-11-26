@@ -8,7 +8,7 @@ import java.util.Set;
 public class tweet {
 	//ceci est un commentaire
 	//commentaire charlie
-	//encore un commentaire
+	//encore un commentair
 	protected String pseudo_users="";
 	protected String date="";
 	protected String heure="";
