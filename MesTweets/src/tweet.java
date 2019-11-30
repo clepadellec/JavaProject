@@ -5,10 +5,11 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.Set;
 
-public class tweet {
+@SuppressWarnings("serial")
+public class tweet implements Comparable<tweet>, Serializable {
 
 	protected String t_pseudo_users="";
-	protected String t_date="";
+	protected LocalDate t_date;
 	protected String t_heure="";
 	protected String t_contenu="";
 	protected String t_lien_dans_contenu="";
@@ -20,7 +21,7 @@ public class tweet {
 	//private String date="";
 
 
-	public tweet(String pseudo_users, String date, String heure, String contenu, String lien_dans_contenu, String hashtag,
+	public tweet(String pseudo_users, LocalDate date, String heure, String contenu, String lien_dans_contenu, String hashtag,
 			String pseudo_mentionne, String pseudo_retweet) {
 		super();
 		this.t_pseudo_users = pseudo_users;
@@ -32,6 +33,16 @@ public class tweet {
 		this.t_pseudo_mentionne = pseudo_mentionne;
 		this.t_pseudo_retweet = pseudo_retweet;
 	}
+	
+	public int compareTo(tweet arg0) {
+		// TODO Auto-generated method stub
+
+		String titre1 = this.getPseudo_users();
+		String titre2 = arg0.getPseudo_users();
+
+
+		return titre1.compareTo(titre2);
+	}
 
 	public String getPseudo_users() {
 		return t_pseudo_users;
@@ -41,11 +52,11 @@ public class tweet {
 		this.t_pseudo_users = pseudo_users;
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return t_date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.t_date = date;
 	}
 

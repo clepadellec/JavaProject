@@ -48,8 +48,8 @@ public class Fenetre extends Application {
 		TextField textField2 = new TextField();
 		textField2.setText("champ texte 2");
 
-		Button creer = new Button("Créer");
-		creer.setText("Créer");
+		Button creer = new Button("Crï¿½er");
+		creer.setText("Crï¿½er");
 		HBox hBox = new HBox(5);
 		hBox.getChildren().addAll(label, textField, creer);
 
@@ -83,16 +83,27 @@ public class Fenetre extends Application {
 	public void start(Stage primaryStage)
 	{
 		Stage myStage = primaryStage;
-		primaryStage.setTitle("Ma première fenêtre");
+		primaryStage.setTitle("Ma premiï¿½re fenï¿½tre");
 		primaryStage.setScene(construitScene());
 		primaryStage.sizeToScene();
 		primaryStage.show();
 	}
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws Exception
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
 		BaseDeTweets bdt = new BaseDeTweets();
-		bdt.importation("Foot.txt");
+		try {
+			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
+			bdt.ouvrir();
+			bdt.explore();
+		}catch(Exception ex){
+			System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
+			bdt.importation("Foot.txt");
+			bdt.enregistrer();
+		}
+
+
+
 		launch(args);
 	}
 	public void setVisible(boolean b) {

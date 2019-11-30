@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -32,7 +34,7 @@ public class BaseDeTweets {
 
 		while (iterator.hasNext())
 		{
-			System.out.println("actu n°" +i+"- "+iterator.next());
+			System.out.println("tweet nÂ°" +i+"- "+iterator.next());
 			i=i+1;
 		}
 	}
@@ -60,28 +62,31 @@ public class BaseDeTweets {
 		@SuppressWarnings("resource")
 		BufferedReader reader = new BufferedReader(new FileReader("resources/"+fic));
 		String ligne;
+		maCollec = new TreeSet<tweet>();
 		while((ligne = reader.readLine()) != null){
 			String[] sepligne = ligne.split("\t");
 			String pseudo_u = sepligne[1];
-			String date_t = sepligne[2];
-			String heure_t = "a venir:";
+			String date = sepligne[2];
 			String tweet = sepligne[3];
 			String lien_dans_tweet="";
 			String hashtag="";
 			String pseudo_mentionne="";
-
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			String[] sepdate = date.split(" ");
+			String heure_t = sepdate[1];
+			LocalDate date_t = LocalDate.parse(sepdate[0], formatter);
 			try {
 				String pseudo_retweet = sepligne[4];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet);
 				System.out.println("tweet :"+t+"\n");
-				//maCollec.add(t);
+				maCollec.add(t);
 
 			} catch (Exception ex){
-				String pseudo_retweet = "NA";
+				String pseudo_retweet = sepligne[0];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet);
 				System.out.println("tweet :"+t+"\n");
-				//maCollec.add(t);
-				//System.err.println("Error. "+ex.getMessage());
+				maCollec.add(t);
+				System.err.println("Error. "+ex.getMessage());
 			}
 		}
 
@@ -89,32 +94,42 @@ public class BaseDeTweets {
 
 	@SuppressWarnings("unchecked")
 	public void ouvrir() throws Exception {
+		Integer i=1;
 		try {
-			FileInputStream w = new FileInputStream("D:\\data.dat");
+			FileInputStream w = new FileInputStream("resources/data.dat");
 			ObjectInputStream o = new ObjectInputStream(w);
 			Object lu =o.readObject();
 			maCollec = (TreeSet<tweet>)lu;
 			w.close();
 			o.close();
-
+			i=i+1;
+			System.out.println("nb de tweets"+i);
+			
 
 		} catch (IOException e) {
 			System.out.println("erreur d'IO");
+			i=i+1;
+			System.out.println("nb de tweets"+i);
 		}
-
+		
+		
 	}
 
 	public void enregistrer() throws Exception {
+		int i=0;
 		try {
-			FileOutputStream w = new FileOutputStream("D:\\data.dat");
+			FileOutputStream w = new FileOutputStream("resources/data.dat");
 			ObjectOutputStream o = new ObjectOutputStream(w);
 			o.writeObject(maCollec);
+			i=i+1;
+			
 
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			i=i+1;
 		}
-
+		System.out.println("nb :"+i);
 	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
