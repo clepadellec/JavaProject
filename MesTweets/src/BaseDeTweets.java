@@ -60,6 +60,7 @@ public class BaseDeTweets {
 
 	public void importation(String fic) throws IOException {
 		@SuppressWarnings("resource")
+		//commit
 		BufferedReader reader = new BufferedReader(new FileReader("resources/"+fic));
 		String ligne;
 		maCollec = new TreeSet<tweet>();
