@@ -83,7 +83,7 @@ public class Fenetre extends Application {
 	public void start(Stage primaryStage)
 	{
 		Stage myStage = primaryStage;
-		primaryStage.setTitle("Ma premi�re fen�tre");
+		primaryStage.setTitle("Ma premiere fenetre");
 		primaryStage.setScene(construitScene());
 		primaryStage.sizeToScene();
 		primaryStage.show();

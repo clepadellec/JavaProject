@@ -35,15 +35,13 @@ public class tweet implements Comparable<tweet>, Serializable {
 	}
 
 	
-    public int compareTo(Object arg0) {
-        // On transtype arg0 (de type Object) en Film :
-        tweet t = (tweet)arg0;
+    public int compareTo(tweet arg0) {
 
-        if (getPseudo_users().compareTo(t.getPseudo_users())<0) return -1;
-        else if (getPseudo_users().compareTo(t.getPseudo_users())>0) return 1;
+        if (getPseudo_users().compareTo(this.getPseudo_users())<0) return -1;
+        else if (getPseudo_users().compareTo(this.getPseudo_users())>0) return 1;
         else
-                if (getHeure().compareTo(t.getHeure())<0) return -1;
-                else if (getHeure().compareTo(t.getHeure())>0) return 1;
+                if (getHeure().compareTo(this.getHeure())<0) return -1;
+                else if (getHeure().compareTo(this.getHeure())>0) return 1;
                 else return 0;
 }
 
