@@ -92,14 +92,16 @@ public class Fenetre extends Application {
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
 		BaseDeTweets bdt = new BaseDeTweets();
+		int i=0;
 		try {
 			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
-			bdt.ouvrir();
+			bdt.ouvrir(i);
 			bdt.explore();
 		}catch(Exception ex){
 			System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
 			bdt.importation("Foot.txt");
 			bdt.enregistrer();
+			bdt.explore();
 		}
 
 

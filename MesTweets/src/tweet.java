@@ -33,16 +33,19 @@ public class tweet implements Comparable<tweet>, Serializable {
 		this.t_pseudo_mentionne = pseudo_mentionne;
 		this.t_pseudo_retweet = pseudo_retweet;
 	}
+
 	
-	public int compareTo(tweet arg0) {
-		// TODO Auto-generated method stub
+    public int compareTo(Object arg0) {
+        // On transtype arg0 (de type Object) en Film :
+        tweet t = (tweet)arg0;
 
-		String titre1 = this.getPseudo_users();
-		String titre2 = arg0.getPseudo_users();
-
-
-		return titre1.compareTo(titre2);
-	}
+        if (getPseudo_users().compareTo(t.getPseudo_users())<0) return -1;
+        else if (getPseudo_users().compareTo(t.getPseudo_users())>0) return 1;
+        else
+                if (getHeure().compareTo(t.getHeure())<0) return -1;
+                else if (getHeure().compareTo(t.getHeure())>0) return 1;
+                else return 0;
+}
 
 	public String getPseudo_users() {
 		return t_pseudo_users;
