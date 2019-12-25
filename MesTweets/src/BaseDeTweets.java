@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.io.Serializable;
 public class BaseDeTweets{
-	
+
 
 	public TreeSet<tweet> maCollec;
 
@@ -77,6 +77,53 @@ public class BaseDeTweets{
 			String[] sepdate = date.split(" ");
 			String heure_t = sepdate[1];
 			LocalDate date_t = LocalDate.parse(sepdate[0], formatter);
+			boolean exist = tweet.contains("#");
+			if(exist==true) {
+				String c="#";
+				int deb = tweet.indexOf(c);
+				int fin = tweet.indexOf(" ",deb);
+				System.out.println(fin);
+				if(fin != -1) {
+					hashtag=tweet.substring(deb,fin);
+				}else {
+					hashtag=tweet.substring(deb,tweet.length()-1);
+				}
+
+			}else {
+				hashtag="NA";
+			}
+			boolean existb = tweet.contains("@");
+			if(existb==true) {
+				String c="@";
+				int deb = tweet.indexOf(c);
+				int fin = tweet.indexOf(" ",deb);
+				System.out.println(fin);
+				if(fin != -1) {
+					pseudo_mentionne=tweet.substring(deb,fin);
+				}else {
+					pseudo_mentionne=tweet.substring(deb,tweet.length()-1);
+				}
+
+			}else {
+				pseudo_mentionne="NA";
+			}
+
+			boolean existc = tweet.contains("https://");
+			if(existc==true) {
+				String c="https://";
+				int deb = tweet.indexOf(c);
+				int fin = tweet.indexOf(" ",deb);
+				System.out.println(fin);
+				if(fin != -1) {
+					lien_dans_tweet=tweet.substring(deb,fin);
+				}else {
+					lien_dans_tweet=tweet.substring(deb,tweet.length()-1);
+				}
+
+
+			}else {
+				lien_dans_tweet="non";
+			}
 			try {
 				String pseudo_retweet = sepligne[4];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet);
@@ -113,8 +160,8 @@ public class BaseDeTweets{
 			i=i+1;
 			System.out.println("nb de tweets"+i);
 		}
-		
-		
+
+
 	}
 
 	public void enregistrer() throws Exception {
