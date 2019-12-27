@@ -90,7 +90,7 @@ public class Fenetre extends Application {
 	}
 	public static void main(String[] args) throws Exception
 	{
-		/*System.setProperty( "file.encoding", "UTF-8" );
+		System.setProperty( "file.encoding", "UTF-8" );
 		BaseDeTweets bdt = new BaseDeTweets();
 		int i=0;
 		try {
@@ -103,7 +103,7 @@ public class Fenetre extends Application {
 			bdt.importation("Foot.txt");
 			bdt.enregistrer();
 			bdt.explore(i);
-		}*/
+		}
 
 		launch(args);
 	}
