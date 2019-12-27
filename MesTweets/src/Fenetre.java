@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 
 public class Fenetre extends Application {
 
-
+//
 
 
 	public Scene construitScene() {
@@ -90,21 +90,20 @@ public class Fenetre extends Application {
 	}
 	public static void main(String[] args) throws Exception
 	{
-		System.setProperty( "file.encoding", "UTF-8" );
+		/*System.setProperty( "file.encoding", "UTF-8" );
 		BaseDeTweets bdt = new BaseDeTweets();
 		int i=0;
 		try {
 			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
 			bdt.ouvrir(i);
-			bdt.explore();
+			bdt.explore(i);
 		}catch(Exception ex){
 			System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
+			bdt.initialise();
 			bdt.importation("Foot.txt");
 			bdt.enregistrer();
-			bdt.explore();
-		}
-
-
+			bdt.explore(i);
+		}*/
 
 		launch(args);
 	}
