@@ -38,7 +38,8 @@ public class BaseDeTweets{
 			i=i+1;
 		}
 	}
-	public static int compterOccurrences(String maChaine, char recherche)
+	
+	public static int compterOccurrences(String maChaine, char recherche) // pompé internet
 	{
 	 int nb = 0;
 	 for (int i=0; i < maChaine.length(); i++)
