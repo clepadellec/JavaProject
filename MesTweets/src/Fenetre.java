@@ -4,6 +4,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,11 +39,32 @@ import javafx.stage.Stage;
 /* clic droit mes news/properties/ java build path/ libraries/ access rules / edit / javafx.** puis accessible /apply */
 
 public class Fenetre extends Application {
-
-
+	public nombreTweet t1 = new nombreTweet(6,26,21,14);
+	public nombreTweet t2 = new nombreTweet(6,26,22,16);
+	public nombreTweet t3 = new nombreTweet(6,26,22,12);
+	public nombreTweet t4 = new nombreTweet(7,27,2,13);
+	public nombreTweet t5 = new nombreTweet(7,27,4,13);
+	public nombreTweet t6 = new nombreTweet(7,28,12,13);
+	public nombreTweet t7 = new nombreTweet(7,28,12,18);
+	public nombreTweet t8 = new nombreTweet(7,28,13,14);
+	public nombreTweet t9 = new nombreTweet(7,28,13,14);
+	public nombreTweet t10 = new nombreTweet(7,28,13,13);
+	public ArrayList<nombreTweet> l = new ArrayList<nombreTweet>();
+	
 	
 	public Scene construitScene() {
 
+		l.add(t1);
+		l.add(t2);
+		l.add(t3);
+		l.add(t4);
+		l.add(t5);
+		l.add(t6);
+		l.add(t7);
+		l.add(t7);
+		l.add(t9);
+		l.add(t10);
+		
 	    GridPane grid = new GridPane();
 		GridPane grid_contenue = new GridPane();
 		MenuBar menuBar = new MenuBar();
@@ -61,6 +84,10 @@ public class Fenetre extends Application {
 
 		hbox.getChildren().add(menuBar);
 		
+		
+		
+		
+		
 		/* Tableau */
 		TableView<utilisateur> userTwitter = new TableView<>();
 		
@@ -74,34 +101,43 @@ public class Fenetre extends Application {
 		userTwitter.setItems(getUsers());
 		userTwitter.getColumns().addAll(pseudoColumn, nombreRTColumn, nombreMentionColumn);
 		
+		
+		
+		
+		
 		/*  ChoiceBox  */
-		ChoiceBox<String> choiceBox_heure = new ChoiceBox<>();
-		choiceBox_heure.getItems().addAll("France","USA","Allemagne");
-		choiceBox_heure.setValue("France");
+		ChoiceBox<Integer> choiceBox_heure = new ChoiceBox<>();
+		choiceBox_heure.getItems().addAll(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
+		choiceBox_heure.setValue(0);
 		
-	
-		ChoiceBox<String> choiceBox_mois = new ChoiceBox<>();
-		choiceBox_mois.getItems().addAll("France","USA","Allemagne");
-		choiceBox_mois.setValue("France");
+		ChoiceBox<Integer> choiceBox_mois = new ChoiceBox<>();
+		choiceBox_mois.getItems().addAll(6,7);
+		//choiceBox_mois.setValue();
 		
-		ChoiceBox<String> choiceBox_semaine = new ChoiceBox<>();
-		choiceBox_semaine.getItems().addAll("France","USA","Allemagne");
-		choiceBox_semaine.setValue("France");
+		ChoiceBox<Integer> choiceBox_semaine = new ChoiceBox<>();
+		choiceBox_semaine.getItems().addAll(26,27,28);
+		choiceBox_semaine.setValue(26);
 		
-		ChoiceBox<String> choiceBox_jour = new ChoiceBox<>();
-		choiceBox_jour.getItems().addAll("France","USA","Allemagne");
-		choiceBox_jour.setValue("France");
+		ChoiceBox<Integer> choiceBox_jour = new ChoiceBox<>();
+		choiceBox_jour.getItems().addAll(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
+		choiceBox_jour.setValue(1);
+		
+		
+		//hbox_filtre_users.getChildren().add(choiceBox_heure);
+		
+
 		
 		
 		hbox_filtre_graph.getChildren().add(choiceBox_mois);
 		
-		hbox_filtre_users.getChildren().add(choiceBox_heure);
+		
 		
 		
 		GridPane.setConstraints(hbox_filtre_users, 0, 0);
 		GridPane.setConstraints(userTwitter, 0, 1);
 		grid_contenue.getChildren().addAll(userTwitter,hbox_filtre_users);
 		
+		// barchart
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Utilisateur");
 
@@ -113,26 +149,51 @@ public class Fenetre extends Application {
 		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
 				
+				hbox_filtre_graph.getChildren().clear();
+				hbox_filtre_graph.getChildren().add(choiceBox_mois);
 				hbox_filtre_graph.getChildren().add(choiceBox_semaine);
-
+				choiceBox_semaine.setValue(0);
+				
+				for (int i=1; i<l.size(); i++){
+					nombreTweet t = (nombreTweet)(l.get(i));
+					if(choiceBox_mois.getValue() == t.getMois() ) {
+						System.out.println(t.getMois());
+					}
+				}
 				graph(barChart,choiceBox_semaine);
 		    }
 		});
 		
 		choiceBox_semaine.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
-				
+				hbox_filtre_graph.getChildren().clear();
+				hbox_filtre_graph.getChildren().add(choiceBox_mois);
+				hbox_filtre_graph.getChildren().add(choiceBox_semaine);
 				hbox_filtre_graph.getChildren().add(choiceBox_jour);
+				choiceBox_jour.setValue(0);
+				for (int i=1; i<l.size(); i++){
+					nombreTweet t = (nombreTweet)(l.get(i));
+					if(choiceBox_semaine.getValue() == t.getSemaine() ) {
+						System.out.println(t.getSemaine());
+					}
+				}
 				graph(barChart,choiceBox_jour);
 		    }
 		});
 		
 		choiceBox_jour.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
-				//a chaque fois modifier les modalité de filtres dynamiquement
+				for (int i=1; i<l.size(); i++){
+					nombreTweet t = (nombreTweet)(l.get(i));
+					if(choiceBox_jour.getValue() == t.getJour() ) {
+						System.out.println(t.getJour());
+					}
+				}
 				graph(barChart,choiceBox_jour);
 		    }
 		});
+		
+		
 		
 		menuItem_tweet.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
@@ -183,50 +244,54 @@ public class Fenetre extends Application {
 		return scene;
 	}
 
-	
-	public void graph(BarChart<String, Number> barChart, ChoiceBox<String> choiceBox_mois) {
+	public ChoiceBox<String> setChoiceBox(){
+		ChoiceBox<String> choiceBox = new ChoiceBox<>();
+		
+		choiceBox.getItems().addAll("France","USA","Allemagne");
+		choiceBox.setValue("France");
+		
+		return choiceBox;
+	}
+		
+	/*public Integer compteOccurence(ArrayList<Integer> filtres, ArrayList<nombreTweet> nombreTweet){
+		Integer cpt = 0;
+		
+		for (int i=0; i<nombreTweet.size(); i++) {
+			nombreTweet tweet = (nombreTweet)(nombreTweet.get(i));
+			
+			for (int j=0; j<filtres.size(); j++){
+				Integer filtre = (Integer)(filtres.get(j));
+				
+				if(filtre.contains(tweet.getMois())) {
+					System.out.println(tweet.getSemaine());
+					cpt+=1;
+				}
+			}
+			
+		}
+		return cpt;
+	}*/
 
-		String choix1 = choiceBox_mois.getValue();
+	
+	public void graph(BarChart<String, Number> barChart, ChoiceBox<Integer> choiceBox_mois) {
+
+		Integer choix1 = choiceBox_mois.getValue();
 		System.out.println(choix1);
 		
-		switch (choix1) {
 		
-		case "Allemagne":
-			
-			XYChart.Series<String, Number> tweet_all = new XYChart.Series<String, Number>();
-			tweet_all.setName("Allemagne");
-			barChart.getData().clear();
-			tweet_all.getData().add(new XYChart.Data<String, Number>("Clement", 15));
-			tweet_all.getData().add(new XYChart.Data<String, Number>("Charlie", 13));
-			tweet_all.getData().add(new XYChart.Data<String, Number>("Adrien", 8));
-			tweet_all.getData().add(new XYChart.Data<String, Number>("Laura", 11));
-			barChart.getData().add(tweet_all);
-			break;
-
-		case "France":
-			XYChart.Series<String, Number> tweet_fra = new XYChart.Series<String, Number>();
-			tweet_fra.setName("France");
-			barChart.getData().clear();
-			tweet_fra.getData().add(new XYChart.Data<String, Number>("Clement", 8));
-			tweet_fra.getData().add(new XYChart.Data<String, Number>("Charlie", 19));
-			tweet_fra.getData().add(new XYChart.Data<String, Number>("Adrien", 16));
-			tweet_fra.getData().add(new XYChart.Data<String, Number>("Laura", 2));
-			barChart.getData().add(tweet_fra);
-			break;
-		case "USA":
-			XYChart.Series<String, Number> tweet_usa = new XYChart.Series<String, Number>();
-			tweet_usa.setName("USA");
-			barChart.getData().clear();
-			tweet_usa.getData().add(new XYChart.Data<String, Number>("Clement", 20));
-			tweet_usa.getData().add(new XYChart.Data<String, Number>("Charlie", 3));
-			tweet_usa.getData().add(new XYChart.Data<String, Number>("Adrien", 18));
-			tweet_usa.getData().add(new XYChart.Data<String, Number>("Laura", 10));
-			barChart.getData().add(tweet_usa);
-			break;
-
-		}
+		XYChart.Series<String, Number> tweet_all = new XYChart.Series<String, Number>();
+		tweet_all.setName("Allemagne");
+		barChart.getData().clear();
+		
+		tweet_all.getData().add(new XYChart.Data<String, Number>("Clement", 15));
+		
+		barChart.getData().add(tweet_all);
+	
 		barChart.setTitle("Some Programming Languages");
 	}
+	
+
+	
 	
 	
 	public ObservableList<utilisateur> getUsers(){
@@ -258,20 +323,21 @@ public class Fenetre extends Application {
 	
 	public static void main(String[] args) throws Exception
 	{
-		/*System.setProperty( "file.encoding", "UTF-8" );
-		BaseDeTweets bdt = new BaseDeTweets();
-		int i=0;
-		try {
-			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
-			bdt.ouvrir(i);
-			bdt.explore(i);
-		}catch(Exception ex){
-			System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
-			bdt.initialise();
-			bdt.importation("Foot.txt");
-			bdt.enregistrer();
-			bdt.explore(i);
-		}*/
+		//System.setProperty( "file.encoding", "UTF-8" );
+		//BaseDeTweets bdt = new BaseDeTweets();
+		//int i=0;
+		//try {
+			//System.out.println("Ouverture en cours, veuillez patienter quelques instants");
+			//bdt.ouvrir(i);
+			//bdt.explore(i);
+			//bdt.moisDate();
+		//}catch(Exception ex){
+		//	System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
+		//	bdt.initialise();
+		//	bdt.importation("Foot.txt");
+		//	bdt.enregistrer();
+		//	bdt.explore(i);
+		//}
 
 		launch(args);
 	}

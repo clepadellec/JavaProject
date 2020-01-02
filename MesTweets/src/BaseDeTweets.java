@@ -12,29 +12,49 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.Serializable;
+
 public class BaseDeTweets{
 
 //test charlie 
-	public TreeSet<tweet> maCollec;
+	public ArrayList<tweet> maCollec;
+	//public ArrayList<tweet> maCollec;
 
 	public void initialise() {
-		maCollec = new TreeSet<tweet>();
+		maCollec = new ArrayList<tweet>();
 	}
 
 	public void ajoute(tweet t) {
 		maCollec.add(t);
 	}
-
-
+	
+	public void moisDate() {
+		//Iterator  it=maCollec.iterator();
+		//Integer i = 0;
+		//Integer cpt = 0;
+		//while (it.hasNext() && cpt < 100)
+		//{
+		System.out.println(maCollec.size());
+		
+		//for (int i=0; i<maCollec.size(); i++){
+		//	tweet t = (tweet)(maCollec.get(i));
+			//System.out.println(t.getDate().getMonth());
+			//System.out.println(it.next());
+			//cpt +=1;
+		//}
+	}
+	
+	
+	
 	public void explore(int i) {
 		Iterator  iterator=maCollec.iterator();
-
+		//Integer cpt = 0;
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet nÂ° "+ i + " :"+iterator.next());
+			System.out.println("tweet n° "+ i + " :"+iterator.next());
 			i=i+1;
 		}
 	}
@@ -178,7 +198,7 @@ public class BaseDeTweets{
 			FileInputStream w = new FileInputStream("resources/data.dat");
 			ObjectInputStream o = new ObjectInputStream(w);
 			Object lu =o.readObject();
-			maCollec = (TreeSet<tweet>)lu;
+			maCollec = (ArrayList<tweet>)lu;
 			w.close();
 			o.close();
 			System.out.println("nb de tweets"+i);
