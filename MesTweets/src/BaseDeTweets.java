@@ -22,7 +22,10 @@ import java.io.Serializable;
 public class BaseDeTweets{
 
 	public TreeSet<tweet> maCollec;
-
+	public String f_mois = "";
+	public String f_semaine = "";
+	public String f_jour = "";
+	
 	public void initialise() {
 		maCollec = new TreeSet<tweet>();
 	}
@@ -31,16 +34,31 @@ public class BaseDeTweets{
 		maCollec.add(t);
 	}
 	
+	public void filtreMois() {
+		// Modifier les variables de classes correspondant aux filtres
+	}
+	
+	public void filtreSemaine() {
+		
+	}
+
+	public void filtreJour() {
+	
+	}
+	
+	
 	public BaseDeNombreTweet creer_donnee_barchart() {
 		Iterator  it=maCollec.iterator();
 		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
-		Integer cpt = 0;
 		Integer compteur = 0;
 		String modalite = "";
 		
-		while (it.hasNext() && cpt < 150000) {
+		while (it.hasNext()) {
 			tweet infoTweet = (tweet)it.next();	
-			
+			// Verifier si il y a pas des filtres
+			// Faire du transtypage en fonction des filtres appliqué
+			// ex if (f_jour.equals(infoTweet.getJour_t())){}
+			// ensuite modifier la valeur a ajouter dans modalité ( pas forcément transtypage mais on verra si y'a moyen de simplifier)
 			if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
 				compteur +=1;
 				modalite = infoTweet.getJour_t();
@@ -52,8 +70,9 @@ public class BaseDeTweets{
 				compteur = 1;
 			}
 
-			cpt+=1;
 		}
+		nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+		bdnt.ajoute(donnee_barchart);
 		return bdnt;
 	}
 	

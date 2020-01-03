@@ -167,8 +167,12 @@ public class Fenetre extends Application {
 						System.out.println(t.getMois());
 					}
 				}
+				//ici on applique les filtres
+				bdt.filtreMois();
+				//ici on réccupere les donnes filtrés
+				// cette fonction peut directement etre appelé dans la fonction graph 
 				bar = bdt.creer_donnee_barchart();
-				
+				//ici on créé l'objet barchart et on affiche le graphiques
 				graph(barChart,bar);
 		    }
 		});
@@ -186,7 +190,8 @@ public class Fenetre extends Application {
 						System.out.println(t.getSemaine());
 					}
 				}
-				//graph(barChart,choiceBox_jour);
+				bar = bdt.creer_donnee_barchart();
+				graph(barChart,bar);
 		    }
 		});
 		
@@ -198,7 +203,8 @@ public class Fenetre extends Application {
 						System.out.println(t.getJour());
 					}
 				}
-				//graph(barChart,choiceBox_jour);
+				bar = bdt.creer_donnee_barchart();
+				graph(barChart,bar);
 		    }
 		});
 		
