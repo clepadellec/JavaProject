@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,9 +21,7 @@ import java.io.Serializable;
 
 public class BaseDeTweets{
 
-//test charlie 
 	public TreeSet<tweet> maCollec;
-	//public ArrayList<tweet> maCollec;
 
 	public void initialise() {
 		maCollec = new TreeSet<tweet>();
@@ -31,30 +31,40 @@ public class BaseDeTweets{
 		maCollec.add(t);
 	}
 	
-	public void moisDate() {
-		//Iterator  it=maCollec.iterator();
-		//Integer i = 0;
-		//Integer cpt = 0;
-		//while (it.hasNext() && cpt < 100)
-		//{
-		System.out.println(maCollec.size());
+	public BaseDeNombreTweet creer_donnee_barchart() {
+		Iterator  it=maCollec.iterator();
+		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
+		Integer cpt = 0;
+		Integer compteur = 0;
+		String modalite = "";
 		
-		//for (int i=0; i<maCollec.size(); i++){
-		//	tweet t = (tweet)(maCollec.get(i));
-			//System.out.println(t.getDate().getMonth());
-			//System.out.println(it.next());
-			//cpt +=1;
-		//}
+		while (it.hasNext() && cpt < 150000) {
+			tweet infoTweet = (tweet)it.next();	
+			
+			if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
+				compteur +=1;
+				modalite = infoTweet.getJour_t();
+			} else {
+				nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+				System.out.println(infoTweet.getJour_t() + " != " + modalite);
+				bdnt.ajoute(donnee_barchart);
+				modalite = infoTweet.getJour_t();
+				compteur = 1;
+			}
+
+			cpt+=1;
+		}
+		return bdnt;
 	}
 	
 	
 	
 	public void explore(int i) {
 		Iterator  iterator=maCollec.iterator();
-		//Integer cpt = 0;
+		
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet n° "+ i + " :"+iterator.next());
+			System.out.println("tweet n° "+ i + " :" + iterator.next());
 			i=i+1;
 		}
 	}
@@ -106,9 +116,17 @@ public class BaseDeTweets{
 			int nb_hashtag=0;
 			int nb_pseudo_mentionne=0;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			String[] sepdate = date.split(" ");
-			String heure_t = sepdate[1];
-			LocalDate date_t = LocalDate.parse(sepdate[0], formatter);
+			String[] sepdate_h = date.split(" ");
+			String heure_t = sepdate_h[1];
+			LocalDate date_t = LocalDate.parse(sepdate_h[0], formatter);
+			//cette variable sert uniquement a séparer les jours mois et annee
+			String date_string = sepdate_h[0];
+			String[] sepdate_j = date_string.split("-");
+			String annee_t = sepdate_j[0];
+			String mois_t = sepdate_j[1];
+			//String jourSemaine_t = sepdate_j[];
+			String jour_t = sepdate_j[2];
+			
 			boolean exist = tweet.contains("#");
 			if(exist==true) {
 				char c= '#';
@@ -175,14 +193,14 @@ public class BaseDeTweets{
 			}
 			try {
 				String pseudo_retweet = sepligne[4];
-				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne);
+				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
 				System.out.println("tweet nÂ°"+i+" :"+t+"\n");
 				i=i+1;
 				maCollec.add(t);
 
 			} catch (Exception ex){
 				String pseudo_retweet = "aucun pseudo rt";
-				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne);
+				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
 				System.out.println("tweet nÂ°"+i+" :"+t+"\n");
 				i=i+1;
 				maCollec.add(t);

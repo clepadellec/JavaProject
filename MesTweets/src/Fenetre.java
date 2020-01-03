@@ -54,9 +54,10 @@ public class Fenetre extends Application {
 	public nombreTweet barre1 = new nombreTweet("26",3);
 	public nombreTweet barre2 = new nombreTweet("27",2);
 	public nombreTweet barre3 = new nombreTweet("28",5);
-	public ArrayList<nombreTweet> bar = new ArrayList<nombreTweet>();
 	
-	//public 
+	public BaseDeNombreTweet bar;
+	
+	static BaseDeTweets bdt = new BaseDeTweets();
 	
 	
 	public Scene construitScene() {
@@ -71,9 +72,7 @@ public class Fenetre extends Application {
 		l.add(t7);
 		l.add(t9);
 		l.add(t10);
-		bar.add(barre1);
-		bar.add(barre2);
-		bar.add(barre3);
+		
 		
 	    GridPane grid = new GridPane();
 		GridPane grid_contenue = new GridPane();
@@ -133,16 +132,14 @@ public class Fenetre extends Application {
 		choiceBox_jour.setValue(1);
 		
 		
-		//hbox_filtre_users.getChildren().add(choiceBox_heure);
+		hbox_filtre_users.getChildren().add(choiceBox_heure);
 		
 
 		
 		
 		hbox_filtre_graph.getChildren().add(choiceBox_mois);
 		
-		
-		
-		
+				
 		GridPane.setConstraints(hbox_filtre_users, 0, 0);
 		GridPane.setConstraints(userTwitter, 0, 1);
 		grid_contenue.getChildren().addAll(userTwitter,hbox_filtre_users);
@@ -170,6 +167,8 @@ public class Fenetre extends Application {
 						System.out.println(t.getMois());
 					}
 				}
+				bar = bdt.creer_donnee_barchart();
+				
 				graph(barChart,bar);
 		    }
 		});
@@ -243,7 +242,6 @@ public class Fenetre extends Application {
 		GridPane.setConstraints(grid_contenue, 0, 1);
 		grid.getChildren().addAll(hbox, grid_contenue);
 		
-		
 		//root prend tout les element de grid
 		StackPane root = new StackPane();
 		root.getChildren().add(grid);
@@ -283,18 +281,11 @@ public class Fenetre extends Application {
 	}*/
 
 	
-	public void graph(BarChart<String, Number> barChart, ArrayList<nombreTweet> donnee) {
-	
+	public void graph(BarChart<String, Number> barChart, BaseDeNombreTweet donnee) {
 		
-		XYChart.Series<String, Number> tweet_all = new XYChart.Series<String, Number>();
-		
+		/*Objet permettant d'alimenter les données du barchart*/
 		barChart.getData().clear();
-		for (int i=0; i<donnee.size(); i++){
-			nombreTweet barre = (nombreTweet)(donnee.get(i));
-			tweet_all.getData().add(new XYChart.Data<String, Number>(barre.getModalite(), barre.getValeur()));
-		}
-		
-		barChart.getData().add(tweet_all);
+		barChart.getData().add(donnee.remplir_donnee());
 		barChart.setTitle("Nombre de tweet par semaines");
 	}
 	
@@ -314,14 +305,7 @@ public class Fenetre extends Application {
 	
 	public void start(Stage primaryStage)
 	{
-		/*CategoryAxis xAxis = new CategoryAxis();
-		xAxis.setLabel("Utilisateur");
-
-		NumberAxis yAxis = new NumberAxis();
-		yAxis.setLabel("Nombre de Rt");
-
-		BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
-*/
+		
 		Stage myStage = primaryStage;
 		primaryStage.setTitle("Ma première fenêtre");
 		primaryStage.setScene(construitScene());
@@ -332,13 +316,13 @@ public class Fenetre extends Application {
 	public static void main(String[] args) throws Exception
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
-		BaseDeTweets bdt = new BaseDeTweets();
+	
 		int i=0;
 		//try {
 			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
 			bdt.ouvrir(i);
 			//bdt.explore(i);
-			bdt.moisDate();
+			//bdt.moisDate();
 		//}catch(Exception ex){
 		//	System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
 			//bdt.initialise();
