@@ -39,17 +39,24 @@ import javafx.stage.Stage;
 /* clic droit mes news/properties/ java build path/ libraries/ access rules / edit / javafx.** puis accessible /apply */
 
 public class Fenetre extends Application {
-	public nombreTweet t1 = new nombreTweet(6,26,21,14);
-	public nombreTweet t2 = new nombreTweet(6,26,22,16);
-	public nombreTweet t3 = new nombreTweet(6,26,22,12);
-	public nombreTweet t4 = new nombreTweet(7,27,2,13);
-	public nombreTweet t5 = new nombreTweet(7,27,4,13);
-	public nombreTweet t6 = new nombreTweet(7,28,12,13);
-	public nombreTweet t7 = new nombreTweet(7,28,12,18);
-	public nombreTweet t8 = new nombreTweet(7,28,13,14);
-	public nombreTweet t9 = new nombreTweet(7,28,13,14);
-	public nombreTweet t10 = new nombreTweet(7,28,13,13);
-	public ArrayList<nombreTweet> l = new ArrayList<nombreTweet>();
+	public tweetPeriode t1 = new tweetPeriode(6,26,21,14);
+	public tweetPeriode t2 = new tweetPeriode(6,26,22,16);
+	public tweetPeriode t3 = new tweetPeriode(6,26,22,12);
+	public tweetPeriode t4 = new tweetPeriode(7,27,2,13);
+	public tweetPeriode t5 = new tweetPeriode(7,27,4,13);
+	public tweetPeriode t6 = new tweetPeriode(7,28,12,13);
+	public tweetPeriode t7 = new tweetPeriode(7,28,12,18);
+	public tweetPeriode t8 = new tweetPeriode(7,28,13,14);
+	public tweetPeriode t9 = new tweetPeriode(7,28,13,14);
+	public tweetPeriode t10 = new tweetPeriode(7,28,13,13);
+	public ArrayList<tweetPeriode> l = new ArrayList<tweetPeriode>();
+
+	public nombreTweet barre1 = new nombreTweet("26",3);
+	public nombreTweet barre2 = new nombreTweet("27",2);
+	public nombreTweet barre3 = new nombreTweet("28",5);
+	public ArrayList<nombreTweet> bar = new ArrayList<nombreTweet>();
+	
+	//public 
 	
 	
 	public Scene construitScene() {
@@ -64,6 +71,9 @@ public class Fenetre extends Application {
 		l.add(t7);
 		l.add(t9);
 		l.add(t10);
+		bar.add(barre1);
+		bar.add(barre2);
+		bar.add(barre3);
 		
 	    GridPane grid = new GridPane();
 		GridPane grid_contenue = new GridPane();
@@ -154,13 +164,13 @@ public class Fenetre extends Application {
 				hbox_filtre_graph.getChildren().add(choiceBox_semaine);
 				choiceBox_semaine.setValue(0);
 				
-				for (int i=1; i<l.size(); i++){
-					nombreTweet t = (nombreTweet)(l.get(i));
+				for (int i=0; i<l.size(); i++){
+					tweetPeriode t = (tweetPeriode)(l.get(i));
 					if(choiceBox_mois.getValue() == t.getMois() ) {
 						System.out.println(t.getMois());
 					}
 				}
-				graph(barChart,choiceBox_semaine);
+				graph(barChart,bar);
 		    }
 		});
 		
@@ -171,25 +181,25 @@ public class Fenetre extends Application {
 				hbox_filtre_graph.getChildren().add(choiceBox_semaine);
 				hbox_filtre_graph.getChildren().add(choiceBox_jour);
 				choiceBox_jour.setValue(0);
-				for (int i=1; i<l.size(); i++){
-					nombreTweet t = (nombreTweet)(l.get(i));
+				for (int i=0; i<l.size(); i++){
+					tweetPeriode t = (tweetPeriode)(l.get(i));
 					if(choiceBox_semaine.getValue() == t.getSemaine() ) {
 						System.out.println(t.getSemaine());
 					}
 				}
-				graph(barChart,choiceBox_jour);
+				//graph(barChart,choiceBox_jour);
 		    }
 		});
 		
 		choiceBox_jour.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
-				for (int i=1; i<l.size(); i++){
-					nombreTweet t = (nombreTweet)(l.get(i));
+				for (int i=0; i<l.size(); i++){
+					tweetPeriode t = (tweetPeriode)(l.get(i));
 					if(choiceBox_jour.getValue() == t.getJour() ) {
 						System.out.println(t.getJour());
 					}
 				}
-				graph(barChart,choiceBox_jour);
+				//graph(barChart,choiceBox_jour);
 		    }
 		});
 		
@@ -273,21 +283,19 @@ public class Fenetre extends Application {
 	}*/
 
 	
-	public void graph(BarChart<String, Number> barChart, ChoiceBox<Integer> choiceBox_mois) {
-
-		Integer choix1 = choiceBox_mois.getValue();
-		System.out.println(choix1);
-		
+	public void graph(BarChart<String, Number> barChart, ArrayList<nombreTweet> donnee) {
+	
 		
 		XYChart.Series<String, Number> tweet_all = new XYChart.Series<String, Number>();
-		tweet_all.setName("Allemagne");
-		barChart.getData().clear();
 		
-		tweet_all.getData().add(new XYChart.Data<String, Number>("Clement", 15));
+		barChart.getData().clear();
+		for (int i=0; i<donnee.size(); i++){
+			nombreTweet barre = (nombreTweet)(donnee.get(i));
+			tweet_all.getData().add(new XYChart.Data<String, Number>(barre.getModalite(), barre.getValeur()));
+		}
 		
 		barChart.getData().add(tweet_all);
-	
-		barChart.setTitle("Some Programming Languages");
+		barChart.setTitle("Nombre de tweet par semaines");
 	}
 	
 
@@ -323,20 +331,20 @@ public class Fenetre extends Application {
 	
 	public static void main(String[] args) throws Exception
 	{
-		//System.setProperty( "file.encoding", "UTF-8" );
-		//BaseDeTweets bdt = new BaseDeTweets();
-		//int i=0;
+		System.setProperty( "file.encoding", "UTF-8" );
+		BaseDeTweets bdt = new BaseDeTweets();
+		int i=0;
 		//try {
-			//System.out.println("Ouverture en cours, veuillez patienter quelques instants");
-			//bdt.ouvrir(i);
+			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
+			bdt.ouvrir(i);
 			//bdt.explore(i);
-			//bdt.moisDate();
+			bdt.moisDate();
 		//}catch(Exception ex){
 		//	System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
-		//	bdt.initialise();
-		//	bdt.importation("Foot.txt");
-		//	bdt.enregistrer();
-		//	bdt.explore(i);
+			//bdt.initialise();
+			//bdt.importation("Foot.txt");
+			//bdt.enregistrer();
+			//bdt.explore(i);
 		//}
 
 		launch(args);

@@ -20,11 +20,11 @@ import java.io.Serializable;
 public class BaseDeTweets{
 
 //test charlie 
-	public ArrayList<tweet> maCollec;
+	public TreeSet<tweet> maCollec;
 	//public ArrayList<tweet> maCollec;
 
 	public void initialise() {
-		maCollec = new ArrayList<tweet>();
+		maCollec = new TreeSet<tweet>();
 	}
 
 	public void ajoute(tweet t) {
@@ -198,7 +198,7 @@ public class BaseDeTweets{
 			FileInputStream w = new FileInputStream("resources/data.dat");
 			ObjectInputStream o = new ObjectInputStream(w);
 			Object lu =o.readObject();
-			maCollec = (ArrayList<tweet>)lu;
+			maCollec = (TreeSet<tweet>)lu;
 			w.close();
 			o.close();
 			System.out.println("nb de tweets"+i);

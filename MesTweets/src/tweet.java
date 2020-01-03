@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.Set;
 //
 //@SuppressWarnings("serial")
-public class tweet/* implements Comparable<tweet>, Serializable*/ {
+public class tweet implements Comparable<tweet>, Serializable {
 
 	protected String t_pseudo_users="";
 	protected LocalDate t_date;
@@ -38,7 +38,7 @@ public class tweet/* implements Comparable<tweet>, Serializable*/ {
 		this.t_nb_pseudo_mentionne=nb_pseudo_mentionne;
 	}
 
-/*
+
 	public int compareTo(tweet arg0) {
 		
 		if (getPseudo_users().compareTo(arg0.getPseudo_users())<0) return -1;
@@ -51,7 +51,7 @@ public class tweet/* implements Comparable<tweet>, Serializable*/ {
 				else if (getHeure().compareTo(arg0.getHeure())>0) return 1;
 				else return 0;
 	}
-*/
+
 	public String getPseudo_users() {
 		return t_pseudo_users;
 	}
