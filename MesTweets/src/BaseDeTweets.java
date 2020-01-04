@@ -22,55 +22,137 @@ import java.io.Serializable;
 public class BaseDeTweets{
 
 	public TreeSet<tweet> maCollec;
-	public String f_mois = "";
-	public String f_semaine = "";
-	public String f_jour = "";
+	public String f_mois = "" ;
+	public String f_semaine = "" ;
+	public String f_jour = "" ;
 	
 	public void initialise() {
 		maCollec = new TreeSet<tweet>();
+	}
+
+	public String getF_mois() {
+		return f_mois;
+	}
+
+	public void setF_mois(String f_mois) {
+		this.f_mois = f_mois;
+	}
+
+	public String getF_semaine() {
+		return f_semaine;
+	}
+
+	public void setF_semaine(String f_semaine) {
+		this.f_semaine = f_semaine;
+	}
+
+	public String getF_jour() {
+		return f_jour;
+	}
+
+	public void setF_jour(String f_jour) {
+		this.f_jour = f_jour;
 	}
 
 	public void ajoute(tweet t) {
 		maCollec.add(t);
 	}
 	
-	public void filtreMois() {
-		// Modifier les variables de classes correspondant aux filtres
-	}
-	
-	public void filtreSemaine() {
-		
-	}
-
-	public void filtreJour() {
-	
-	}
-	
-	
+	//fonction qui permet de gerer les filtres a appliquer syr le barchart
 	public BaseDeNombreTweet creer_donnee_barchart() {
 		Iterator  it=maCollec.iterator();
 		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
 		Integer compteur = 0;
 		String modalite = "";
 		
-		while (it.hasNext()) {
-			tweet infoTweet = (tweet)it.next();	
-			// Verifier si il y a pas des filtres
-			// Faire du transtypage en fonction des filtres appliqué
-			// ex if (f_jour.equals(infoTweet.getJour_t())){}
-			// ensuite modifier la valeur a ajouter dans modalité ( pas forcément transtypage mais on verra si y'a moyen de simplifier)
-			if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
-				compteur +=1;
-				modalite = infoTweet.getJour_t();
-			} else {
-				nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
-				System.out.println(infoTweet.getJour_t() + " != " + modalite);
-				bdnt.ajoute(donnee_barchart);
-				modalite = infoTweet.getJour_t();
-				compteur = 1;
+		/*si il y a un filtre sur les jours */
+		if (f_jour.equals("") == false) {
+				
+			while (it.hasNext()) {
+				tweet infoTweet = (tweet)it.next();
+	
+				if (f_jour.equals(infoTweet.getJour_t()) && f_mois.equals(infoTweet.getMois_t())) {
+				
+					String[] split_h = infoTweet.getHeure().split(":");
+					String heure = split_h[0];
+					
+					if (modalite.equals(heure) || modalite.equals("")) {
+						compteur +=1;
+						modalite = heure;
+					} else {
+						nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+						System.out.println(heure + " != " + modalite + " : " + compteur);
+						bdnt.ajoute(donnee_barchart);
+						modalite = heure;
+						compteur = 1;
+					}
+				}
 			}
-
+		
+		} else {
+			/*si il y a un filtre sur les Semaines */
+			/*
+			if (f_semaine.equals("") == false) {
+				
+				while (it.hasNext()) {
+					tweet infoTweet = (tweet)it.next();
+					if (f_mois.equals(infoTweet.getSemaine_t())){
+						if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
+							compteur +=1;
+							modalite = infoTweet.getJour_t();
+						} else {
+							nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+							System.out.println(infoTweet.getJour_t() + " != " + modalite + " : " + compteur);
+							bdnt.ajoute(donnee_barchart);
+							modalite = infoTweet.getJour_t();
+							compteur = 1;
+						}
+					}
+				}
+			} else {
+			*/	
+				/*si il y a un filtre sur les mois */
+				if (f_mois.equals("") == false) {
+					
+					while (it.hasNext()) {
+						tweet infoTweet = (tweet)it.next();
+						
+						if (f_mois.equals(infoTweet.getMois_t())){
+							if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
+								compteur +=1;
+								modalite = infoTweet.getJour_t();
+							} else {
+								nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+								System.out.println(infoTweet.getJour_t() + " != " + modalite + " : " + compteur);
+								bdnt.ajoute(donnee_barchart);
+								modalite = infoTweet.getJour_t();
+								compteur = 1;
+							}
+						}
+					}
+					
+				} else {
+					/*si il n'y a pas de filtres */
+					while (it.hasNext()) {
+						tweet infoTweet = (tweet)it.next();
+						
+						if (f_mois.equals(infoTweet.getMois_t())){
+							if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
+								compteur +=1;
+								modalite = infoTweet.getJour_t();
+							} else {
+								nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+								System.out.println(infoTweet.getJour_t() + " != " + modalite + " : " + compteur);
+								bdnt.ajoute(donnee_barchart);
+								modalite = infoTweet.getJour_t();
+								compteur = 1;
+							}
+						}
+					}
+				}
+			//}
 		}
+	
 		nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 		bdnt.ajoute(donnee_barchart);
 		return bdnt;
@@ -210,6 +292,8 @@ public class BaseDeTweets{
 			}else {
 				lien_dans_tweet="non";
 			}
+
+			
 			try {
 				String pseudo_retweet = sepligne[4];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
