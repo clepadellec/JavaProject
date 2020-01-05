@@ -22,7 +22,8 @@ public class tweet implements Comparable<tweet>, Serializable {
 	protected int t_nb_pseudo_mentionne=0;
 	protected String annee_t;
 	protected String mois_t;
-	//protected String jourSemaine_t;
+	protected String jourSemaine_t;
+	protected String t_nom_semaine;
 	protected String jour_t;
 
 	//protected LocalDate date = LocalDate.now();
@@ -30,7 +31,7 @@ public class tweet implements Comparable<tweet>, Serializable {
 
 	public tweet(String t_pseudo_users, LocalDate t_date, String t_heure, String t_contenu, String t_lien_dans_contenu,
 			String t_hashtag, String t_pseudo_mentionne, String t_pseudo_retweet, int t_nb_hashtag,
-			int t_nb_pseudo_mentionne, String annee_t2, String mois_t, /*String jourSemaine_t,*/ String jour_t2) {
+			int t_nb_pseudo_mentionne, String annee_t2, String mois_t,String jourSemaine_t, String jour_t2, String t_nom_semaine) {
 		super();
 		this.t_pseudo_users = t_pseudo_users;
 		this.t_date = t_date;
@@ -44,8 +45,9 @@ public class tweet implements Comparable<tweet>, Serializable {
 		this.t_nb_pseudo_mentionne = t_nb_pseudo_mentionne;
 		this.annee_t = annee_t2;
 		this.mois_t = mois_t;
-		//this.jourSemaine_t = jourSemaine_t;
+		this.jourSemaine_t = jourSemaine_t;
 		this.jour_t = jour_t2;
+		this.t_nom_semaine =t_nom_semaine;
 	}
 
 
@@ -175,19 +177,33 @@ public class tweet implements Comparable<tweet>, Serializable {
 	public void setJour_t(String jour_t) {
 		this.jour_t = jour_t;
 	}
+	public String getJourSemaine_t() {
+		return jourSemaine_t;
+	}
+
+	public void setJourSemaine_t(String jourSemaine_t) {
+		this.jourSemaine_t = jourSemaine_t;
+	}
 
 
 
 
-	
 	@Override
 	public String toString() {
 		return "tweet [t_pseudo_users=" + t_pseudo_users + ", t_date=" + t_date + ", t_heure=" + t_heure
 				+ ", t_contenu=" + t_contenu + ", t_lien_dans_contenu=" + t_lien_dans_contenu + ", t_hashtag="
 				+ t_hashtag + ", t_pseudo_mentionne=" + t_pseudo_mentionne + ", t_pseudo_retweet=" + t_pseudo_retweet
 				+ ", t_nb_hashtag=" + t_nb_hashtag + ", t_nb_pseudo_mentionne=" + t_nb_pseudo_mentionne + ", annee_t="
-				+ annee_t + ", mois_t=" + mois_t + ", jourSemaine_t="  + ", jour_t=" + jour_t + "]";
+				+ annee_t + ", mois_t=" + mois_t + ", jourSemaine_t=" + jourSemaine_t + ", t_nom_semaine="
+				+ t_nom_semaine + ", jour_t=" + jour_t + "]";
 	}
+
+
+
+
+
+
+
 
 	
 
