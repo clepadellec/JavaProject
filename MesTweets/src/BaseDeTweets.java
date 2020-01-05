@@ -166,10 +166,12 @@ public class BaseDeTweets{
 		while (iterator.hasNext())
 		{
 			System.out.println("tweet n° "+ i + " :" + iterator.next());
+
 			i=i+1;
 		}
 	}
 	
+
 	public static int compterOccurrences(String maChaine, char recherche) // pompé internet
 	{
 	 int nb = 0;
@@ -220,7 +222,7 @@ public class BaseDeTweets{
 			String[] sepdate_h = date.split(" ");
 			String heure_t = sepdate_h[1];
 			LocalDate date_t = LocalDate.parse(sepdate_h[0], formatter);
-			//cette variable sert uniquement a séparer les jours mois et annee
+			//cette variable sert uniquement a s�parer les jours mois et annee
 			String date_string = sepdate_h[0];
 			String[] sepdate_j = date_string.split("-");
 			String annee_t = sepdate_j[0];
@@ -297,14 +299,14 @@ public class BaseDeTweets{
 			try {
 				String pseudo_retweet = sepligne[4];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				System.out.println("tweet nÂ°"+i+" :"+t+"\n");
+				System.out.println("tweet n°"+i+" :"+t+"\n");
 				i=i+1;
 				maCollec.add(t);
 
 			} catch (Exception ex){
 				String pseudo_retweet = "aucun pseudo rt";
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				System.out.println("tweet nÂ°"+i+" :"+t+"\n");
+				System.out.println("tweet n°"+i+" :"+t+"\n");
 				i=i+1;
 				maCollec.add(t);
 				//System.out.println("pas de retweet");
