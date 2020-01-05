@@ -207,7 +207,6 @@ public class BaseDeTweets{
 		//commit
 		BufferedReader reader = new BufferedReader(new FileReader("resources/"+fic));
 		String ligne;
-		int i=1;
 		while((ligne = reader.readLine()) != null){
 			String[] sepligne = ligne.split("\t");
 			String pseudo_u = sepligne[1];
@@ -299,59 +298,53 @@ public class BaseDeTweets{
 			try {
 				String pseudo_retweet = sepligne[4];
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				System.out.println("tweet n°"+i+" :"+t+"\n");
-				i=i+1;
+				//System.out.println("tweet n°"+i+" :"+t+"\n");
 				maCollec.add(t);
 
 			} catch (Exception ex){
 				String pseudo_retweet = "aucun pseudo rt";
 				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				System.out.println("tweet n°"+i+" :"+t+"\n");
-				i=i+1;
+				//System.out.println("tweet n°"+i+" :"+t+"\n");
 				maCollec.add(t);
 				//System.out.println("pas de retweet");
 			}
 		}
 
 	}
-
-	@SuppressWarnings("unchecked")
-	public void ouvrir(int i) throws Exception {
+	// ceci est un essai
+	//@SuppressWarnings("unchecked")
+	/*public void ouvrir() throws Exception {
 		try {
-			FileInputStream w = new FileInputStream("resources/data.dat");
+			FileInputStream w = new FileInputStream("resources/data.txt");
 			ObjectInputStream o = new ObjectInputStream(w);
 			Object lu =o.readObject();
 			maCollec = (TreeSet<tweet>)lu;
 			w.close();
 			o.close();
-			System.out.println("nb de tweets"+i);
-			i=i+1;
-
 		} catch (IOException e) {
 			System.out.println("erreur d'IO");
-			i=i+1;
-			System.out.println("nb de tweets"+i);
 		}
 
 
-	}
-
+	}*/
+/*
 	public void enregistrer() throws Exception {
 		try {
-			FileOutputStream w = new FileOutputStream("resources/data.dat");
+			FileOutputStream w = new FileOutputStream("resources/data.txt");
 			ObjectOutputStream o = new ObjectOutputStream(w);
 			o.writeObject(maCollec);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
+	}*/
+/*
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
 	}
 	private void readObject(java.io.ObjectInputStream out) throws IOException, ClassNotFoundException{
 		out.defaultReadObject();
-	}
+	}*/
+	
 	//a completer
 }
