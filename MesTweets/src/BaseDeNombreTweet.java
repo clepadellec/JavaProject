@@ -8,7 +8,7 @@ public class BaseDeNombreTweet {
 
 		public ArrayList<nombreTweet> collec_nombreTweet = new ArrayList<nombreTweet>();
 		
-		public void ajoute(nombreTweet nt) {
+		public void ajouteNombreTweet(nombreTweet nt) {
 			collec_nombreTweet.add(nt);
 		}
 		

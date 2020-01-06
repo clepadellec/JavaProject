@@ -53,9 +53,9 @@ public class tweet implements Comparable<tweet>, Serializable {
 
 	public int compareTo(tweet arg0) {
 		
-	/*	if (getPseudo_users().compareTo(arg0.getPseudo_users())<0) return -1;
+		if (getPseudo_users().compareTo(arg0.getPseudo_users())<0) return -1;
 		else if(getPseudo_users().compareTo(arg0.getPseudo_users())>0) return 1;
-		else*/
+		else
 			if (getDate().compareTo(arg0.getDate())<0) return -1;
 			else if (getDate().compareTo(arg0.getDate())>0) return 1;
 			else

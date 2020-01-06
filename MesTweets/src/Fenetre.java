@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 public class Fenetre extends Application {
 	
 	public BaseDeNombreTweet bar;
+	public BaseDeUtilisateurs tab;
 	static BaseDeTweets bdt = new BaseDeTweets();
 		
 	public static void main(String[] args) throws Exception
@@ -56,25 +58,16 @@ public class Fenetre extends Application {
 		 * Trouver des idées pour les hashtag
 		 * Ajouter des petits truc sympa sur l'affichage des graphiques
 		 * Tester sur les deux jeux de données
-		 * 
+		 * Rendre dynamique les choicebox
 		 */
-		
-		
-		
-		
 		int i=0;
-		//try {
-			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
-			//bdt.ouvrir(i);
-			//bdt.explore(i);
-			//bdt.moisDate();
-		//}catch(Exception ex){
-		//	System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
-			//bdt.initialise();
-			//bdt.importation("Foot.txt");
+		
+		System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
+			bdt.initialise();
+			bdt.importation("Foot.txt");
 			//bdt.enregistrer();
 			//bdt.explore(i);
-		//}
+		
 
 		launch(args);
 	}
@@ -95,51 +88,33 @@ public class Fenetre extends Application {
 		GridPane grid_contenue = new GridPane();
 		MenuBar menuBar = new MenuBar();
 		
-		HBox hbox_menu = new HBox();
-		VBox vbox_filtre_graph = new VBox();
-		VBox vbox_filtre_users = new VBox();
-		
-
-		HBox hbox_filtre_graph_mois = new HBox();
-		HBox hbox_filtre_graph_semaine = new HBox();
-		HBox hbox_filtre_graph_jour = new HBox();
-
-		
-		//création du menu
 		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
+
+		HBox hbox_menu = new HBox();
+		hbox_menu.getChildren().add(menuBar);
 		
-		//On ajoute des sous menu
 		MenuItem menuItem_tweet = new MenuItem("Tweet");
 		MenuItem menuItem_utilisateur = new MenuItem("Utilisateur");
 		MenuItem menuItem_hashtag = new MenuItem("Hashtags");
 		menu_edition.getItems().addAll(menuItem_tweet, menuItem_utilisateur, menuItem_hashtag);
 
-		hbox_menu.getChildren().add(menuBar);
-		
-		
-		
-		
-		
-		/*************** Tableau ********************/
-		
-		TableView<utilisateur> userTwitter = new TableView<>();
-		
-		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
-		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
-		TableColumn<utilisateur, Integer> nombreRTColumn = new TableColumn<>("Nombre de Rt");
-		nombreRTColumn.setCellValueFactory(new PropertyValueFactory<>("u_nombre_retweet"));
-		TableColumn<utilisateur, Integer> nombreMentionColumn = new TableColumn<>("Nombre de mention");
-		nombreMentionColumn.setCellValueFactory(new PropertyValueFactory<>("u_nombre_mention"));
-		
-		userTwitter.setItems(getUsers());
-		userTwitter.getColumns().addAll(pseudoColumn, nombreRTColumn, nombreMentionColumn);
-		
-		
-		
 	
 		
-		/****************** ChoiceBox ********************/
+		
+		
+		
+		
+		
+		
+		
+
+		/**************************** Bar Chart ***************************/
+		
+		VBox vbox_filtre_graph = new VBox();
+		HBox hbox_filtre_graph_mois = new HBox();
+		HBox hbox_filtre_graph_semaine = new HBox();
+		HBox hbox_filtre_graph_jour = new HBox();
 		//Rendre tout ca dynamique 
 		ChoiceBox<String> choiceBox_heure = new ChoiceBox<>();
 		choiceBox_heure.getItems().addAll("Aucun","0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
@@ -166,12 +141,6 @@ public class Fenetre extends Application {
 		hbox_filtre_graph_jour.getChildren().addAll();
 		
 		vbox_filtre_graph.getChildren().addAll(hbox_filtre_graph_mois, hbox_filtre_graph_semaine, hbox_filtre_graph_jour);
-		
-		
-		vbox_filtre_users.getChildren().add(choiceBox_heure);	
-		GridPane.setConstraints(vbox_filtre_users, 0, 0);
-		GridPane.setConstraints(userTwitter, 0, 1);
-		grid_contenue.getChildren().addAll(userTwitter,vbox_filtre_users);
 		
 		// barchart
 		CategoryAxis xAxis = new CategoryAxis();
@@ -229,8 +198,6 @@ public class Fenetre extends Application {
 		    }
 		});
 		
-		
-		
 		button_supprimer_mois.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent s_m) {
 
@@ -273,8 +240,25 @@ public class Fenetre extends Application {
 		});
 		
 		
+
 		
-		/**************MENU**************/
+
+		
+		/*************************** Tableau ********************************/
+		
+		VBox vbox_filtre_users = new VBox();
+		
+		TableView<utilisateur> tableview_userTwitter = new TableView<>();
+		
+		tableau(tableview_userTwitter);
+		
+		vbox_filtre_users.getChildren().add(choiceBox_heure);	
+		GridPane.setConstraints(vbox_filtre_users, 0, 0);
+		GridPane.setConstraints(tableview_userTwitter, 0, 1);
+		grid_contenue.getChildren().addAll(tableview_userTwitter,vbox_filtre_users);
+
+		
+		/************************* MENU *************************/
 		
 		menuItem_tweet.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
@@ -297,22 +281,20 @@ public class Fenetre extends Application {
 				GridPane.setConstraints(vbox_filtre_users, 0, 0);
 				grid_contenue.getChildren().add(vbox_filtre_users);
 
-				GridPane.setConstraints(userTwitter, 0, 1);
-				grid_contenue.getChildren().add(userTwitter);
+				GridPane.setConstraints(tableview_userTwitter, 0, 1);
+				grid_contenue.getChildren().add(tableview_userTwitter);
 			}
 		});
 		
 		menuItem_hashtag.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
 				grid_contenue.getChildren().clear();
-				GridPane.setConstraints(userTwitter, 0, 0);
-				grid_contenue.getChildren().add(userTwitter);
+				GridPane.setConstraints(tableview_userTwitter, 0, 0);
+				grid_contenue.getChildren().add(tableview_userTwitter);
 			}
 		});
 		
-		
-		
-		
+		/********************* Affichage de l'interface *********************/
 		
 		//On affiche l'entete et le contenue
 		GridPane.setConstraints(hbox_menu, 0, 0);
@@ -329,6 +311,10 @@ public class Fenetre extends Application {
 		return scene;
 	}
 
+	
+	
+	
+	
 	/*ca peut etre utile pour generer dynamiquement les choicebox*/
 	public ChoiceBox<String> setChoiceBox(){
 		ChoiceBox<String> choiceBox = new ChoiceBox<>();
@@ -351,14 +337,25 @@ public class Fenetre extends Application {
 	
 
 	/*Fonction pour les tableaus*/
-	public ObservableList<utilisateur> getUsers(){
-		ObservableList<utilisateur> topUsers = FXCollections.observableArrayList();
-		utilisateur utilisateur1 = new utilisateur("chachalartiste",19,20);
-		utilisateur utilisateur2 = new utilisateur("charpogo",77,5);
-		utilisateur utilisateur3 = new utilisateur("mathieuVDP",15,23);
-		topUsers.addAll(utilisateur1,utilisateur2,utilisateur3);
-		return topUsers;
+	public void tableau(TableView<utilisateur> tableview){
+
+		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
+		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
+		TableColumn<utilisateur, Integer> nombreRTColumn = new TableColumn<>("Nombre de Rt");
+		nombreRTColumn.setCellValueFactory(new PropertyValueFactory<>("u_nombre_retweet"));
+		TableColumn<utilisateur, Integer> nombreMentionColumn = new TableColumn<>("Nombre de mention");
+		nombreMentionColumn.setCellValueFactory(new PropertyValueFactory<>("u_nombre_mention"));
+		
+		tab = bdt.creer_donnee_tableau();
+		tableview.getItems().clear();
+		tableview.setItems(tab.ajouteUtilisateur());
+		tableview.getColumns().addAll(pseudoColumn, nombreRTColumn, nombreMentionColumn);
+		
 	}
+	
+
+	
+
 	
 	
 	
