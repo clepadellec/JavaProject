@@ -17,11 +17,15 @@ import java.lang.reflect.Field;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.Serializable;
+
 
 public class BaseDeTweets{
 
@@ -29,11 +33,39 @@ public class BaseDeTweets{
 	public String f_mois = "" ;
 	public String f_semaine = "" ;
 	public String f_jour = "" ;
-	
+	public String f_joursem="";
+
 	public void initialise() {
 		maCollec = new TreeSet<tweet>();
 	}
 
+
+
+	public String trouvejour(LocalDate date ) {
+		Date datee = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Calendar calendarNomJourSemaine = Calendar.getInstance();
+		calendarNomJourSemaine.setTime(datee);
+		int semaine = calendarNomJourSemaine.get(Calendar.DAY_OF_WEEK);
+		String nomjourSemaine = "";
+		switch (semaine) {
+		case 1:  nomjourSemaine = "Dimanche";
+		break;
+		case 2:  nomjourSemaine = "Lundi";
+		break;
+		case 3:  nomjourSemaine = "Mardi";
+		break;
+		case 4:  nomjourSemaine = "Mercredi";
+		break;
+		case 5:  nomjourSemaine = "Jeudi";
+		break;
+		case 6:  nomjourSemaine = "Vendredi";
+		break;
+		case 7:  nomjourSemaine = "Samedi";
+		break;
+		}
+
+		return nomjourSemaine;
+	}
 	public String getF_mois() {
 		return f_mois;
 	}
@@ -61,7 +93,14 @@ public class BaseDeTweets{
 	public void ajoute(tweet t) {
 		maCollec.add(t);
 	}
-	
+	public String getF_joursem() {
+		return f_joursem;
+	}
+
+	public void setF_joursem(String f_joursem) {
+		this.f_joursem = f_joursem;
+	}
+
 	//fonction qui permet de gerer les filtres a appliquer syr le barchart
 	public BaseDeNombreTweet creer_donnee_barchart() {
 		//Iterateur qui permet de parcourir le treeset
@@ -71,24 +110,33 @@ public class BaseDeTweets{
 		// Le couple modalité/compteur correspond a 
 		Integer compteur = 0;
 		String modalite = "";
-		
+
 		/*si il y a un filtre sur les jours */
 		if (f_jour.equals("") == false) {
 			// Boucle sur les element du treeset
+
+
 			while (it.hasNext()) {
 				//l'element du treeset est stocké dans un objet de type tweet
 				tweet infoTweet = (tweet)it.next();
+
 				// On test si le tweet correspond aux conditions de tri (jour,semaine,mois)
+
 				if (f_jour.equals(infoTweet.getJour_t()) && f_mois.equals(infoTweet.getMois_t())) {
+
 					//On réccupère l'heure du tweet
+
+
 					String[] split_h = infoTweet.getHeure().split(":");
 					String heure = split_h[0];
+
 					/*le treeset est trié par ordre chronologique 
 					 * donc si on observe un changement entre deux valeur
 					 * on créé une nouvelle modalité
 					 */
 					//si l'heure du nouveau tweet est identique a celle du tweet précédent
 					// ou si il s'agit du premier tweet
+
 					if (modalite.equals(heure) || modalite.equals("")) {
 						//on incrémente de 1 le compteur correspondant a la valeur de la modalité
 						compteur +=1;
@@ -106,12 +154,12 @@ public class BaseDeTweets{
 					}
 				}
 			}
-		
+
 		} else {
 			/*si il y a un filtre sur les Semaines */
 			/*
 			if (f_semaine.equals("") == false) {
-				
+
 				while (it.hasNext()) {
 					tweet infoTweet = (tweet)it.next();
 					if (f_mois.equals(infoTweet.getSemaine_t())){
@@ -128,52 +176,22 @@ public class BaseDeTweets{
 					}
 				}
 			} else {
-			*/	
-				/*si il y a un filtre sur les mois */
-				if (f_mois.equals("") == false) {
-					// Boucle sur les element du treeset
-					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
-						tweet infoTweet = (tweet)it.next();
-						// On test si le tweet correspond aux conditions de tri (mois)
-						if (f_mois.equals(infoTweet.getMois_t())){
-							/*le treeset est trié par ordre chronologique 
-							 * donc si on observe un changement entre deux valeur
-							 * on créé une nouvelle modalité
-							 */
-							//si le jour du nouveau tweet est identique a celui du tweet précédent
-							// ou si il s'agit du premier tweet
-							if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
-								//on incrémente de 1 le compteur correspondant a la valeur de la modalité
-								compteur +=1;
-								//la variable modalité prend la valeur du nouveau jour
-								modalite = infoTweet.getJour_t();
-							} else {
-								// On créé un objet nombreTweet
-								nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
-								//on ajoute l'objet a la base de nombreTweet
-								bdnt.ajouteNombreTweet(donnee_barchart);
-								//la variable modalité prend la valeur de la nouvelle heure
-								modalite = infoTweet.getJour_t();
-								//on reinitialise le compteur de modalité a 1
-								compteur = 1;
-							}
-						}
-					}
-					
-				} else {
-					/*si il n'y a pas de filtres */
-					// Boucle sur les element du treeset
-					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
-						tweet infoTweet = (tweet)it.next();
+
+			 */	
+			/*si il y a un filtre sur les mois */
+			if (f_mois.equals("") == false) {
+				// Boucle sur les element du treeset
+				while (it.hasNext()) {
+					//l'element du treeset est stocké dans un objet de type tweet
+					tweet infoTweet = (tweet)it.next();
+					// On test si le tweet correspond aux conditions de tri (mois)
+					if (f_mois.equals(infoTweet.getMois_t())){
 						/*le treeset est trié par ordre chronologique 
 						 * donc si on observe un changement entre deux valeur
 						 * on créé une nouvelle modalité
 						 */
 						//si le jour du nouveau tweet est identique a celui du tweet précédent
 						// ou si il s'agit du premier tweet
-						
 						if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {
 							//on incrémente de 1 le compteur correspondant a la valeur de la modalité
 							compteur +=1;
@@ -189,23 +207,53 @@ public class BaseDeTweets{
 							//on reinitialise le compteur de modalité a 1
 							compteur = 1;
 						}
-						
 					}
 				}
-			//}
+
+			} else {
+				/*si il n'y a pas de filtres */
+				// Boucle sur les element du treeset
+				while (it.hasNext()) {
+					//l'element du treeset est stocké dans un objet de type tweet
+					tweet infoTweet = (tweet)it.next();
+					/*le treeset est trié par ordre chronologique 
+					 * donc si on observe un changement entre deux valeur
+					 * on créé une nouvelle modalité
+					 */
+					//si le jour du nouveau tweet est identique a celui du tweet précédent
+					// ou si il s'agit du premier tweet
+
+					if (modalite.equals(infoTweet.getJour_t()) || modalite.equals("")) {//3
+						//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+						compteur +=1;
+						//la variable modalité prend la valeur du nouveau jour
+						modalite = infoTweet.getJour_t();
+					} else {
+						// On créé un objet nombreTweet
+						nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+						//on ajoute l'objet a la base de nombreTweet
+						bdnt.ajouteNombreTweet(donnee_barchart);
+						//la variable modalité prend la valeur de la nouvelle heure
+						modalite = infoTweet.getJour_t();
+						//on reinitialise le compteur de modalité a 1
+
+					}//3
+				}//while
+				//}
+			}
 		}
-	
 		nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 		bdnt.ajouteNombreTweet(donnee_barchart);
 		return bdnt;
 	}
-	
+
+
 	public BaseDeUtilisateurs creer_donnee_tableau() {
 		BaseDeUtilisateurs bdu = new BaseDeUtilisateurs();
 		String pseudo_users = "";
 		Integer compteur_tweet = 0;
 		Iterator  it=maCollec.iterator();
-		
+
 		while (it.hasNext()) {
 			tweet infoTweet = (tweet)it.next();
 			//System.out.println(infoTweet.getPseudo_users());
@@ -222,34 +270,39 @@ public class BaseDeTweets{
 				compteur_tweet = 1;
 			}
 			//l'element du treeset est stocké dans un objet de type tweet
-		
+
 		}
 		utilisateur user = new utilisateur(pseudo_users,compteur_tweet,5);
 		bdu.ajouteUtilisateur(user);		
 		return bdu;
 	}
-	
 
-	
+
+
+
+
+
 	public void explore(int i) {
 		Iterator  iterator=maCollec.iterator();
-		
+
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet n° "+ i + " :" + iterator.next());
+			System.out.println("tweet nÂ° "+ i + " :" + iterator.next());
+
 			i=i+1;
 		}
 	}
-	
-	public static int compterOccurrences(String maChaine, char recherche) // pompé internet
+
+
+	public static int compterOccurrences(String maChaine, char recherche) // pompÃ© internet
 	{
-	 int nb = 0;
-	 for (int i=0; i < maChaine.length(); i++)
-	 {
-	 if (maChaine.charAt(i) == recherche)
-	 nb++;
-	 }
-	 return nb;
+		int nb = 0;
+		for (int i=0; i < maChaine.length(); i++)
+		{
+			if (maChaine.charAt(i) == recherche)
+				nb++;
+		}
+		return nb;
 	}
 
 	public void trouveactu(String rech) {
@@ -273,10 +326,9 @@ public class BaseDeTweets{
 
 	public void importation(String fic) throws IOException {
 		@SuppressWarnings("resource")
-		//commit
+
 		BufferedReader reader = new BufferedReader(new FileReader("resources/"+fic));
 		String ligne;
-		int i=1;
 		while((ligne = reader.readLine()) != null){
 			String[] sepligne = ligne.split("\t");
 			String pseudo_u = sepligne[1];
@@ -291,13 +343,16 @@ public class BaseDeTweets{
 			String[] sepdate_h = date.split(" ");
 			String heure_t = sepdate_h[1];
 			LocalDate date_t = LocalDate.parse(sepdate_h[0], formatter);
-			//cette variable sert uniquement a séparer les jours mois et annee
+			DayOfWeek dayweek = date_t.getDayOfWeek();
+			//cette variable sert uniquement a separer les jours mois et annee
 			String date_string = sepdate_h[0];
 			String[] sepdate_j = date_string.split("-");
 			String annee_t = sepdate_j[0];
 			String mois_t = sepdate_j[1];
 			//String jourSemaine_t = sepdate_j[];
 			String jour_t = sepdate_j[2];
+			String nom_semaine="Semaine du Lundi xx au Dimanche xx";
+			String nom_jour= trouvejour(date_t);
 			
 			boolean exist = tweet.contains("#");
 			if(exist==true) {
@@ -315,7 +370,7 @@ public class BaseDeTweets{
 							hashtag=hashtag+tweet.substring(deb,tweet.length()-1);
 						}
 						if(fin != -1) {
-						deb=fin;
+							deb=fin;
 						}else break;	
 					}else break;	
 				}
@@ -340,7 +395,7 @@ public class BaseDeTweets{
 							pseudo_mentionne=pseudo_mentionne+tweet.substring(deb,tweet.length()-1);
 						}
 						if(fin != -1) {
-						deb=fin;
+							deb=fin;
 						}else break;	
 					}else break;	
 				}
@@ -364,63 +419,60 @@ public class BaseDeTweets{
 				lien_dans_tweet="non";
 			}
 
-			
+
 			try {
 				String pseudo_retweet = sepligne[4];
-				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				//System.out.println("tweet nÂ°"+i+" :"+t+"\n");
-				i=i+1;
+
+				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t,nom_jour,nom_semaine);
+				//System.out.println(t+"\n");
 				maCollec.add(t);
 
 			} catch (Exception ex){
 				String pseudo_retweet = "aucun pseudo rt";
-				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t);
-				//System.out.println("tweet nÂ°"+i+" :"+t+"\n");
-				i=i+1;
+				
+
+				tweet t = new tweet(pseudo_u,date_t,heure_t,tweet,lien_dans_tweet,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee_t,mois_t,jour_t,nom_jour,nom_semaine);
+				//System.out.println(t+"\n");
 				maCollec.add(t);
 				//System.out.println("pas de retweet");
 			}
 		}
 
 	}
-
-	@SuppressWarnings("unchecked")
-	public void ouvrir(int i) throws Exception {
+	// ceci est un essai
+	//@SuppressWarnings("unchecked")
+	/*public void ouvrir() throws Exception {
 		try {
-			FileInputStream w = new FileInputStream("resources/data.dat");
+			FileInputStream w = new FileInputStream("resources/data.txt");
 			ObjectInputStream o = new ObjectInputStream(w);
 			Object lu =o.readObject();
 			maCollec = (TreeSet<tweet>)lu;
 			w.close();
 			o.close();
-			System.out.println("nb de tweets"+i);
-			i=i+1;
-
 		} catch (IOException e) {
 			System.out.println("erreur d'IO");
-			i=i+1;
-			System.out.println("nb de tweets"+i);
 		}
 
 
-	}
-
+	}*/
+	/*
 	public void enregistrer() throws Exception {
 		try {
-			FileOutputStream w = new FileOutputStream("resources/data.dat");
+			FileOutputStream w = new FileOutputStream("resources/data.txt");
 			ObjectOutputStream o = new ObjectOutputStream(w);
 			o.writeObject(maCollec);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
+	}*/
+	/*
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
 	}
 	private void readObject(java.io.ObjectInputStream out) throws IOException, ClassNotFoundException{
 		out.defaultReadObject();
-	}
+	}*/
+
 	//a completer
 }
