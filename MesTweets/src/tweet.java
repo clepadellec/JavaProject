@@ -4,11 +4,12 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Set;
 //
 //@SuppressWarnings("serial")
-public class tweet implements Comparable<tweet>, Serializable {
+public class tweet{
 
 	protected String t_pseudo_users="";
 	protected LocalDate t_date;
@@ -20,18 +21,21 @@ public class tweet implements Comparable<tweet>, Serializable {
 	protected String t_pseudo_retweet="";
 	protected int t_nb_hashtag=0;
 	protected int t_nb_pseudo_mentionne=0;
-	protected String annee_t;
-	protected String mois_t;
-	protected String jourSemaine_t;
-	protected String t_nom_semaine;
-	protected String jour_t;
-
+	protected String t_annee;
+	protected String t_mois;
+	protected String t_jour;
+	protected String t_jour_Semaine;
+	protected String t_semaine;
 	//protected LocalDate date = LocalDate.now();
 	//private String date="";
 
+
+
+
 	public tweet(String t_pseudo_users, LocalDate t_date, String t_heure, String t_contenu, String t_lien_dans_contenu,
 			String t_hashtag, String t_pseudo_mentionne, String t_pseudo_retweet, int t_nb_hashtag,
-			int t_nb_pseudo_mentionne, String annee_t2, String mois_t,String jourSemaine_t, String jour_t2, String t_nom_semaine) {
+			int t_nb_pseudo_mentionne, String t_annee, String t_mois, String t_jour, String t_jour_Semaine,
+			String t_semaine) {
 		super();
 		this.t_pseudo_users = t_pseudo_users;
 		this.t_date = t_date;
@@ -43,149 +47,14 @@ public class tweet implements Comparable<tweet>, Serializable {
 		this.t_pseudo_retweet = t_pseudo_retweet;
 		this.t_nb_hashtag = t_nb_hashtag;
 		this.t_nb_pseudo_mentionne = t_nb_pseudo_mentionne;
-		this.annee_t = annee_t2;
-		this.mois_t = mois_t;
-		this.jourSemaine_t = jourSemaine_t;
-		this.jour_t = jour_t2;
-		this.t_nom_semaine =t_nom_semaine;
-	}
-
-
-
-
-	public int compareTo(tweet arg0) {
-		
-		if (getPseudo_users().compareTo(arg0.getPseudo_users())<0) return -1;
-		else if(getPseudo_users().compareTo(arg0.getPseudo_users())>0) return 1;
-		else
-			if (getDate().compareTo(arg0.getDate())<0) return -1;
-			else if (getDate().compareTo(arg0.getDate())>0) return 1;
-			else
-				if (getHeure().compareTo(arg0.getHeure())<0) return -1;
-				else if (getHeure().compareTo(arg0.getHeure())>0) return 1;
-				else return 0;
+		this.t_annee = t_annee;
+		this.t_mois = t_mois;
+		this.t_jour = t_jour;
+		this.t_jour_Semaine = t_jour_Semaine;
+		this.t_semaine = t_semaine;
 	}
 
 	
-	public String getPseudo_users() {
-		return t_pseudo_users;
-	}
-
-	public void setPseudo_users(String pseudo_users) {
-		this.t_pseudo_users = pseudo_users;
-	}
-
-	public LocalDate getDate() {
-		return t_date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.t_date = date;
-	}
-
-	public String getHeure() {
-		return t_heure;
-	}
-
-	public void setHeure(String heure) {
-		this.t_heure = heure;
-	}
-
-	public String getcontenu() {
-		return t_contenu;
-	}
-
-	public void setcontenu(String contenu) {
-		this.t_contenu = contenu;
-	}
-
-	public String getLien_dans_contenu() {
-		return t_lien_dans_contenu;
-	}
-
-	public void setLien_dans_contenu(String lien_dans_contenu) {
-		this.t_lien_dans_contenu = lien_dans_contenu;
-	}
-
-	public String getHashtag() {
-		return t_hashtag;
-	}
-
-	public void setHashtag(String hashtag) {
-		this.t_hashtag = hashtag;
-	}
-
-	public String getPseudo_mentionne() {
-		return t_pseudo_mentionne;
-	}
-
-	public void setPseudo_mentionne(String pseudo_mentionne) {
-		this.t_pseudo_mentionne = pseudo_mentionne;
-	}
-
-	public String getpseudo_retweet() {
-		return t_pseudo_retweet;
-	}
-
-	public void setpseudo_retweet(String pseudo_retweet) {
-		this.t_pseudo_retweet = pseudo_retweet;
-	}
-
-	public int getnb_hashtag() {
-		return t_nb_hashtag;
-	}
-
-
-	public void setnb_hashtag(int t_nb_hashtag) {
-		this.t_nb_hashtag = t_nb_hashtag;
-	}
-
-
-	public int getnb_pseudo_mentionne() {
-		return t_nb_pseudo_mentionne;
-	}
-
-
-	public void setnb_pseudo_mentionne(int t_nb_pseudo_mentionne) {
-		this.t_nb_pseudo_mentionne = t_nb_pseudo_mentionne;
-	}
-
-
-	public String getAnnee_t() {
-		return annee_t;
-	}
-
-	public void setAnnee_t(String annee_t) {
-		this.annee_t = annee_t;
-	}
-
-	public String getMois_t() {
-		return mois_t;
-	}
-
-	public void setMois_t(String mois_t) {
-		this.mois_t = mois_t;
-	}
-
-	
-
-	
-	public String getJour_t() {
-		return jour_t;
-	}
-
-	public void setJour_t(String jour_t) {
-		this.jour_t = jour_t;
-	}
-	public String getJourSemaine_t() {
-		return jourSemaine_t;
-	}
-
-	public void setJourSemaine_t(String jourSemaine_t) {
-		this.jourSemaine_t = jourSemaine_t;
-	}
-
-
 
 
 	@Override
@@ -193,12 +62,314 @@ public class tweet implements Comparable<tweet>, Serializable {
 		return "tweet [t_pseudo_users=" + t_pseudo_users + ", t_date=" + t_date + ", t_heure=" + t_heure
 				+ ", t_contenu=" + t_contenu + ", t_lien_dans_contenu=" + t_lien_dans_contenu + ", t_hashtag="
 				+ t_hashtag + ", t_pseudo_mentionne=" + t_pseudo_mentionne + ", t_pseudo_retweet=" + t_pseudo_retweet
-				+ ", t_nb_hashtag=" + t_nb_hashtag + ", t_nb_pseudo_mentionne=" + t_nb_pseudo_mentionne + ", annee_t="
-				+ annee_t + ", mois_t=" + mois_t + ", jourSemaine_t=" + jourSemaine_t + ", t_nom_semaine="
-				+ t_nom_semaine + ", jour_t=" + jour_t + "]";
+				+ ", t_nb_hashtag=" + t_nb_hashtag + ", t_nb_pseudo_mentionne=" + t_nb_pseudo_mentionne + ", t_annee="
+				+ t_annee + ", t_mois=" + t_mois + ", t_jour=" + t_jour + ", t_jour_Semaine=" + t_jour_Semaine
+				+ ", t_semaine=" + t_semaine + "]";
 	}
 
 
+
+
+
+	public static Comparator<tweet> triDate = new Comparator<tweet>() {
+		public int compare (tweet t1,tweet t2) {
+			LocalDate tdate1 = t1.getT_date();
+			LocalDate tdate2 = t2.getT_date();
+			int resultat;
+			resultat=tdate1.compareTo(tdate2);
+			if (resultat==0) {
+				String h1 = t1.getT_heure();
+				String h2 = t2.getT_heure();
+				resultat=h1.compareTo(h2);
+			}
+			return resultat;
+		}
+	};
+	
+	public static Comparator<tweet> triUsers = new Comparator<tweet>() {
+		public int compare (tweet t1,tweet t2) {
+			String pseu1 = t1.getT_pseudo_users();
+			String pseu2 = t2.getT_pseudo_users();
+			int resultat;
+			resultat=pseu1.compareTo(pseu2);
+			if (resultat==0) {
+				LocalDate tdate1 = t1.getT_date();
+				LocalDate tdate2 = t2.getT_date();
+				resultat=tdate1.compareTo(tdate2);
+			}
+			return resultat;
+		}
+	};
+
+
+
+
+
+
+	public String getT_pseudo_users() {
+		return t_pseudo_users;
+	}
+
+
+
+
+
+
+	public void setT_pseudo_users(String t_pseudo_users) {
+		this.t_pseudo_users = t_pseudo_users;
+	}
+
+
+
+
+
+
+	public LocalDate getT_date() {
+		return t_date;
+	}
+
+
+
+
+
+
+	public void setT_date(LocalDate t_date) {
+		this.t_date = t_date;
+	}
+
+
+
+
+
+
+	public String getT_heure() {
+		return t_heure;
+	}
+
+
+
+
+
+
+	public void setT_heure(String t_heure) {
+		this.t_heure = t_heure;
+	}
+
+
+
+
+
+
+	public String getT_contenu() {
+		return t_contenu;
+	}
+
+
+
+
+
+
+	public void setT_contenu(String t_contenu) {
+		this.t_contenu = t_contenu;
+	}
+
+
+
+
+
+
+	public String getT_lien_dans_contenu() {
+		return t_lien_dans_contenu;
+	}
+
+
+
+
+
+
+	public void setT_lien_dans_contenu(String t_lien_dans_contenu) {
+		this.t_lien_dans_contenu = t_lien_dans_contenu;
+	}
+
+
+
+
+
+
+	public String getT_hashtag() {
+		return t_hashtag;
+	}
+
+
+
+
+
+
+	public void setT_hashtag(String t_hashtag) {
+		this.t_hashtag = t_hashtag;
+	}
+
+
+
+
+
+
+	public String getT_pseudo_mentionne() {
+		return t_pseudo_mentionne;
+	}
+
+
+
+
+
+
+	public void setT_pseudo_mentionne(String t_pseudo_mentionne) {
+		this.t_pseudo_mentionne = t_pseudo_mentionne;
+	}
+
+
+
+
+
+
+	public String getT_pseudo_retweet() {
+		return t_pseudo_retweet;
+	}
+
+
+
+
+
+
+	public void setT_pseudo_retweet(String t_pseudo_retweet) {
+		this.t_pseudo_retweet = t_pseudo_retweet;
+	}
+
+
+
+
+
+
+	public int getT_nb_hashtag() {
+		return t_nb_hashtag;
+	}
+
+
+
+
+
+
+	public void setT_nb_hashtag(int t_nb_hashtag) {
+		this.t_nb_hashtag = t_nb_hashtag;
+	}
+
+
+
+
+
+
+	public int getT_nb_pseudo_mentionne() {
+		return t_nb_pseudo_mentionne;
+	}
+
+
+
+
+
+
+	public void setT_nb_pseudo_mentionne(int t_nb_pseudo_mentionne) {
+		this.t_nb_pseudo_mentionne = t_nb_pseudo_mentionne;
+	}
+
+
+
+
+
+
+	public String getT_annee() {
+		return t_annee;
+	}
+
+
+
+
+
+
+	public void setT_annee(String t_annee) {
+		this.t_annee = t_annee;
+	}
+
+
+
+
+
+
+	public String getT_mois() {
+		return t_mois;
+	}
+
+
+
+
+
+
+	public void setT_mois(String t_mois) {
+		this.t_mois = t_mois;
+	}
+
+
+
+
+
+
+	public String getT_jour() {
+		return t_jour;
+	}
+
+
+
+
+
+
+	public void setT_jour(String t_jour) {
+		this.t_jour = t_jour;
+	}
+
+
+
+
+
+
+	public String getT_jour_Semaine() {
+		return t_jour_Semaine;
+	}
+
+
+
+
+
+
+	public void setT_jour_Semaine(String t_jour_Semaine) {
+		this.t_jour_Semaine = t_jour_Semaine;
+	}
+
+
+
+
+
+
+	public String getT_semaine() {
+		return t_semaine;
+	}
+
+
+
+
+
+
+	public void setT_semaine(String t_semaine) {
+		this.t_semaine = t_semaine;
+	}
 
 
 
@@ -212,23 +383,7 @@ public class tweet implements Comparable<tweet>, Serializable {
 
 
 
-	/*
-	public News(String t,String a,String s, String d) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		String date;
-		this.t_titre=t;
-		this.t_auteur=a;
-		this.t_source=s;
-		date=d;
 
-		try {
-			this.t_date = LocalDate.parse(date, formatter);
-		} catch (DateTimeParseException e) { System.out.println( "erreur, la date sera celle du  jour"); };
-
-
-	}
-
-	 */
 
 
 }
