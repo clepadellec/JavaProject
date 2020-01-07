@@ -79,6 +79,7 @@ public class Fenetre extends Application {
 		}catch(Exception ex){*/
 		System.out.println("Importation de la base en cours, veuillez patienter quelques instants...");
 		bdt.initialise();
+	
 		bdt.importation("foot.txt");
 		//bdt.enregistrer();
 		System.out.println("finis !");
@@ -114,9 +115,15 @@ public class Fenetre extends Application {
 
 		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
-
+		Menu menu_data = new Menu("Jeu de données");
+		menuBar.getMenus().addAll(menu_data);
+		
 		HBox hbox_menu = new HBox();
 		hbox_menu.getChildren().add(menuBar);
+		
+		MenuItem menuItem_foot = new MenuItem("Foot");
+		MenuItem menuItem_climat = new MenuItem("Climat");
+		menu_data.getItems().addAll(menuItem_foot, menuItem_climat);
 
 		//On ajoute des sous menu
 		MenuItem menuItem_tweet = new MenuItem("Tweet");
@@ -124,21 +131,10 @@ public class Fenetre extends Application {
 		MenuItem menuItem_hashtag = new MenuItem("Hashtags");
 		menu_edition.getItems().addAll(menuItem_tweet, menuItem_utilisateur, menuItem_hashtag);
 
-		//Rendre tout ca dynamique 
-		//ChoiceBox<String> choiceBox_heure = new ChoiceBox<>();
-		//choiceBox_heure.getItems().addAll("Aucun","0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
-		//choiceBox_heure.setValue(0);
-
 		ChoiceBox<String> choiceBox_mois = bdt.setChoiceBox("mois");
-		//choiceBox_mois.getItems().addAll("Aucun","06","07");
-		//choiceBox_mois.setValue("Aucun");
-
 		ChoiceBox<String> choiceBox_semaine =  bdt.setChoiceBox("semaine");
-		//choiceBox_semaine.getItems().addAll("Aucun","26","27","28");
-
 		ChoiceBox<String> choiceBox_jour = bdt.setChoiceBox("jour");
-		//choiceBox_jour.getItems().addAll("Aucun","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31");
-
+		
 		
 		Button button_supprimer_mois = new Button("Supprimer");
 		Button button_supprimer_semaine = new Button("Supprimer");
@@ -275,11 +271,51 @@ public class Fenetre extends Application {
 			}
 		});
 
-
+		
 
 		/************************* MENU *************************/
 
+		menuItem_foot.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent me) {
+				bdt.initialise();
 
+				try {
+					bdt.importation("foot.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				grid_contenue.getChildren().clear();
+				graph(barChart);
+				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(vbox_filtre_graph);
+
+				GridPane.setConstraints(barChart, 0, 1);
+				grid_contenue.getChildren().add(barChart);
+				
+			}
+		});
+		
+		menuItem_climat.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent me) {
+				bdt.initialise();
+
+				try {
+					bdt.importation("climat.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				grid_contenue.getChildren().clear();
+				graph(barChart);
+				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(vbox_filtre_graph);
+
+				GridPane.setConstraints(barChart, 0, 1);
+				grid_contenue.getChildren().add(barChart);
+				
+			}
+		});
 
 		menuItem_tweet.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
@@ -339,9 +375,9 @@ public class Fenetre extends Application {
 	}
 
 
-
-
-
+	public void import_donnee() throws Exception {
+		bdt.importation("foot.txt");
+	}
 
 
 
@@ -362,12 +398,13 @@ public class Fenetre extends Application {
 		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
 		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
 		//modifier le titre dynamiquement
-		TableColumn<utilisateur, Integer> nombre_occurence = new TableColumn<>("Nombre de Rt");
-		nombre_occurence.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
+		TableColumn<utilisateur, Integer> nombre_retweet = new TableColumn<>("Nombre de Rt");
+		nombre_retweet.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
+		//modifier le titre dynamiquement
 		
 		tab = bdt.creer_donnee_tableau(option_de_tri);
 		tableview.setItems(tab.ajouteUtilisateur());
-		tableview.getColumns().addAll(pseudoColumn, nombre_occurence);
+		tableview.getColumns().addAll(pseudoColumn,nombre_retweet);
 
 	}
 

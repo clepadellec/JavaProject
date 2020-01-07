@@ -52,7 +52,7 @@ public class utilisateur  {
 	}
 
 	public static Comparator<utilisateur> triTweet = new Comparator<utilisateur>() {
-		public int compare (utilisateur t1,utilisateur t2) {
+		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_tweet();
 			Integer nbt2 = t2.getU_nombre_tweet();
 			int resultat;
@@ -63,7 +63,7 @@ public class utilisateur  {
 	};
 	
 	public static Comparator<utilisateur> triMention = new Comparator<utilisateur>() {
-		public int compare (utilisateur t1,utilisateur t2) {
+		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_mention();
 			Integer nbt2 = t2.getU_nombre_mention();
 			int resultat;
@@ -74,7 +74,7 @@ public class utilisateur  {
 	};
 	
 	public static Comparator<utilisateur> triRetweet = new Comparator<utilisateur>() {
-		public int compare (utilisateur t1,utilisateur t2) {
+		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_retweet();
 			Integer nbt2 = t2.getU_nombre_retweet();
 			int resultat;

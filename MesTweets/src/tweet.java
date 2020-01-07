@@ -101,7 +101,20 @@ public class tweet{
 		}
 	};
 
-
+	public static Comparator<tweet> triRetweet = new Comparator<tweet>() {
+		public int compare (tweet t1,tweet t2) {
+			String pseu1 = t1.getT_pseudo_retweet();
+			String pseu2 = t2.getT_pseudo_retweet();
+			int resultat;
+			resultat=pseu1.compareTo(pseu2);
+			if (resultat==0) {
+				LocalDate tdate1 = t1.getT_date();
+				LocalDate tdate2 = t2.getT_date();
+				resultat=tdate1.compareTo(tdate2);
+			}
+			return resultat;
+		}
+	};
 
 
 
