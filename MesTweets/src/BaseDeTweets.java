@@ -407,20 +407,35 @@ public class BaseDeTweets{
 		bdnt.ajouteNombreTweet(donnee_barchart);
 		return bdnt;
 	}
+	public int trouveoccurence(String rech) {
+		Iterator  iterator=maCollec.iterator();
+		int cpt=0;
+		while (iterator.hasNext())
+		{
+			tweet n= (tweet) iterator.next();
+			String contenu = n.getT_contenu();
+			String rt = n.getT_pseudo_retweet();
+			boolean exist =contenu.contains(rech);
+			if (exist==true && rt=="NA"){
+				cpt=cpt+1;
+			}
 
+		}
+		return cpt;
+	}
 	public ArrayList<tweet> tri_tweet_date(){
 		Collections.sort(maCollec,tweet.triDate);
 		return maCollec;
 	}
-	
+
 	public ArrayList<tweet> tri_tweet_pseudo(){
 		Collections.sort(maCollec,tweet.triUsers);
 		return maCollec;
 	}
-	
-	
-	
-	
+
+
+
+
 	public BaseDeUtilisateurs creer_donnee_tableau(String choix_tri) {
 		BaseDeUtilisateurs bdu = new BaseDeUtilisateurs();
 		String pseudo_users = "";
@@ -429,10 +444,10 @@ public class BaseDeTweets{
 		Integer compteur_nombreretweet = 0;
 		utilisateur user;
 		maCollec = tri_tweet_pseudo();
-		
+
 		Iterator  it=maCollec.iterator();
-		
-		
+
+
 		switch (choix_tri) {
 		case "Nombre de tweet":
 			bdu.tri_utilisateur_nombreTweet();
@@ -458,31 +473,21 @@ public class BaseDeTweets{
 			user = new utilisateur(pseudo_users,compteur_nombretweet,compteur_nombremention, compteur_nombreretweet);
 			bdu.ajouteUtilisateur(user);		
 			return bdu;
-			
+
 		case "Nombre de mentions":
 			bdu.tri_utilisateur_nombreMention();
 
 			while (it.hasNext()) {
 				tweet infoTweet = (tweet)it.next();
-				//System.out.println(infoTweet.getPseudo_users());
-				if (pseudo_users.equals(infoTweet.getT_pseudo_users()) || pseudo_users.equals("")){
-					//System.out.println(infoTweet.getPseudo_users());
-					compteur_nombremention +=1;
-					pseudo_users = infoTweet.getT_pseudo_users();
-				} else {
+				String pseudo = infoTweet.getT_pseudo_users();
+				pseudo= "@"+pseudo;
+				compteur_nombremention = trouveoccurence(pseudo);
 
-					//System.out.println(infoTweet.getPseudo_users() + " : " +  compteur_tweet );
-					user = new utilisateur(pseudo_users,compteur_nombretweet,compteur_nombremention, compteur_nombreretweet);
-					bdu.ajouteUtilisateur(user);
-					pseudo_users = infoTweet.getT_pseudo_users();
-					compteur_nombremention = 1;
-				}
-				//l'element du treeset est stocké dans un objet de type tweet
-
+				user = new utilisateur(pseudo_users,compteur_nombretweet,compteur_nombremention, compteur_nombreretweet);
+				bdu.ajouteUtilisateur(user);
+				pseudo_users = infoTweet.getT_pseudo_users();
 			}
-			user = new utilisateur(pseudo_users,compteur_nombretweet,compteur_nombremention, compteur_nombreretweet);
-			bdu.ajouteUtilisateur(user);		
-			return bdu;
+
 
 
 
@@ -525,7 +530,7 @@ public class BaseDeTweets{
 
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet nÂ° "+ i + " :" + iterator.next());
+			System.out.println("tweet n° "+ i + " :" + iterator.next());
 
 			i=i+1;
 		}
@@ -575,7 +580,7 @@ public class BaseDeTweets{
 			String lien_dans_contenu="";
 			String hashtag="";
 			String pseudo_mentionne="";
-			
+
 			int nb_hashtag=0;
 			int nb_pseudo_mentionne=0;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -668,7 +673,7 @@ public class BaseDeTweets{
 				hashtag="NA";
 				nb_hashtag=0;
 				nb_pseudo_mentionne=0;
-				
+
 				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
 				//System.out.println(t+"\n");
 				maCollec.add(t);
