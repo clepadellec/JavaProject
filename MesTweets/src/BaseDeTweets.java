@@ -79,7 +79,7 @@ public class BaseDeTweets{
 		switch (semaine) {
 		case 0:  nomMois = "Janvier";
 		break;
-		case 1:  nomMois = "Février";
+		case 1:  nomMois = "FÃ©vrier";
 		break;
 		case 2:  nomMois = "Mars";
 		break;
@@ -91,7 +91,7 @@ public class BaseDeTweets{
 		break;
 		case 6:  nomMois = "Juillet";
 		break;
-		case 7:  nomMois = "Août";
+		case 7:  nomMois = "AoÃ»t";
 		break;
 		case 8:  nomMois = "Septembre";
 		break;
@@ -99,7 +99,7 @@ public class BaseDeTweets{
 		break;
 		case 10:  nomMois = "Novembre";
 		break;
-		case 11:  nomMois = "Décembre";
+		case 11:  nomMois = "DÃ©cembre";
 		break;
 		}
 
@@ -263,9 +263,9 @@ public class BaseDeTweets{
 		maCollec = tri_tweet_date();
 		//Iterateur qui permet de parcourir le treeset
 		Iterator  it=maCollec.iterator();
-		//La base de nombreTweet contient toutes les données necessaire a la construction du barchart
+		//La base de nombreTweet contient toutes les donnÃ©es necessaire a la construction du barchart
 		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
-		// Le couple modalité/compteur correspond a 
+		// Le couple modalitÃ©/compteur correspond a 
 		Integer compteur = 0;
 		String modalite = "";
 
@@ -275,39 +275,39 @@ public class BaseDeTweets{
 
 
 			while (it.hasNext()) {
-				//l'element du treeset est stocké dans un objet de type tweet
+				//l'element du treeset est stockÃ© dans un objet de type tweet
 				tweet infoTweet = (tweet)it.next();
 
 				// On test si le tweet correspond aux conditions de tri (jour,semaine,mois)
 
 				if (f_jour.equals(infoTweet.getT_jour()) && f_mois.equals(infoTweet.getT_mois())) {
 
-					//On réccupère l'heure du tweet
+					//On rÃ©ccupÃ¨re l'heure du tweet
 
 //test
 					String[] split_h = infoTweet.getT_heure().split(":");
 					String heure = split_h[0];
 
-					/*le treeset est trié par ordre chronologique 
+					/*le treeset est triÃ© par ordre chronologique 
 					 * donc si on observe un changement entre deux valeur
-					 * on créé une nouvelle modalité
+					 * on crÃ©Ã© une nouvelle modalitÃ©
 					 */
-					//si l'heure du nouveau tweet est identique a celle du tweet précédent
+					//si l'heure du nouveau tweet est identique a celle du tweet prÃ©cÃ©dent
 					// ou si il s'agit du premier tweet
 
 					if (modalite.equals(heure) || modalite.equals("")) {
-						//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+						//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 						compteur +=1;
-						//la variable modalité prend la valeur de la nouvelle heure
+						//la variable modalitÃ© prend la valeur de la nouvelle heure
 						modalite = heure;
 					} else {
-						// On créé un objet nombreTweet
+						// On crÃ©Ã© un objet nombreTweet
 						nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 						//on ajoute l'objet a la base de nombreTweet
 						bdnt.ajouteNombreTweet(donnee_barchart);
-						//la variable modalité prend la valeur de la nouvelle heure
+						//la variable modalitÃ© prend la valeur de la nouvelle heure
 						modalite = heure;
-						//on reinitialise le compteur de modalité a 1
+						//on reinitialise le compteur de modalitÃ© a 1
 						compteur = 1;
 					}
 				}
@@ -341,29 +341,29 @@ public class BaseDeTweets{
 				if (f_mois.equals("") == false) {
 					// Boucle sur les element du treeset
 					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
+						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
 						// On test si le tweet correspond aux conditions de tri (mois)
 						if (f_mois.equals(infoTweet.getT_mois())){
-							/*le treeset est trié par ordre chronologique 
+							/*le treeset est triÃ© par ordre chronologique 
 							 * donc si on observe un changement entre deux valeur
-							 * on créé une nouvelle modalité
+							 * on crÃ©Ã© une nouvelle modalitÃ©
 							 */
-							//si le jour du nouveau tweet est identique a celui du tweet précédent
+							//si le jour du nouveau tweet est identique a celui du tweet prÃ©cÃ©dent
 							// ou si il s'agit du premier tweet
 							if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
-								//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+								//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 								compteur +=1;
-								//la variable modalité prend la valeur du nouveau jour
+								//la variable modalitÃ© prend la valeur du nouveau jour
 								modalite = infoTweet.getT_jour();
 							} else {
-								// On créé un objet nombreTweet
+								// On crÃ©Ã© un objet nombreTweet
 								nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 								//on ajoute l'objet a la base de nombreTweet
 								bdnt.ajouteNombreTweet(donnee_barchart);
-								//la variable modalité prend la valeur de la nouvelle heure
+								//la variable modalitÃ© prend la valeur de la nouvelle heure
 								modalite = infoTweet.getT_jour();
-								//on reinitialise le compteur de modalité a 1
+								//on reinitialise le compteur de modalitÃ© a 1
 								compteur = 1;
 							}
 						}
@@ -373,30 +373,30 @@ public class BaseDeTweets{
 					/*si il n'y a pas de filtres */
 					// Boucle sur les element du treeset
 					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
+						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
-						/*le treeset est trié par ordre chronologique 
+						/*le treeset est triÃ© par ordre chronologique 
 						 * donc si on observe un changement entre deux valeur
-						 * on créé une nouvelle modalité
+						 * on crÃ©Ã© une nouvelle modalitÃ©
 						 */
-						//si le jour du nouveau tweet est identique a celui du tweet précédent
+						//si le jour du nouveau tweet est identique a celui du tweet prÃ©cÃ©dent
 						// ou si il s'agit du premier tweet
 
 						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {//3
-							//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+							//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 							compteur +=1;
-							//la variable modalité prend la valeur du nouveau jour
+							//la variable modalitÃ© prend la valeur du nouveau jour
 							modalite = infoTweet.getT_jour();
 						} else {
-							// On créé un objet nombreTweet
+							// On crÃ©Ã© un objet nombreTweet
 							nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 							//System.out.println(modalite + " : " + compteur);
 							//on ajoute l'objet a la base de nombreTweet
 							bdnt.ajouteNombreTweet(donnee_barchart);
 							compteur =1;
-							//la variable modalité prend la valeur de la nouvelle heure
+							//la variable modalitÃ© prend la valeur de la nouvelle heure
 							modalite = infoTweet.getT_jour();
-							//on reinitialise le compteur de modalité a 1
+							//on reinitialise le compteur de modalitÃ© a 1
 
 						}
 					}
@@ -502,7 +502,6 @@ public class BaseDeTweets{
 
 
 	}
-
 	/*
 	public int compte_mention(String rech) {
 		Iterator  iterator=maCollec.iterator();
@@ -527,14 +526,14 @@ public class BaseDeTweets{
 
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet nÂ° "+ i + " :" + iterator.next());
+			System.out.println("tweet nÃ‚Â° "+ i + " :" + iterator.next());
 
 			i=i+1;
 		}
 	}
 
 
-	public static int compterOccurrences(String maChaine, char recherche) // pompÃ© internet
+	public static int compterOccurrences(String maChaine, char recherche) // pompÃƒÂ© internet
 	{
 		int nb = 0;
 		for (int i=0; i < maChaine.length(); i++)

@@ -49,8 +49,6 @@ public class Fenetre extends Application {
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
 
-
-
 		/*
 		int i=0;
 
@@ -82,7 +80,7 @@ public class Fenetre extends Application {
 	{
 
 		Stage myStage = primaryStage;
-		primaryStage.setTitle("Ma première fenêtre");
+		primaryStage.setTitle("Ma premiÃ¨re fenÃªtre");
 		primaryStage.setScene(construitScene());
 		primaryStage.sizeToScene();
 		primaryStage.show();
@@ -101,7 +99,7 @@ public class Fenetre extends Application {
 		HBox hbox_filtre_graph_semaine = new HBox();
 		HBox hbox_filtre_graph_jour = new HBox();
 
-		//création du menu
+		//crÃ©ation du menu
 
 		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
@@ -194,7 +192,7 @@ public class Fenetre extends Application {
 				//ici on applique les filtres
 				bdt.setF_jour("");
 				bdt.setF_mois(choiceBox_mois.getValue());
-				//ici on créé l'objet barchart et on affiche le graphiques
+				//ici on crÃ©Ã© l'objet barchart et on affiche le graphiques
 				graph(barChart);
 			}
 		});
@@ -374,7 +372,7 @@ public class Fenetre extends Application {
 	/*Fonction pour les graphiques*/
 	public void graph(BarChart<String, Number> barChart) {
 		bar = bdt.creer_donnee_barchart();
-		/*Objet permettant d'alimenter les données du barchart*/
+		/*Objet permettant d'alimenter les donnÃ©es du barchart*/
 		barChart.getData().clear();
 		barChart.getData().add(bar.remplir_donnee());
 		barChart.setTitle("Nombre de tweet par semaines");
