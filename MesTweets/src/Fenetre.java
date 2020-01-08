@@ -48,16 +48,6 @@ public class Fenetre extends Application {
 	public static void main(String[] args) throws Exception
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
-		/*
-		 * truc a faire :
-		 * Gerer les types month et day of week pour eviter de mettre des String  // On s'en tape a part juin /06
-		 * Gerer l'affichage des filtre avec les choiceBox de merde // Charlie
-		 * Améliorer l'interface parce que c'ets moche // Charlie
-		 * Trouver des idées pour les hashtag //Top , recherche, 
-		 * Ajouter des petits truc sympa sur l'affichage des graphiques // A voir plus tard
-		 * Tester sur les deux jeux de donn�es 
-		 * 
-		 */
 
 
 
@@ -395,6 +385,8 @@ public class Fenetre extends Application {
 	public void tableau(TableView<utilisateur> tableview, String option_de_tri){
 
 		tableview.getItems().clear();
+		//tableview_userTwitter.getItems().clear();
+		
 		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
 		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
 		//modifier le titre dynamiquement

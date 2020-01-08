@@ -284,7 +284,7 @@ public class BaseDeTweets{
 
 					//On réccupère l'heure du tweet
 
-
+//test
 					String[] split_h = infoTweet.getT_heure().split(":");
 					String heure = split_h[0];
 
