@@ -62,7 +62,7 @@ public class Fenetre extends Application {
 	    // Import du fichier 
 	    bdt.importation(fichier + ".txt");
 	    //Fenetre qui annonce que l'importation s'est bien passé
-	    input_fichier_imprte.showMessageDialog(null, "Les données ont ét importé avec succès");
+	    input_fichier_imprte.showMessageDialog(null, "Les données ont été importées avec succès");
 	    
 	    /*-------------------------------------------------------------------------------------------------------*/
 	    
@@ -100,7 +100,9 @@ public class Fenetre extends Application {
 		//on ajoute la bare de menu au hbox de menu
 		hbox_menu.getChildren().add(menuBar);
 		
-		
+		//Label qui annonces les liste déroulantes de filtres
+		Label label_filtre_graph = new Label("Filtres :  ");
+		Label label_filtre_users = new Label("Filtres :  ");
 		//On ajoute des sous menu
 		MenuItem menuItem_tweet = new MenuItem("Tweet");
 		MenuItem menuItem_utilisateur = new MenuItem("Utilisateur");
@@ -116,7 +118,8 @@ public class Fenetre extends Application {
 		ChoiceBox<String> choiceBox_semaine =bdt.setChoiceBox("semaine");
 		ChoiceBox<String> choiceBox_jour = bdt.setChoiceBox("jour");
 		//Ajout du filtre mois aux filtre du graphiques
-		Hbox_filtre_graph.getChildren().add(choiceBox_mois);
+		Hbox_filtre_graph.getChildren().clear();
+		Hbox_filtre_graph.getChildren().addAll(label_filtre_graph, choiceBox_mois);
 
 		// Création de la listes déroulante de filtre sur les utilisateur 
 		ChoiceBox<String> choiceBox_utilisateur = new ChoiceBox<>();
@@ -124,7 +127,7 @@ public class Fenetre extends Application {
 		choiceBox_utilisateur.setValue("Nombre de tweet");
 		Hbox_filtre_users.getChildren().clear();
 		//Ajout du filtre aux filtre des tableau d'utilisateur
-		Hbox_filtre_users.getChildren().add(choiceBox_utilisateur);
+		Hbox_filtre_users.getChildren().addAll(label_filtre_users,choiceBox_utilisateur);
 		
 		// Création des axes d'abscies et d'ordoné du barchart
 		CategoryAxis xAxis = new CategoryAxis();
