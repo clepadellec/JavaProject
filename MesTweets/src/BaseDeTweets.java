@@ -710,7 +710,7 @@ public class BaseDeTweets{
 	
 	
 	// Cette methode va nous servir à remplir la base de hashtag, elle prend en entrée la liste des hashtags triée avec doublons
-	public BaseDeHashtag rempli_bdh(ArrayList<String> list_hashtag) {
+	public BaseDeHashtag creer_donnee_tableau_hashtag(ArrayList<String> list_hashtag) {
 		//on stocke la longueur de la liste dans un integer
 		int long_list =list_hashtag.size();
 		//on déclare la base de hashtags 

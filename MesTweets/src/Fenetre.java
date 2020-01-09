@@ -345,7 +345,7 @@ public class Fenetre extends Application {
 		nombre_hashtag.setCellValueFactory(new PropertyValueFactory<>("h_nombre_occurence"));
 
 		//Objet de type BaseDeHashtag contenant toutes les informations necessaire a la création du tableau
-		tab_hash = bdt.rempli_bdh(bdt.intermediaire_rempli_bdh());
+		tab_hash = bdt.creer_donnee_tableau_hashtag(bdt.intermediaire_rempli_bdh());
 		//on ajoute les données au tableau
 		tableview.setItems(tab_hash.ajouteHashtag_tableau());
 		//ajout des noms de colonnes
