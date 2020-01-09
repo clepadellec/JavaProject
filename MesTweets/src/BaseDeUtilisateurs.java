@@ -14,7 +14,7 @@ public class BaseDeUtilisateurs {
 		collec_utilisateur.add(utilisateur);
 	}
 	
-	public ObservableList<utilisateur>  ajouteUtilisateur() {
+	public ObservableList<utilisateur>  ajouteUtilisateur_tableau() {
 		ObservableList<utilisateur> topUsers = FXCollections.observableArrayList();
 		//compteur pour réccuperer que les 10 premiers
 		int i = 0;

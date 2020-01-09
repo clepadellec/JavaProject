@@ -7,7 +7,16 @@ import javafx.scene.chart.XYChart;
 public class BaseDeNombreTweet {
 
 		public ArrayList<nombreTweet> collec_nombreTweet = new ArrayList<nombreTweet>();
+		public String title_chart = "";
 		
+		public String getTitle_chart() {
+			return title_chart;
+		}
+
+		public void setTitle_chart(String title_chart) {
+			this.title_chart = title_chart;
+		}
+
 		public void ajouteNombreTweet(nombreTweet nt) {
 			collec_nombreTweet.add(nt);
 		}
@@ -21,4 +30,6 @@ public class BaseDeNombreTweet {
 			}
 			return donnee_Barchart;
 		}
+
+		
 }

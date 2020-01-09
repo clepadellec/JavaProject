@@ -40,67 +40,46 @@ import javafx.stage.Stage;
 /* clic droit mes news/properties/ java build path/ libraries/ access rules / edit / javafx.** puis accessible /apply */
 
 public class Fenetre extends Application {
-
+	//on cr�� nos objet utile pour creer l'interface
 	public BaseDeNombreTweet bar;
-	public BaseDeUtilisateurs tab;
+	public BaseDeUtilisateurs tab_uti;
+	public BaseDeHashtag tab_hash;
 	static BaseDeTweets bdt = new BaseDeTweets();
 
 	public static void main(String[] args) throws Exception
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
-
-		/*
-		int i=0;
-
-
-		System.out.println("Importation et enregistrement de la base en cours, veuillez patienter quelques instants...");
-			bdt.initialise();
-			bdt.importation("Foot.txt");
-			//bdt.enregistrer();
-			//bdt.explore(i);
-
-		try {
-			System.out.println("Ouverture en cours, veuillez patienter quelques instants");
-			bdt.ouvrir();
-			bdt.explore(i);
-			System.out.println("finis !");
-		}catch(Exception ex){*/
 		System.out.println("Importation de la base en cours, veuillez patienter quelques instants...");
 		bdt.initialise();
-	
-		bdt.importation("foot.txt");
-		//bdt.enregistrer();
+		//bdt.importation("climat.txt");
 		System.out.println("finis !");
-		//bdt.explore(i);
-		//}
+		
 		launch(args);
 	}
 
+	
+	
+	
 	public void start(Stage primaryStage)
 	{
 
 		Stage myStage = primaryStage;
-		primaryStage.setTitle("Ma premiÃ¨re fenÃªtre");
+		primaryStage.setTitle("Projet JAVA : Charlie Camenen et Clement Le Padellec");
 		primaryStage.setScene(construitScene());
 		primaryStage.sizeToScene();
 		primaryStage.show();
 	}
 
+	
 	public Scene construitScene() {
 
 		GridPane grid = new GridPane();
 		GridPane grid_contenue = new GridPane();
 		MenuBar menuBar = new MenuBar();
-
-		VBox vbox_filtre_graph = new VBox();
-		HBox Hbox_filtre_users = new HBox();
-
-		HBox hbox_filtre_graph_mois = new HBox();
-		HBox hbox_filtre_graph_semaine = new HBox();
-		HBox hbox_filtre_graph_jour = new HBox();
-
-		//crÃ©ation du menu
-
+		
+		Button button_import_climat = new Button("Importer donn�es climat");
+		Button button_import_foot = new Button("Importer donn�es foot");
+		
 		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
 		Menu menu_data = new Menu("Jeu de donn�es");
@@ -119,23 +98,22 @@ public class Fenetre extends Application {
 		MenuItem menuItem_hashtag = new MenuItem("Hashtags");
 		menu_edition.getItems().addAll(menuItem_tweet, menuItem_utilisateur, menuItem_hashtag);
 
+		
+		HBox Hbox_filtre_graph = new HBox();
+		HBox Hbox_filtre_users = new HBox();
+		
 		ChoiceBox<String> choiceBox_mois = bdt.setChoiceBox("mois");
 		ChoiceBox<String> choiceBox_semaine =  bdt.setChoiceBox("semaine");
 		ChoiceBox<String> choiceBox_jour = bdt.setChoiceBox("jour");
 		
+		Hbox_filtre_graph.getChildren().addAll(choiceBox_mois);
+
+		ChoiceBox<String> choiceBox_utilisateur = new ChoiceBox<>();
+		choiceBox_utilisateur.getItems().addAll("Nombre de tweet","Nombre de mentions","Nombre de retweet");
+		choiceBox_utilisateur.setValue("Nombre de tweet");
+		Hbox_filtre_users.getChildren().clear();
+		Hbox_filtre_users.getChildren().add(choiceBox_utilisateur);
 		
-		Button button_supprimer_mois = new Button("Supprimer");
-		Button button_supprimer_semaine = new Button("Supprimer");
-		Button button_supprimer_jour = new Button("Supprimer");
-		Label label_mois = new Label("Mois : ");
-		Label label_semaine = new Label("Semaine : ");
-		Label label_jour = new Label("Jour : ");
-		hbox_filtre_graph_mois.getChildren().addAll(label_mois,choiceBox_mois);
-		hbox_filtre_graph_semaine.getChildren().addAll();
-		hbox_filtre_graph_jour.getChildren().addAll();
-
-		vbox_filtre_graph.getChildren().addAll(hbox_filtre_graph_mois, hbox_filtre_graph_semaine, hbox_filtre_graph_jour);
-
 		// barchart
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Utilisateur");
@@ -147,14 +125,91 @@ public class Fenetre extends Application {
 		
 		graph(barChart);
 		
+		
+		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent m) {
+
+				if (Hbox_filtre_graph.getChildren().contains(choiceBox_semaine)) {
+					choiceBox_semaine.setValue("Aucun");
+					Hbox_filtre_graph.getChildren().remove(choiceBox_jour);
+				} else {
+					Hbox_filtre_graph.getChildren().add(choiceBox_semaine);
+					choiceBox_semaine.setValue("Aucun");
+				}
+				
+				//ici on applique les filtres
+				bdt.setF_jour("Aucun");
+				bdt.setF_semaine("Aucun");
+				bdt.setF_mois(choiceBox_mois.getValue());
+				//ici on crÃ©Ã© l'objet barchart et on affiche le graphiques
+				graph(barChart);
+			}
+		});
+
 		choiceBox_semaine.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent s) {
-
+/*
 				hbox_filtre_graph_jour.getChildren().clear();
 				hbox_filtre_graph_jour.getChildren().addAll(label_jour, choiceBox_jour, button_supprimer_jour);
-
-				bdt.setF_jour("");
+*/
+				if (Hbox_filtre_graph.getChildren().contains(choiceBox_jour)) {
+					choiceBox_jour.setValue("Aucun");
+				} else {
+					Hbox_filtre_graph.getChildren().add(choiceBox_jour);
+					choiceBox_jour.setValue("Aucun");
+				}
+				bdt.setF_jour("Aucun");
 				bdt.setF_semaine(choiceBox_semaine.getValue());
+				graph(barChart);
+			}
+		});
+
+		
+		choiceBox_jour.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent j) {
+				bdt.setF_jour(choiceBox_jour.getValue());
+				graph(barChart);
+			}
+		});
+		
+		
+		button_import_foot.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent j) {
+				bdt.initialise();
+				try {
+					bdt.importation("foot.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		
+		button_import_climat.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent j) {
+				bdt.initialise();
+				try {
+					bdt.importation("climat.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		/*
+
+		button_supprimer_mois.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent s_m) {
+
+				hbox_filtre_graph_mois.getChildren().clear();
+				hbox_filtre_graph_jour.getChildren().clear();
+
+				hbox_filtre_graph_mois.getChildren().addAll(label_mois,choiceBox_mois);
+				choiceBox_mois.setValue("Aucun");
+
+				bdt.setF_mois("");
+				bdt.setF_jour("");
 				graph(barChart);
 			}
 		});
@@ -172,59 +227,6 @@ public class Fenetre extends Application {
 			}
 		});
 		
-		
-		
-		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
-			public void handle(ActionEvent m) {
-
-				//mois
-				if (hbox_filtre_graph_mois.getChildren().contains(button_supprimer_mois) == false) {
-					hbox_filtre_graph_mois.getChildren().add(button_supprimer_mois);
-				}
-
-				//semaine
-
-				hbox_filtre_graph_jour.getChildren().clear();
-				hbox_filtre_graph_jour.getChildren().addAll(label_jour,choiceBox_jour);
-				choiceBox_jour.setValue("Aucun");
-
-
-				//ici on applique les filtres
-				bdt.setF_jour("");
-				bdt.setF_mois(choiceBox_mois.getValue());
-				//ici on crÃ©Ã© l'objet barchart et on affiche le graphiques
-				graph(barChart);
-			}
-		});
-
-
-		choiceBox_jour.setOnAction(new EventHandler<ActionEvent>(){
-			public void handle(ActionEvent j) {
-				if (hbox_filtre_graph_jour.getChildren().contains(button_supprimer_jour) == false) {
-					hbox_filtre_graph_jour.getChildren().add(button_supprimer_jour);
-				}
-				bdt.setF_jour(choiceBox_jour.getValue());
-				graph(barChart);
-			}
-		});
-		
-
-		button_supprimer_mois.setOnAction(new EventHandler<ActionEvent>(){
-			public void handle(ActionEvent s_m) {
-
-				hbox_filtre_graph_mois.getChildren().clear();
-				hbox_filtre_graph_jour.getChildren().clear();
-
-				hbox_filtre_graph_mois.getChildren().addAll(label_mois,choiceBox_mois);
-				choiceBox_mois.setValue("Aucun");
-
-				bdt.setF_mois("");
-				bdt.setF_jour("");
-				graph(barChart);
-			}
-		});
-
-		
 
 		button_supprimer_jour.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent s_j) {
@@ -239,7 +241,7 @@ public class Fenetre extends Application {
 		});
 
 
-
+*/
 
 
 		/*************************** Tableau ********************************/
@@ -247,19 +249,25 @@ public class Fenetre extends Application {
 		
 
 		TableView<utilisateur> tableview_userTwitter = new TableView<>();
-		ChoiceBox<String> choiceBox_utilisateur = new ChoiceBox<>();
-		Hbox_filtre_users.getChildren().add(choiceBox_utilisateur);
-		choiceBox_utilisateur.getItems().addAll("Nombre de tweet","Nombre de mentions","Nombre de retweet");
-		choiceBox_utilisateur.setValue("Nombre de tweet");
-		tableau(tableview_userTwitter,choiceBox_utilisateur.getValue());
+
+		tableau_utilisateur(tableview_userTwitter,choiceBox_utilisateur.getValue());
 				
 		choiceBox_utilisateur.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent j) {
-				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				grid_contenue.getChildren().clear();
+				tableau_utilisateur(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				
+				GridPane.setConstraints(Hbox_filtre_users, 0, 0);
+				grid_contenue.getChildren().add(Hbox_filtre_users);
+				GridPane.setConstraints(tableview_userTwitter, 0, 1);
+				grid_contenue.getChildren().add(tableview_userTwitter);
 			}
 		});
 
-		
+		TableView<hashtag> tableview_hashtag = new TableView<>();
+
+		tableau_hashtag(tableview_hashtag);
+				
 
 		/************************* MENU *************************/
 
@@ -274,9 +282,9 @@ public class Fenetre extends Application {
 				}
 				grid_contenue.getChildren().clear();
 				graph(barChart);
-				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
-				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
-				grid_contenue.getChildren().add(vbox_filtre_graph);
+				tableau_utilisateur(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(Hbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(Hbox_filtre_graph);
 
 				GridPane.setConstraints(barChart, 0, 1);
 				grid_contenue.getChildren().add(barChart);
@@ -286,18 +294,15 @@ public class Fenetre extends Application {
 		
 		menuItem_climat.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
-				bdt.initialise();
-
-				try {
-					bdt.importation("climat.txt");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				
+				
+				
+				
 				grid_contenue.getChildren().clear();
 				graph(barChart);
-				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
-				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
-				grid_contenue.getChildren().add(vbox_filtre_graph);
+				tableau_utilisateur(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(Hbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(Hbox_filtre_graph);
 
 				GridPane.setConstraints(barChart, 0, 1);
 				grid_contenue.getChildren().add(barChart);
@@ -309,8 +314,8 @@ public class Fenetre extends Application {
 			public void handle(ActionEvent me) {
 				grid_contenue.getChildren().clear();
 
-				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
-				grid_contenue.getChildren().add(vbox_filtre_graph);
+				GridPane.setConstraints(Hbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(Hbox_filtre_graph);
 
 				GridPane.setConstraints(barChart, 0, 1);
 				grid_contenue.getChildren().add(barChart);
@@ -333,18 +338,20 @@ public class Fenetre extends Application {
 
 		menuItem_hashtag.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
+				
 				grid_contenue.getChildren().clear();
-				GridPane.setConstraints(tableview_userTwitter, 0, 0);
-				grid_contenue.getChildren().add(tableview_userTwitter);
+				GridPane.setConstraints(tableview_hashtag, 0, 0);
+				grid_contenue.getChildren().add(tableview_hashtag);
 			}
 		});
 
 		/********************* Affichage de l'interface *********************/
-
-		Hbox_filtre_users.getChildren().add(choiceBox_jour);	
-		GridPane.setConstraints(Hbox_filtre_users, 0, 0);
-		GridPane.setConstraints(tableview_userTwitter, 0, 1);
-		grid_contenue.getChildren().addAll(tableview_userTwitter,Hbox_filtre_users);
+	
+		
+		
+		GridPane.setConstraints(button_import_climat, 0, 0);
+		GridPane.setConstraints(button_import_foot, 0, 1);
+		grid_contenue.getChildren().addAll(button_import_climat,button_import_foot);
 
 
 		//On affiche l'entete et le contenue
@@ -363,28 +370,26 @@ public class Fenetre extends Application {
 	}
 
 
-	public void import_donnee() throws Exception {
-		bdt.importation("foot.txt");
-	}
-
-
-
+	
+	
+	
+	
 	/*Fonction pour les graphiques*/
 	public void graph(BarChart<String, Number> barChart) {
 		bar = bdt.creer_donnee_barchart();
 		/*Objet permettant d'alimenter les donnÃ©es du barchart*/
 		barChart.getData().clear();
 		barChart.getData().add(bar.remplir_donnee());
-		barChart.setTitle("Nombre de tweet par semaines");
+		
+		barChart.setTitle(bar.getTitle_chart());
 	}
 
 
 	/*Fonction pour les tableaux*/
-	public void tableau(TableView<utilisateur> tableview, String option_de_tri){
+	public void tableau_utilisateur(TableView<utilisateur> tableview, String option_de_tri){
 
 		tableview.getItems().clear();
-		//tableview_userTwitter.getItems().clear();
-		
+		tableview.getColumns().clear();
 		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
 		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
 		//modifier le titre dynamiquement
@@ -392,13 +397,26 @@ public class Fenetre extends Application {
 		nombre_retweet.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
 		//modifier le titre dynamiquement
 		
-		tab = bdt.creer_donnee_tableau(option_de_tri);
-		tableview.setItems(tab.ajouteUtilisateur());
-		tableview.getColumns().addAll(pseudoColumn,nombre_retweet);
+		tab_uti = bdt.creer_donnee_tableau_utilisateurs(option_de_tri);
+		tableview.setItems(tab_uti.ajouteUtilisateur_tableau());
+		tableview.getColumns().addAll(pseudoColumn, nombre_retweet);
 
 	}
 
-
+	public void tableau_hashtag(TableView<hashtag> tableview) {
+		tableview.getItems().clear();
+		tableview.getColumns().clear();
+		TableColumn<hashtag, String> libele_hashtag = new TableColumn<>("Hashtag");
+		libele_hashtag.setCellValueFactory(new PropertyValueFactory<>("h_libele"));
+		//modifier le titre dynamiquement
+		TableColumn<hashtag, Integer> nombre_hashtag = new TableColumn<>("Nombre de Hashtag");
+		nombre_hashtag.setCellValueFactory(new PropertyValueFactory<>("h_nombre_occurence"));
+		//modifier le titre dynamiquement
+		
+		tab_hash = bdt.rempli_bdh(bdt.intermediaire_rempli_bdh());
+		tableview.setItems(tab_hash.ajouteHashtag_tableau());
+		tableview.getColumns().addAll(libele_hashtag, nombre_hashtag);
+	}
 
 
 

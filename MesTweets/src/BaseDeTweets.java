@@ -32,15 +32,65 @@ import java.io.Serializable;
 public class BaseDeTweets{
 
 	public ArrayList<tweet> maCollec;
-	public String f_mois = "" ;
-	public String f_semaine = "" ;
-	public String f_jour = "" ;
-	public String f_joursem="";
+	public String f_mois = "Aucun" ;
+	public String f_semaine = "Aucun" ;
+	public String f_jour = "Aucun" ;
+	public String f_joursem="Aucun";
 
 	public void initialise() {
 		maCollec = new ArrayList<tweet>();
 	}
 
+	public String getF_mois() {
+		return f_mois;
+	}
+
+	public void setF_mois(String f_mois) {
+		this.f_mois = f_mois;
+	}
+
+	public String getF_semaine() {
+		return f_semaine;
+	}
+
+	public void setF_semaine(String f_semaine) {
+		this.f_semaine = f_semaine;
+	}
+
+	public String getF_jour() {
+		return f_jour;
+	}
+
+	public void setF_jour(String f_jour) {
+		this.f_jour = f_jour;
+	}
+
+	public void ajoute(tweet t) {
+		maCollec.add(t);
+	}
+	public String getF_joursem() {
+		return f_joursem;
+	}
+
+	public void setF_joursem(String f_joursem) {
+		this.f_joursem = f_joursem;
+	}
+	
+	/*Fontion faisant appel aux fonction de comparaison de tweet
+	 * afin d'ordonner la base de tweet de différentes manieres
+	 */
+	public ArrayList<tweet> tri_tweet_date(){
+		Collections.sort(maCollec,tweet.triDate);
+		return maCollec;
+	}
+	public ArrayList<tweet> tri_tweet_pseudo(){
+		Collections.sort(maCollec,tweet.triUsers);
+		return maCollec;
+	}
+	public ArrayList<tweet> tri_tweet_retweet(){
+		Collections.sort(maCollec,tweet.triRetweet);
+		return maCollec;
+	}
 
 
 	public String trouvejour(LocalDate date ) {
@@ -79,7 +129,7 @@ public class BaseDeTweets{
 		switch (semaine) {
 		case 0:  nomMois = "Janvier";
 		break;
-		case 1:  nomMois = "FÃ©vrier";
+		case 1:  nomMois = "Fevrier";
 		break;
 		case 2:  nomMois = "Mars";
 		break;
@@ -91,7 +141,7 @@ public class BaseDeTweets{
 		break;
 		case 6:  nomMois = "Juillet";
 		break;
-		case 7:  nomMois = "AoÃ»t";
+		case 7:  nomMois = "Aout";
 		break;
 		case 8:  nomMois = "Septembre";
 		break;
@@ -99,7 +149,7 @@ public class BaseDeTweets{
 		break;
 		case 10:  nomMois = "Novembre";
 		break;
-		case 11:  nomMois = "DÃ©cembre";
+		case 11:  nomMois = "Decembre";
 		break;
 		}
 
@@ -171,126 +221,131 @@ public class BaseDeTweets{
 		return nomsemaine;
 	}
 
-
-
-	public String getF_mois() {
-		return f_mois;
-	}
-
-	public void setF_mois(String f_mois) {
-		this.f_mois = f_mois;
-	}
-
-	public String getF_semaine() {
-		return f_semaine;
-	}
-
-	public void setF_semaine(String f_semaine) {
-		this.f_semaine = f_semaine;
-	}
-
-	public String getF_jour() {
-		return f_jour;
-	}
-
-	public void setF_jour(String f_jour) {
-		this.f_jour = f_jour;
-	}
-
-	public void ajoute(tweet t) {
-		maCollec.add(t);
-	}
-	public String getF_joursem() {
-		return f_joursem;
-	}
-
-	public void setF_joursem(String f_joursem) {
-		this.f_joursem = f_joursem;
-	}
-
-	/*ca peut etre utile pour generer dynamiquement les choicebox*/
+	/*Cette fonction permet de rendre dynamique les liste deroulante 
+	 * qui sont utilisée lors des filtres sur les diagrammes
+	 * variable_tri : chaine de caractere qui determine la maniere dont les modalités vont etre ordoné
+	 */
 	public ChoiceBox<String> setChoiceBox(String variable_tri){
-
+		//l'objet retourné par la fonction est créé
 		ChoiceBox<String> choiceBox = new ChoiceBox<>();
+		//iterateur sur la base de tweet
 		Iterator  it= maCollec.iterator();
+		//variable pivot qui sert de comparateur entre deux objet successif dans la base. Elle est de type String ou Integer (semaine/mois/jour)
 		Object modalite = "";
+		//on ajoute une modalité "Aucun" dans le cas ou la liste ne contient aucun filtre
 		choiceBox.getItems().add("Aucun");
 
+		
 		switch (variable_tri) {
 
 		case "mois":
+			//boucle sur la base de tweet
 			while (it.hasNext()) {
-
+				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
+				//si le mois de cet objet est diffrent du précédent (ou si il s'agit du premier element de la base)
 				if (modalite.equals(infoTweet.getT_mois()) == false || modalite.equals("") ){
+					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_mois());
+					//la pivot change 
 					modalite = infoTweet.getT_mois();
-					System.out.println(infoTweet.getT_mois());
 				}
 
 			}
 		case "semaine":
+			//boucle sur la base de tweet
 			while (it.hasNext()) {
-
+				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
-				if (modalite.equals(infoTweet.getT_semaine()) == false || modalite.equals("") ){
+				//si la semaine de cet objet est diffrente de la précédente(ou si il s'agit du premier element de la base)
+				if ((modalite.equals(infoTweet.getT_semaine()) == false || modalite.equals(""))){
+					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_semaine());
+					//la pivot change 
 					modalite = infoTweet.getT_semaine();
-					System.out.println(infoTweet.getT_semaine());
 				}
 
 			}
 
 		case "jour":
+			//boucle sur la base de tweet
 			while (it.hasNext()) {
-
+				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
-				if (modalite.equals(infoTweet.getT_jour()) == false || modalite.equals("") ){
+				//si le mois de cet objet est diffrent du précédent (ou si il s'agit du premier element de la base)
+				if ((modalite.equals(infoTweet.getT_jour()) == false || modalite.equals(""))){
+					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_jour());
+					//la pivot change 
 					modalite = infoTweet.getT_jour();
-					System.out.println(infoTweet.getT_jour());
 				}
 
 			}
 		}
-
+		//on initialise la valeur de cette liste déroulante a "Aucun"
 		choiceBox.setValue("Aucun");
 		return choiceBox;
 	}
 
+	/*fonction qui permet de créer dynamiquement un titre a un graphique en fonction du filtre appliqué*/
+	public void creer_titre(BaseDeNombreTweet bdnt){
+		String titre;
+		//si il y a un filtre sur les jours
+		if (f_jour.equals("Aucun") == false) {
+			titre = "Nombre de tweet par heure le " + f_jour + " " + f_mois;
+		} else {
+			//si il y a un filtre sur les semaines
+			if (f_semaine.equals("Aucun") == false) {
+				titre = "Nombre de tweet par jour de la semaine du " + f_semaine;
+			} else {
+				//si il y a un filtre sur les mois
+				if (f_mois.equals("Aucun") == false) {
+					titre =  "Nombre de tweet par jour du mois de " + f_mois;
+				} else {
+					//si il n'y a pas de filtre
+					titre = "Nombre de tweet par jour";
+				}
+			}
+		}
+		//on ajoute le filtre au barchart
+		bdnt.setTitle_chart(titre);
+	}
+
+
+
 	//fonction qui permet de gerer les filtres a appliquer syr le barchart
 	public BaseDeNombreTweet creer_donnee_barchart() {
+		//on tir la base en fonction des dates
 		maCollec = tri_tweet_date();
-		//Iterateur qui permet de parcourir le treeset
+		//Iterateur qui permet de parcourir la base
 		Iterator  it=maCollec.iterator();
-		//La base de nombreTweet contient toutes les donnÃ©es necessaire a la construction du barchart
+		//La base de nombreTweet contient toutes les donnees necessaire a la construction du barchart
 		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
-		// Le couple modalitÃ©/compteur correspond a 
+		// Le couple modalite compteur correspond a un jour (ou heure) accompagné de son nombre de tweet
 		Integer compteur = 0;
 		String modalite = "";
-
+		//on appel la fontion qui permet de creer le titre
+		creer_titre(bdnt);
 		/*si il y a un filtre sur les jours */
-		if (f_jour.equals("") == false) {
-			// Boucle sur les element du treeset
-
+		if (f_jour.equals("Aucun") == false) {
+			// Boucle sur les element de la base
 
 			while (it.hasNext()) {
-				//l'element du treeset est stockÃ© dans un objet de type tweet
+				//l'element de la base est stockÃ© dans un objet de type tweet
 				tweet infoTweet = (tweet)it.next();
 
 				// On test si le tweet correspond aux conditions de tri (jour,semaine,mois)
 
 				if (f_jour.equals(infoTweet.getT_jour()) && f_mois.equals(infoTweet.getT_mois())) {
 
-					//On rÃ©ccupÃ¨re l'heure du tweet
+					//On reccupere l'heure du tweet
 
-//test
 					String[] split_h = infoTweet.getT_heure().split(":");
 					String heure = split_h[0];
 
-					/*le treeset est triÃ© par ordre chronologique 
+					/*la base est trie par ordre chronologique 
 					 * donc si on observe un changement entre deux valeur
-					 * on crÃ©Ã© une nouvelle modalitÃ©
+					 * on cree une nouvelle modalite
 					 */
 					//si l'heure du nouveau tweet est identique a celle du tweet prÃ©cÃ©dent
 					// ou si il s'agit du premier tweet
@@ -316,18 +371,30 @@ public class BaseDeTweets{
 		} else {
 			/*si il y a un filtre sur les Semaines */
 
-			if (f_semaine.equals("") == false) {
-
+			if (f_semaine.equals("Aucun") == false) {
+				//oucle sur les elements de la base
 				while (it.hasNext()) {
+					//tweet courrant de la base
 					tweet infoTweet = (tweet)it.next();
+					//si la semaine du tweet courrant est la meme que celle du filtre
 					if (f_semaine.equals(infoTweet.getT_semaine())){
+						/*la base est trie par ordre chronologique 
+						 * donc si on observe un changement entre deux valeur
+						 * on cree une nouvelle modalite
+						 */
+						//si le jour du nouveau tweet est identique a celle du tweet prÃ©cÃ©dent
+						// ou si il s'agit du premier tweet
 						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
+							//on incrémente la valeur 
 							compteur +=1;
 							modalite = infoTweet.getT_jour();
 						} else {
+							//on cré un objet nombre tweet
 							nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
+							//on ajoute l'objet a la base de nombreTweet
 							bdnt.ajouteNombreTweet(donnee_barchart);
 							modalite = infoTweet.getT_jour();
+							//on reinitialise le compteur
 							compteur = 1;
 						}
 					}
@@ -338,14 +405,14 @@ public class BaseDeTweets{
 
 
 				/*si il y a un filtre sur les mois */
-				if (f_mois.equals("") == false) {
+				if (f_mois.equals("Aucun") == false) {
 					// Boucle sur les element du treeset
 					while (it.hasNext()) {
 						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
 						// On test si le tweet correspond aux conditions de tri (mois)
 						if (f_mois.equals(infoTweet.getT_mois())){
-							/*le treeset est triÃ© par ordre chronologique 
+							/*la base est triÃ© par ordre chronologique 
 							 * donc si on observe un changement entre deux valeur
 							 * on crÃ©Ã© une nouvelle modalitÃ©
 							 */
@@ -375,14 +442,14 @@ public class BaseDeTweets{
 					while (it.hasNext()) {
 						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
-						/*le treeset est triÃ© par ordre chronologique 
+						/*la base est triÃ© par ordre chronologique 
 						 * donc si on observe un changement entre deux valeur
 						 * on crÃ©Ã© une nouvelle modalitÃ©
 						 */
 						//si le jour du nouveau tweet est identique a celui du tweet prÃ©cÃ©dent
 						// ou si il s'agit du premier tweet
 
-						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {//3
+						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
 							//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 							compteur +=1;
 							//la variable modalitÃ© prend la valeur du nouveau jour
@@ -403,66 +470,60 @@ public class BaseDeTweets{
 				}
 			}
 		}
+		//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 		nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 		bdnt.ajouteNombreTweet(donnee_barchart);
 		return bdnt;
 	}
 
-	public ArrayList<tweet> tri_tweet_date(){
-		Collections.sort(maCollec,tweet.triDate);
-		return maCollec;
-	}
-
-	public ArrayList<tweet> tri_tweet_pseudo(){
-		Collections.sort(maCollec,tweet.triUsers);
-		return maCollec;
-	}
-
-	public ArrayList<tweet> tri_tweet_retweet(){
-		Collections.sort(maCollec,tweet.triRetweet);
-		return maCollec;
-	}
-
-
-
-
-	public BaseDeUtilisateurs creer_donnee_tableau(String choix_tri) {
+	/* fonction qui permet d'ajouter les donnes necessaire a la constructon du tableau des utilisateurs*/
+	/* La chaine choix_tri est un indicateur de la maniere dont le tableau va etre trier */
+	public BaseDeUtilisateurs creer_donnee_tableau_utilisateurs(String choix_tri) {
+		//objet renvoyé par la fonction
 		BaseDeUtilisateurs bdu = new BaseDeUtilisateurs();
+		//pseudo de l(utilisateur courrant
 		String pseudo_users = "";
+		//données de l'utilisateur courrant
 		Integer compteur_nombre_tweet = 0;
 		Integer compteur_nombre_mention = 0;
 		Integer compteur_nombre_retweet = 0;
+		//objet Utilisateur a ajoiter dans la base 
 		utilisateur user;
-
+		
 
 		switch (choix_tri) {
 		case "Nombre de tweet":
+			//on tri en fonction du pseudo
 			maCollec = tri_tweet_pseudo();
 			Iterator  iterator_tweet=maCollec.iterator();
-
+			//parcour de la base
 			while (iterator_tweet.hasNext()) {
+				//obet courrant de la base
 				tweet infoTweet = (tweet)iterator_tweet.next();
-				//System.out.println(infoTweet.getPseudo_users());
+				//si la valeur courrante est identique a la precdente, ou si c'ets le premier element de la base
 				if (pseudo_users.equals(infoTweet.getT_pseudo_users()) || pseudo_users.equals("") ){
-					//System.out.println(infoTweet.getPseudo_users());
+					//on incremente le compteur 
 					compteur_nombre_tweet +=1;
 					pseudo_users = infoTweet.getT_pseudo_users();
 				} else {
-
-					//System.out.println(infoTweet.getT_pseudo_users() + " : " +  compteur_nombretweet );
+					//on créé notre objet utilisateur
 					user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
+					//on ajoute l'utilisateur a la base
 					bdu.ajouteUtilisateur(user);
 					pseudo_users = infoTweet.getT_pseudo_users();
+					//on réinitialise le compteur
 					compteur_nombre_tweet = 1;
 				}
-
+				
 			}
-
+			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 			user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
 			bdu.ajouteUtilisateur(user);	
 			bdu.tri_utilisateur_nombreTweet();
 			return bdu;
 			/*	
+			 * Ici on fait appel a la fonction compte_mention mais elle rend le programme trop lourd
+			 * 
 		case "Nombre de mentions":
 
 			tweet infoTweet = (tweet)iterator_retweet.next();
@@ -471,26 +532,33 @@ public class BaseDeTweets{
 			compteur_nombremention = compte_mention(pseudo);
 			 */
 		case "Nombre de retweet":
+			//on tri la base par pseudo de retweet
 			maCollec = tri_tweet_retweet();
 			Iterator  iterator_retweet=maCollec.iterator();
-
+			//on parcour la base
 			while (iterator_retweet.hasNext()) {
+				//obet courrant de la base
 				tweet infoTweet = (tweet)iterator_retweet.next();
-				//System.out.println(infoTweet.getPseudo_users());
+				//Si le tweet est un retweet
 				if (infoTweet.getT_pseudo_retweet().equals("NA") == false){
+					//si la valeur courrante est identique a la precdente, ou si c'ets le premier element de la base
 					if (pseudo_users.equals(infoTweet.getT_pseudo_retweet()) || pseudo_users.equals("")){
-						//System.out.println(infoTweet.getPseudo_users());
+						//on incrémente le compteur
 						compteur_nombre_tweet +=1;
 						pseudo_users = infoTweet.getT_pseudo_retweet();
 					} else {
 
 						user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
+						//on créé notre objet utilisateur
 						bdu.ajouteUtilisateur(user);
+						//on ajoute l'utilisateur a la base
 						pseudo_users = infoTweet.getT_pseudo_retweet();
+						//on réinitialise le compteur
 						compteur_nombre_tweet = 1;
 					}
 				}
 			}
+			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 			user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
 			bdu.ajouteUtilisateur(user);	
 			bdu.tri_utilisateur_nombreTweet();
@@ -502,6 +570,95 @@ public class BaseDeTweets{
 
 
 	}
+	
+	public ArrayList<String> intermediaire_rempli_bdh() {
+		Integer cptlength = 0 ;
+		String tab_charFinTweet[ ];
+		tab_charFinTweet = new String[] {" ",";",".",",","?","!",":","/","-"};
+		ArrayList<String> list_hashtag = new ArrayList<String>();
+		Iterator  iterator=maCollec.iterator();
+		while (iterator.hasNext())
+		{
+			tweet t = (tweet)iterator.next();
+			String contenu = t.getT_contenu();
+			String hashtag="";
+			int deb=0;
+			String c="#";
+			int nbhashtag= t.getT_nb_hashtag();
+			for(int j = 0; j <= nbhashtag; j++) {
+				int min = contenu.length();
+				
+				deb = contenu.indexOf(c,deb);
+				int fin;
+				if(deb != -1) {
+					
+					for (int k = 0; k < tab_charFinTweet.length ;k++) {
+						if (contenu.indexOf(tab_charFinTweet[k],deb) != -1 && contenu.indexOf(tab_charFinTweet[k],deb) < min) {
+							min = contenu.indexOf(tab_charFinTweet[k],deb);
+						}
+					}
+					fin = min;
+					cptlength +=1;
+					//System.out.println(deb + " " + fin);
+					if(fin != -1) {
+						hashtag=contenu.substring(deb,fin);
+						hashtag = hashtag.replace(",", "");
+						if ((hashtag != " ") && (hashtag != " # ")) {
+							//System.out.println(hashtag);
+							
+							list_hashtag.add(hashtag);
+						}
+						deb=fin;
+					}else {
+						hashtag=contenu.substring(deb,contenu.length()-1);
+						hashtag = hashtag.replace(",", "");
+						if ((hashtag != " ") && (hashtag != " # ")) {
+							//System.out.println(hashtag);
+							
+							list_hashtag.add(hashtag);
+						}	
+						break;
+					}
+				}else break;
+			}
+		}
+		Collections.sort(list_hashtag);
+		System.out.println(cptlength);
+		return list_hashtag;
+	}
+	
+	public BaseDeHashtag rempli_bdh(ArrayList<String> list_hashtag) {
+		
+		int long_list =list_hashtag.size();
+		BaseDeHashtag bdh = new BaseDeHashtag();
+		int cpt=1;
+		String h_comp= list_hashtag.get(0);
+		
+		for (int i=1; i <long_list; i++) {
+		
+			if(h_comp.equals(list_hashtag.get(i))) {
+				cpt=cpt+1;
+			}else {
+
+				hashtag h= new hashtag(h_comp, cpt);
+				if ((h.getH_libele() !=" #")&&(h.getH_libele() !=" ,")) {
+					bdh.ajouteHashtag(h);
+					cpt=1;
+					h_comp=list_hashtag.get(i);
+				}
+
+			}
+		}
+
+		bdh.tri_hashtag_occurence();
+		return bdh;
+	}
+	
+	/*
+	 * Cette fonction n'a pas été utilisé car elle aurait rendu
+	 * la complexité du programme quadratique. Et nous n'avons pas trouvé de moyen 
+	 * de proceder autrement pour le moment
+	 */
 	/*
 	public int compte_mention(String rech) {
 		Iterator  iterator=maCollec.iterator();
@@ -574,7 +731,6 @@ public class BaseDeTweets{
 			String date_heure = sepligne[2];
 			String contenu = sepligne[3];
 			String lien_dans_contenu="";
-			String hashtag="";
 			String pseudo_mentionne="";
 
 			int nb_hashtag=0;
@@ -603,24 +759,7 @@ public class BaseDeTweets{
 				int nb = compterOccurrences(contenu, c);
 				int deb=0;
 				nb_hashtag=nb;
-				for(int j = 1; j <= nb; j++) {
-					deb = contenu.indexOf(c,deb);
-					if(deb != -1) {
-						int fin = contenu.indexOf(" ",deb);
-						if(fin != -1) {
-							hashtag=hashtag+contenu.substring(deb,fin);
-						}else {
-							hashtag=hashtag+contenu.substring(deb,contenu.length()-1);
-						}
-						if(fin != -1) {
-							deb=fin;
-						}else break;	
-					}else break;	
-				}
-			}else {
-				hashtag="NA";
 			}
-			hashtag = hashtag.replace(",", "");
 
 			boolean existb = contenu.contains("@");
 			if(existb==true) {
@@ -666,19 +805,17 @@ public class BaseDeTweets{
 			try {
 				String pseudo_retweet = sepligne[4];
 				pseudo_mentionne="NA";
-				hashtag="NA";
 				nb_hashtag=0;
 				nb_pseudo_mentionne=0;
 
-				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
+				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
 				//System.out.println(t+"\n");
 				maCollec.add(t);
 
 			} catch (Exception ex){
 				String pseudo_retweet = "NA";
 
-
-				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,hashtag,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
+				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
 				//System.out.println(t+"\n");
 				maCollec.add(t);
 				//System.out.println("pas de retweet");
@@ -687,41 +824,4 @@ public class BaseDeTweets{
 
 	}
 
-
-	// ceci est un essai
-	//@SuppressWarnings("unchecked")
-	/*public void ouvrir() throws Exception {
-		try {
-			FileInputStream w = new FileInputStream("resources/data.txt");
-			ObjectInputStream o = new ObjectInputStream(w);
-			Object lu =o.readObject();
-			maCollec = (TreeSet<tweet>)lu;
-			w.close();
-			o.close();
-		} catch (IOException e) {
-			System.out.println("erreur d'IO");
-		}
-
-
-	}*/
-	/*
-	public void enregistrer() throws Exception {
-		try {
-			FileOutputStream w = new FileOutputStream("resources/data.txt");
-			ObjectOutputStream o = new ObjectOutputStream(w);
-			o.writeObject(maCollec);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
-	/*
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
-		out.defaultWriteObject();
-	}
-	private void readObject(java.io.ObjectInputStream out) throws IOException, ClassNotFoundException{
-		out.defaultReadObject();
-	}*/
-
-	//a completer
 }
