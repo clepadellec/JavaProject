@@ -44,22 +44,9 @@ public class Fenetre extends Application {
 	public BaseDeNombreTweet bar;
 	public BaseDeUtilisateurs tab;
 	static BaseDeTweets bdt = new BaseDeTweets();
-
 	public static void main(String[] args) throws Exception
 	{
 		System.setProperty( "file.encoding", "UTF-8" );
-		/*
-		 * truc a faire :
-		 * Gerer les types month et day of week pour eviter de mettre des String  // On s'en tape a part juin /06
-		 * Gerer l'affichage des filtre avec les choiceBox de merde // Charlie
-		 * AmÃ©liorer l'interface parce que c'ets moche // Charlie
-		 * Trouver des idÃ©es pour les hashtag //Top , recherche, 
-		 * Ajouter des petits truc sympa sur l'affichage des graphiques // A voir plus tard
-		 * Tester sur les deux jeux de données 
-		 * 
-		 */
-
-
 
 		/*
 		int i=0;
@@ -79,9 +66,12 @@ public class Fenetre extends Application {
 		}catch(Exception ex){*/
 		System.out.println("Importation de la base en cours, veuillez patienter quelques instants...");
 		bdt.initialise();
-		bdt.importation("climat.txt");
+		bdt.importation("Foot.txt");
 		//bdt.enregistrer();
 		System.out.println("finis !");
+		//ArrayList<String> test=bdt.intermediaire_rempli_bdh();
+		//BaseDeHashtag bdh=bdt.rempli_bdh(test);
+		//System.out.println(test);
 		//bdt.explore(i);
 		//}
 		launch(args);
@@ -91,7 +81,7 @@ public class Fenetre extends Application {
 	{
 
 		Stage myStage = primaryStage;
-		primaryStage.setTitle("Ma premiÃ¨re fenÃªtre");
+		primaryStage.setTitle("Ma premiÃƒÂ¨re fenÃƒÂªtre");
 		primaryStage.setScene(construitScene());
 		primaryStage.sizeToScene();
 		primaryStage.show();
@@ -110,38 +100,31 @@ public class Fenetre extends Application {
 		HBox hbox_filtre_graph_semaine = new HBox();
 		HBox hbox_filtre_graph_jour = new HBox();
 
-		//crÃ©ation du menu
+		//crÃƒÂ©ation du menu
 
-		Menu menu_edition = new Menu("Choix de la fonctionnalité");
+		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
-
+		Menu menu_data = new Menu("Jeu de données");
+		menuBar.getMenus().addAll(menu_data);
+		
 		HBox hbox_menu = new HBox();
 		hbox_menu.getChildren().add(menuBar);
+		
+		MenuItem menuItem_foot = new MenuItem("Foot");
+		MenuItem menuItem_climat = new MenuItem("Climat");
+		menu_data.getItems().addAll(menuItem_foot, menuItem_climat);
 
 		//On ajoute des sous menu
-		MenuItem menuItem_import = new MenuItem("Importation");
 		MenuItem menuItem_tweet = new MenuItem("Tweet");
 		MenuItem menuItem_utilisateur = new MenuItem("Utilisateur");
 		MenuItem menuItem_hashtag = new MenuItem("Hashtags");
-		MenuItem menuItem_Record = new MenuItem("Records");
-		menu_edition.getItems().addAll(menuItem_import,menuItem_tweet, menuItem_utilisateur, menuItem_hashtag,menuItem_Record);
-
-		//Rendre tout ca dynamique 
-		//ChoiceBox<String> choiceBox_heure = new ChoiceBox<>();
-		//choiceBox_heure.getItems().addAll("Aucun","0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
-		//choiceBox_heure.setValue(0);
+		menu_edition.getItems().addAll(menuItem_tweet, menuItem_utilisateur, menuItem_hashtag);
 
 		ChoiceBox<String> choiceBox_mois = bdt.setChoiceBox("mois");
-		//choiceBox_mois.getItems().addAll("Aucun","06","07");
-		//choiceBox_mois.setValue("Aucun");
-
 		ChoiceBox<String> choiceBox_semaine =  bdt.setChoiceBox("semaine");
-		//choiceBox_semaine.getItems().addAll("Aucun","26","27","28");
-
 		ChoiceBox<String> choiceBox_jour = bdt.setChoiceBox("jour");
-		//choiceBox_jour.getItems().addAll("Aucun","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31");
-		Button button_import_foot = new Button("Importation de Foot.txt");
-		Button button_import_climat = new Button("Importation de climat.txt");
+		
+		
 		Button button_supprimer_mois = new Button("Supprimer");
 		Button button_supprimer_semaine = new Button("Supprimer");
 		Button button_supprimer_jour = new Button("Supprimer");
@@ -190,26 +173,7 @@ public class Fenetre extends Application {
 			}
 		});
 		
-		button_import_foot.setOnAction(new EventHandler<ActionEvent>(){
-			public void handle(ActionEvent s_s) {
-				try {
-					bdt.importation("foot.txt");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		button_import_climat.setOnAction(new EventHandler<ActionEvent>(){
-			public void handle(ActionEvent s_s) {
-				try {
-					bdt.importation("climat.txt");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});	
+		
 		
 		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent m) {
@@ -229,7 +193,7 @@ public class Fenetre extends Application {
 				//ici on applique les filtres
 				bdt.setF_jour("");
 				bdt.setF_mois(choiceBox_mois.getValue());
-				//ici on crÃ©Ã© l'objet barchart et on affiche le graphiques
+				//ici on crÃƒÂ©ÃƒÂ© l'objet barchart et on affiche le graphiques
 				graph(barChart);
 			}
 		});
@@ -296,20 +260,49 @@ public class Fenetre extends Application {
 			}
 		});
 
-
+		
 
 		/************************* MENU *************************/
 
-		menuItem_import.setOnAction(new EventHandler<ActionEvent>(){
+		menuItem_foot.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
-				grid_contenue.getChildren().clear();
-				grid_contenue.getChildren().addAll(button_import_foot);
-				grid_contenue.getChildren().addAll(button_import_climat);
-				GridPane.setConstraints(button_import_climat, 100, 0);
-				
-				;
+				bdt.initialise();
 
-				//graph(barChart);
+				try {
+					bdt.importation("foot.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				grid_contenue.getChildren().clear();
+				graph(barChart);
+				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(vbox_filtre_graph);
+
+				GridPane.setConstraints(barChart, 0, 1);
+				grid_contenue.getChildren().add(barChart);
+				
+			}
+		});
+		
+		menuItem_climat.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent me) {
+				bdt.initialise();
+
+				try {
+					bdt.importation("climat.txt");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				grid_contenue.getChildren().clear();
+				graph(barChart);
+				tableau(tableview_userTwitter, choiceBox_utilisateur.getValue());
+				GridPane.setConstraints(vbox_filtre_graph, 0, 0);
+				grid_contenue.getChildren().add(vbox_filtre_graph);
+
+				GridPane.setConstraints(barChart, 0, 1);
+				grid_contenue.getChildren().add(barChart);
+				
 			}
 		});
 
@@ -371,16 +364,16 @@ public class Fenetre extends Application {
 	}
 
 
-
-
-
+	public void import_donnee() throws Exception {
+		bdt.importation("foot.txt");
+	}
 
 
 
 	/*Fonction pour les graphiques*/
 	public void graph(BarChart<String, Number> barChart) {
 		bar = bdt.creer_donnee_barchart();
-		/*Objet permettant d'alimenter les donnÃ©es du barchart*/
+		/*Objet permettant d'alimenter les donnÃƒÂ©es du barchart*/
 		barChart.getData().clear();
 		barChart.getData().add(bar.remplir_donnee());
 		barChart.setTitle("Nombre de tweet par semaines");
@@ -391,15 +384,18 @@ public class Fenetre extends Application {
 	public void tableau(TableView<utilisateur> tableview, String option_de_tri){
 
 		tableview.getItems().clear();
+		//tableview_userTwitter.getItems().clear();
+		
 		TableColumn<utilisateur, String> pseudoColumn = new TableColumn<>("Utilisateur");
 		pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("u_pseudo_users"));
 		//modifier le titre dynamiquement
-		TableColumn<utilisateur, Integer> nombre_occurence = new TableColumn<>("Nombre de Rt");
-		nombre_occurence.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
+		TableColumn<utilisateur, Integer> nombre_retweet = new TableColumn<>("Nombre de Rt");
+		nombre_retweet.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
+		//modifier le titre dynamiquement
 		
 		tab = bdt.creer_donnee_tableau(option_de_tri);
 		tableview.setItems(tab.ajouteUtilisateur());
-		tableview.getColumns().addAll(pseudoColumn, nombre_occurence);
+		tableview.getColumns().addAll(pseudoColumn,nombre_retweet);
 
 	}
 
