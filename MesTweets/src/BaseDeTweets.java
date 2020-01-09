@@ -332,6 +332,7 @@ public class BaseDeTweets{
 
 			}
 		}
+
 		//on initialise la valeur de cette liste déroulante a "Aucun"
 		choiceBox.setValue("Aucun");
 		return choiceBox;
