@@ -3,13 +3,15 @@ import java.util.Comparator;
 
 public class utilisateur  {
 
+	//un utilisateur possède un pseudo utilisateur
 	private String u_pseudo_users = "";
+	//il possède également un nombre de tweet, un nombre de retweet et un nombre de mention
 	private Integer u_nombre_tweet = 0;	
 	private Integer u_nombre_retweet = 0;
 	private Integer u_nombre_mention = 0;
 	
 
-
+	//constructeur
 	public utilisateur(String u_pseudo_users, Integer u_nombre_tweet, Integer u_nombre_retweet,
 			Integer u_nombre_mention) {
 		super();
@@ -19,6 +21,7 @@ public class utilisateur  {
 		this.u_nombre_mention = u_nombre_mention;
 	}
 
+	//getters et setters
 	public String getU_pseudo_users() {
 		return u_pseudo_users;
 	}
@@ -51,6 +54,9 @@ public class utilisateur  {
 		this.u_nombre_retweet = u_nombre_retweet;
 	}
 
+	//on créer des fonctions qui comparent les utilisateurs :
+	
+	//selon le nombre de tweets
 	public static Comparator<utilisateur> triTweet = new Comparator<utilisateur>() {
 		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_tweet();
@@ -62,6 +68,7 @@ public class utilisateur  {
 
 	};
 	
+	//selon le nombre de mentions
 	public static Comparator<utilisateur> triMention = new Comparator<utilisateur>() {
 		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_mention();
@@ -73,6 +80,7 @@ public class utilisateur  {
 
 	};
 	
+	//selon le nombre de retweets
 	public static Comparator<utilisateur> triRetweet = new Comparator<utilisateur>() {
 		public int compare (utilisateur t2,utilisateur t1) {
 			Integer nbt1 = t1.getU_nombre_retweet();
