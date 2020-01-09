@@ -31,16 +31,19 @@ import java.io.Serializable;
 
 public class BaseDeTweets{
 
+	//BaseDeTweets possède plusieurs attributs : voir avec Charlie
 	public ArrayList<tweet> maCollec;
 	public String f_mois = "Aucun" ;
 	public String f_semaine = "Aucun" ;
 	public String f_jour = "Aucun" ;
 	public String f_joursem="Aucun";
 
+	// La fonction initialise créer une nouvelle collection, on affecte un nouveau arraylist à maCollec
 	public void initialise() {
 		maCollec = new ArrayList<tweet>();
 	}
 
+	//Si dessous on retrouve les getters et setters qui permettent de mettre à jour ou récupérer la valeur des attributs
 	public String getF_mois() {
 		return f_mois;
 	}
@@ -65,6 +68,7 @@ public class BaseDeTweets{
 		this.f_jour = f_jour;
 	}
 
+	// la fonction ajoute permet d'ajouter un tweet à la base de tweets
 	public void ajoute(tweet t) {
 		maCollec.add(t);
 	}
@@ -76,29 +80,46 @@ public class BaseDeTweets{
 		this.f_joursem = f_joursem;
 	}
 	
-	/*Fontion faisant appel aux fonction de comparaison de tweet
-	 * afin d'ordonner la base de tweet de diff�rentes manieres
-	 */
+	/*Les fonctions de tri ci-dessous permettent d'ordonner la base de tweet de différentes manieres
+	on fait appel à des fonction de comparaison créees dans tweet*/
+	
+	//tri par date
 	public ArrayList<tweet> tri_tweet_date(){
 		Collections.sort(maCollec,tweet.triDate);
 		return maCollec;
 	}
+	
+	//tri par pseudo
 	public ArrayList<tweet> tri_tweet_pseudo(){
 		Collections.sort(maCollec,tweet.triUsers);
 		return maCollec;
 	}
+	
+	//tri par retweet
 	public ArrayList<tweet> tri_tweet_retweet(){
 		Collections.sort(maCollec,tweet.triRetweet);
 		return maCollec;
 	}
 
-
+	//La fonction trouvejour prend en paramètre un LocalDate et retourne le nom du jour de la semaine de la date rentrée
 	public String trouvejour(LocalDate date ) {
+		//conversion de notre date de type 'LocalDate' en type 'Date'
+		//opération nécessaire pour utiliser les calendar
 		Date datee = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		//création d'une nouvelle variable de type calendrier 
 		Calendar calendarNomJourSemaine = Calendar.getInstance();
+		
+		//on initialise le calendrier avec la date souhaitée
 		calendarNomJourSemaine.setTime(datee);
+		
+		//L'integer semaine récupère le numéro du jour de la semaine
 		int semaine = calendarNomJourSemaine.get(Calendar.DAY_OF_WEEK);
+		
+		//initialisation de la variable qui renverra le nom du jour de la semaine
 		String nomjourSemaine = "";
+		
+		//creation d'un switch qui en fonction du numéro du jour de la semaine attribue le nom
 		switch (semaine) {
 		case 1:  nomjourSemaine = "Dimanche";
 		break;
@@ -115,11 +136,11 @@ public class BaseDeTweets{
 		case 7:  nomjourSemaine = "Samedi";
 		break;
 		}
-
+		//on retourne le nom
 		return nomjourSemaine;
 	}
 
-
+	//La fonction trouvemois à excatement le même fonctionnement que trouvejour sauf qu'elle retourne les noms de mois de la date rentrée
 	public String trouvemois(LocalDate date ) {
 		Date datee = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Calendar calendarNomJourSemaine = Calendar.getInstance();
@@ -156,21 +177,37 @@ public class BaseDeTweets{
 		return nomMois;
 	}
 
-
+	//la fonction trouvenomsemaine à pou but, à partir d'une date souhaitée, de renvoyer la date de début et de fin de la semaine
 	public String trouvenomsemaine(LocalDate date, String joursem, int jour) {
+		//initialisation de la variable qui stockera le nom de la semaine
 		String nomsemaine="";
+		//conversion de notre LocalDate en Date 
 		Date datee = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		//Initialisation du calendrier avec notre date
 		Calendar calendarNomJourSemaine = Calendar.getInstance();
 		calendarNomJourSemaine.setTime(datee);
+		
+		//on récupère le nb de jour dans le mois de la date rentrée
 		int nb_jour_mois = calendarNomJourSemaine.getActualMaximum(Calendar.DAY_OF_MONTH);
-		//System.out.println(nb_jour_mois);
+		
+		// on initialise 2 variables, une pour le mois du début et une pour le mois de fin
+		// cette opération est nécessaire car certaines semaines sont à cheval sur 2 mois
 		int num_mois_dep = calendarNomJourSemaine.get(Calendar.MONTH);
 		int num_mois_fin = calendarNomJourSemaine.get(Calendar.MONTH);
+		
+		// la variable deb correspondra au jour du début, la variable fin au jour de la fin et diff servira lorsque la semaine
+		// sera à cheval sur 2 mois
 		int deb=0;
 		int fin=0;
 		int diff=0;
+		
+		//en paramètre d'entrée on a rentrée le nom du jour de la semaine, et le numéro du jour dans le mois
+		//grâce à ces deux infos on peut facilement déterminer la date de début et la date de fin
 		switch (joursem) {
 		case "Dimanche":
+			// ex: si le nom du jour est un dimanche (08/09 par exemple)
+			//alors on sait que le lundi de la semaine sera en jour-6 (02/09)
+			// on sait également que dimanche sera le dernier jour donc fin=jour
 			deb= jour-6;
 			fin= jour;
 			break;
@@ -199,40 +236,53 @@ public class BaseDeTweets{
 			fin= jour+1;
 			break;
 		}
-
+		
+		// si le jour de fin est > au nombre de jours dans le mois c'est que la semaine est à cheval sur 2 mois
 		if (fin>nb_jour_mois) {
+			//on calcul le nb de jours en trop
 			diff= fin-nb_jour_mois;
+			// on rajoute cette différence à 0 et on incrémente le numéro de mois de 1
 			fin=0+diff;
 			num_mois_fin=num_mois_fin+1;
 		}
-
+		
+		// si le jour de début est inférieur à 0 c'est que le début de semaine se situe dans le mois précédent
 		if (deb<=0) {
+			//on décrémente le numéro de mois
 			num_mois_dep = calendarNomJourSemaine.get(Calendar.MONTH)-1;
+			
+			// si le nombre de jour du mois actuel est 31 alors le mois précédent à 30j
 			if(nb_jour_mois==31) {
+				//avec une simple soustraction on obtient la bonne date de début
 				deb=30-Math.abs(deb);
 			}else {
 				deb=31-Math.abs(deb);
 			}
-
+			//dans cette méthode on sait que l'on a pas de données en février et que nous n'avons pas de chevauchement d'année
+			//dans le cas contraire la fonction ne marcherait pas
 		}
+		
+		//l'indiçage des mois en java commence à 0 on incrémente donc les deux numéro de mois 
 		num_mois_dep=num_mois_dep+1;
 		num_mois_fin=num_mois_fin+1;
+		
+		//on met en forme le nom de la semaine et on le retourne
 		nomsemaine= "Semaine du Lundi "+deb+"/"+num_mois_dep+" au Dimanche "+fin+"/"+num_mois_fin;
 		return nomsemaine;
 	}
 
 	/*Cette fonction permet de rendre dynamique les liste deroulante 
-	 * qui sont utilis�e lors des filtres sur les diagrammes
-	 * variable_tri : chaine de caractere qui determine la maniere dont les modalit�s vont etre ordon�
+	 * qui sont utilisée lors des filtres sur les diagrammes
+	 * variable_tri : chaine de caractere qui determine la maniere dont les modalités vont etre ordoné
 	 */
 	public ChoiceBox<String> setChoiceBox(String variable_tri){
-		//l'objet retourn� par la fonction est cr��
+		//l'objet retourné par la fonction est créé
 		ChoiceBox<String> choiceBox = new ChoiceBox<>();
 		//iterateur sur la base de tweet
 		Iterator  it= maCollec.iterator();
 		//variable pivot qui sert de comparateur entre deux objet successif dans la base. Elle est de type String ou Integer (semaine/mois/jour)
 		Object modalite = "";
-		//on ajoute une modalit� "Aucun" dans le cas ou la liste ne contient aucun filtre
+		//on ajoute une modalité "Aucun" dans le cas ou la liste ne contient aucun filtre
 		choiceBox.getItems().add("Aucun");
 
 		
@@ -243,7 +293,7 @@ public class BaseDeTweets{
 			while (it.hasNext()) {
 				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
-				//si le mois de cet objet est diffrent du pr�c�dent (ou si il s'agit du premier element de la base)
+				//si le mois de cet objet est diffrent du précédent (ou si il s'agit du premier element de la base)
 				if (modalite.equals(infoTweet.getT_mois()) == false || modalite.equals("") ){
 					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_mois());
@@ -257,7 +307,7 @@ public class BaseDeTweets{
 			while (it.hasNext()) {
 				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
-				//si la semaine de cet objet est diffrente de la pr�c�dente(ou si il s'agit du premier element de la base)
+				//si la semaine de cet objet est diffrente de la précédente(ou si il s'agit du premier element de la base)
 				if ((modalite.equals(infoTweet.getT_semaine()) == false || modalite.equals(""))){
 					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_semaine());
@@ -272,7 +322,7 @@ public class BaseDeTweets{
 			while (it.hasNext()) {
 				//Objet tweet de la base
 				tweet infoTweet = (tweet)it.next();
-				//si le mois de cet objet est diffrent du pr�c�dent (ou si il s'agit du premier element de la base)
+				//si le mois de cet objet est diffrent du précédent (ou si il s'agit du premier element de la base)
 				if ((modalite.equals(infoTweet.getT_jour()) == false || modalite.equals(""))){
 					//on ajoute un element a la liste droulante
 					choiceBox.getItems().add(infoTweet.getT_jour());
@@ -282,12 +332,13 @@ public class BaseDeTweets{
 
 			}
 		}
-		//n initialise la valeur de cette liste d�roulante a "Aucun"
+
+		//on initialise la valeur de cette liste déroulante a "Aucun"
 		choiceBox.setValue("Aucun");
 		return choiceBox;
 	}
 
-	/*fonction qui permet de cr�er dynamiquement un titre a un graphique en fonction du filtre appliqu�*/
+	/*fonction qui permet de créer dynamiquement un titre a un graphique en fonction du filtre appliqué*/
 	public void creer_titre(BaseDeNombreTweet bdnt){
 		String titre;
 		//si il y a un filtre sur les jours
@@ -321,7 +372,7 @@ public class BaseDeTweets{
 		Iterator  it=maCollec.iterator();
 		//La base de nombreTweet contient toutes les donnees necessaire a la construction du barchart
 		BaseDeNombreTweet bdnt = new BaseDeNombreTweet();
-		// Le couple modalite compteur correspond a un jour (ou heure) accompagn� de son nombre de tweet
+		// Le couple modalite compteur correspond a un jour (ou heure) accompagné de son nombre de tweet
 		Integer compteur = 0;
 		String modalite = "";
 		//on appel la fontion qui permet de creer le titre
@@ -331,7 +382,7 @@ public class BaseDeTweets{
 			// Boucle sur les element de la base
 
 			while (it.hasNext()) {
-				//l'element de la base est stocké dans un objet de type tweet
+				//l'element de la base est stockÃ© dans un objet de type tweet
 				tweet infoTweet = (tweet)it.next();
 
 				// On test si le tweet correspond aux conditions de tri (jour,semaine,mois)
@@ -347,22 +398,22 @@ public class BaseDeTweets{
 					 * donc si on observe un changement entre deux valeur
 					 * on cree une nouvelle modalite
 					 */
-					//si l'heure du nouveau tweet est identique a celle du tweet précédent
+					//si l'heure du nouveau tweet est identique a celle du tweet prÃ©cÃ©dent
 					// ou si il s'agit du premier tweet
 
 					if (modalite.equals(heure) || modalite.equals("")) {
-						//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+						//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 						compteur +=1;
-						//la variable modalité prend la valeur de la nouvelle heure
+						//la variable modalitÃ© prend la valeur de la nouvelle heure
 						modalite = heure;
 					} else {
-						// On créé un objet nombreTweet
+						// On crÃ©Ã© un objet nombreTweet
 						nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 						//on ajoute l'objet a la base de nombreTweet
 						bdnt.ajouteNombreTweet(donnee_barchart);
-						//la variable modalité prend la valeur de la nouvelle heure
+						//la variable modalitÃ© prend la valeur de la nouvelle heure
 						modalite = heure;
-						//on reinitialise le compteur de modalité a 1
+						//on reinitialise le compteur de modalitÃ© a 1
 						compteur = 1;
 					}
 				}
@@ -382,14 +433,14 @@ public class BaseDeTweets{
 						 * donc si on observe un changement entre deux valeur
 						 * on cree une nouvelle modalite
 						 */
-						//si le jour du nouveau tweet est identique a celle du tweet précédent
+						//si le jour du nouveau tweet est identique a celle du tweet prÃ©cÃ©dent
 						// ou si il s'agit du premier tweet
 						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
-							//on incr�mente la valeur 
+							//on incrémente la valeur 
 							compteur +=1;
 							modalite = infoTweet.getT_jour();
 						} else {
-							//on cr� un objet nombre tweet
+							//on cré un objet nombre tweet
 							nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 							//on ajoute l'objet a la base de nombreTweet
 							bdnt.ajouteNombreTweet(donnee_barchart);
@@ -408,29 +459,29 @@ public class BaseDeTweets{
 				if (f_mois.equals("Aucun") == false) {
 					// Boucle sur les element du treeset
 					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
+						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
 						// On test si le tweet correspond aux conditions de tri (mois)
 						if (f_mois.equals(infoTweet.getT_mois())){
-							/*la base est trié par ordre chronologique 
+							/*la base est triÃ© par ordre chronologique 
 							 * donc si on observe un changement entre deux valeur
-							 * on créé une nouvelle modalité
+							 * on crÃ©Ã© une nouvelle modalitÃ©
 							 */
-							//si le jour du nouveau tweet est identique a celui du tweet précédent
+							//si le jour du nouveau tweet est identique a celui du tweet prÃ©cÃ©dent
 							// ou si il s'agit du premier tweet
 							if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
-								//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+								//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 								compteur +=1;
-								//la variable modalité prend la valeur du nouveau jour
+								//la variable modalitÃ© prend la valeur du nouveau jour
 								modalite = infoTweet.getT_jour();
 							} else {
-								// On créé un objet nombreTweet
+								// On crÃ©Ã© un objet nombreTweet
 								nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 								//on ajoute l'objet a la base de nombreTweet
 								bdnt.ajouteNombreTweet(donnee_barchart);
-								//la variable modalité prend la valeur de la nouvelle heure
+								//la variable modalitÃ© prend la valeur de la nouvelle heure
 								modalite = infoTweet.getT_jour();
-								//on reinitialise le compteur de modalité a 1
+								//on reinitialise le compteur de modalitÃ© a 1
 								compteur = 1;
 							}
 						}
@@ -440,37 +491,37 @@ public class BaseDeTweets{
 					/*si il n'y a pas de filtres */
 					// Boucle sur les element du treeset
 					while (it.hasNext()) {
-						//l'element du treeset est stocké dans un objet de type tweet
+						//l'element du treeset est stockÃ© dans un objet de type tweet
 						tweet infoTweet = (tweet)it.next();
-						/*la base est trié par ordre chronologique 
+						/*la base est triÃ© par ordre chronologique 
 						 * donc si on observe un changement entre deux valeur
-						 * on créé une nouvelle modalité
+						 * on crÃ©Ã© une nouvelle modalitÃ©
 						 */
-						//si le jour du nouveau tweet est identique a celui du tweet précédent
+						//si le jour du nouveau tweet est identique a celui du tweet prÃ©cÃ©dent
 						// ou si il s'agit du premier tweet
 
 						if (modalite.equals(infoTweet.getT_jour()) || modalite.equals("")) {
-							//on incrémente de 1 le compteur correspondant a la valeur de la modalité
+							//on incrÃ©mente de 1 le compteur correspondant a la valeur de la modalitÃ©
 							compteur +=1;
-							//la variable modalité prend la valeur du nouveau jour
+							//la variable modalitÃ© prend la valeur du nouveau jour
 							modalite = infoTweet.getT_jour();
 						} else {
-							// On créé un objet nombreTweet
+							// On crÃ©Ã© un objet nombreTweet
 							nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 							//System.out.println(modalite + " : " + compteur);
 							//on ajoute l'objet a la base de nombreTweet
 							bdnt.ajouteNombreTweet(donnee_barchart);
 							compteur =1;
-							//la variable modalité prend la valeur de la nouvelle heure
+							//la variable modalitÃ© prend la valeur de la nouvelle heure
 							modalite = infoTweet.getT_jour();
-							//on reinitialise le compteur de modalité a 1
+							//on reinitialise le compteur de modalitÃ© a 1
 
 						}
 					}
 				}
 			}
 		}
-		//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajout�
+		//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 		nombreTweet donnee_barchart = new nombreTweet(modalite, compteur);
 		bdnt.ajouteNombreTweet(donnee_barchart);
 		return bdnt;
@@ -479,11 +530,11 @@ public class BaseDeTweets{
 	/* fonction qui permet d'ajouter les donnes necessaire a la constructon du tableau des utilisateurs*/
 	/* La chaine choix_tri est un indicateur de la maniere dont le tableau va etre trier */
 	public BaseDeUtilisateurs creer_donnee_tableau_utilisateurs(String choix_tri) {
-		//objet renvoy� par la fonction
+		//objet renvoyé par la fonction
 		BaseDeUtilisateurs bdu = new BaseDeUtilisateurs();
 		//pseudo de l(utilisateur courrant
 		String pseudo_users = "";
-		//donn�es de l'utilisateur courrant
+		//données de l'utilisateur courrant
 		Integer compteur_nombre_tweet = 0;
 		Integer compteur_nombre_mention = 0;
 		Integer compteur_nombre_retweet = 0;
@@ -506,17 +557,17 @@ public class BaseDeTweets{
 					compteur_nombre_tweet +=1;
 					pseudo_users = infoTweet.getT_pseudo_users();
 				} else {
-					//on cr�� notre objet utilisateur
+					//on créé notre objet utilisateur
 					user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
 					//on ajoute l'utilisateur a la base
 					bdu.ajouteUtilisateur(user);
 					pseudo_users = infoTweet.getT_pseudo_users();
-					//on r�initialise le compteur
+					//on réinitialise le compteur
 					compteur_nombre_tweet = 1;
 				}
 				
 			}
-			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajout�
+			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 			user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
 			bdu.ajouteUtilisateur(user);	
 			bdu.tri_utilisateur_nombreTweet();
@@ -543,22 +594,22 @@ public class BaseDeTweets{
 				if (infoTweet.getT_pseudo_retweet().equals("NA") == false){
 					//si la valeur courrante est identique a la precdente, ou si c'ets le premier element de la base
 					if (pseudo_users.equals(infoTweet.getT_pseudo_retweet()) || pseudo_users.equals("")){
-						//on incr�mente le compteur
+						//on incrémente le compteur
 						compteur_nombre_tweet +=1;
 						pseudo_users = infoTweet.getT_pseudo_retweet();
 					} else {
 
 						user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
-						//on cr�� notre objet utilisateur
+						//on créé notre objet utilisateur
 						bdu.ajouteUtilisateur(user);
 						//on ajoute l'utilisateur a la base
 						pseudo_users = infoTweet.getT_pseudo_retweet();
-						//on r�initialise le compteur
+						//on réinitialise le compteur
 						compteur_nombre_tweet = 1;
 					}
 				}
 			}
-			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajout�
+			//on ajoute le dernier element car on est sorti de la boucle sans l'avoir ajouté
 			user = new utilisateur(pseudo_users,compteur_nombre_tweet,compteur_nombre_mention, compteur_nombre_retweet);
 			bdu.ajouteUtilisateur(user);	
 			bdu.tri_utilisateur_nombreTweet();
@@ -571,50 +622,78 @@ public class BaseDeTweets{
 
 	}
 	
+	//cette méthode renvoie la liste de tous les hashtags triés et avec doublons
+	//cette liste nous servira à remplir la base de hashtags
 	public ArrayList<String> intermediaire_rempli_bdh() {
 		Integer cptlength = 0 ;
+		
+		// on déclare un tableau avec tous les caractères qui terminent un hashtag (ex : #FIFA. , #FIFA: -> les derniers caractères ne comptent pas dans le hashtag)
 		String tab_charFinTweet[ ];
 		tab_charFinTweet = new String[] {" ",";",".",",","?","!",":","/","-"};
+		// creation de la liste qui renverra à la fin de la fonction
 		ArrayList<String> list_hashtag = new ArrayList<String>();
+		
+		//creation d'un iterateur pour parcourir toute la base de tweet
 		Iterator  iterator=maCollec.iterator();
 		while (iterator.hasNext())
 		{
+			//on stock le tweet actuel dans la variable t
 			tweet t = (tweet)iterator.next();
+			//on récupère le contenu du tweet
 			String contenu = t.getT_contenu();
+			// creation d'une variable hashtag qui stockera les hashtags
 			String hashtag="";
+			//deb servira à identifier la position de début du hashtag
 			int deb=0;
+			// le caractère à trouver pour identifier un hashtag est '#'
 			String c="#";
+			// on récupère le nombre de hashtag dans le tweet
 			int nbhashtag= t.getT_nb_hashtag();
+			
+			//on boucle sur le nombre de hashtag du tweet pour récupérer chaque hashtag
 			for(int j = 0; j <= nbhashtag; j++) {
-				int min = contenu.length();
 				
+				
+				int min = contenu.length();
+				//on recupere la position du premier #
 				deb = contenu.indexOf(c,deb);
-				int fin;
+				int fin=0;
+				
+				// si deb est différent de -1 ça veut dire qu'il existe un hashtag
 				if(deb != -1) {
 					
+					// on parcout le tableau des éléments qui finissent les tweets pour trouver le caractère qui termine le hashtag
 					for (int k = 0; k < tab_charFinTweet.length ;k++) {
 						if (contenu.indexOf(tab_charFinTweet[k],deb) != -1 && contenu.indexOf(tab_charFinTweet[k],deb) < min) {
+							// on recupere la position la plusproche du début
 							min = contenu.indexOf(tab_charFinTweet[k],deb);
 						}
 					}
+					//fin correspond à la position ou s'arrete le hashtag
 					fin = min;
 					cptlength +=1;
-					//System.out.println(deb + " " + fin);
+					
+					// si fin est différent de -1 c'est qu'il reste encore du contenu après le hashtag
 					if(fin != -1) {
+						
+						//extraction du hashtag
 						hashtag=contenu.substring(deb,fin);
+						//correction d'un bug 
 						hashtag = hashtag.replace(",", "");
+						
+						// si le hashtag contient quelque chose on l'ajoute sinon on ne l'ajoute pas
+						// certaines personnes ont juste tweeté "blabbla # blabla", on ne considère pas que la personne est utilisé un hashtag
 						if ((hashtag != " ") && (hashtag != " # ")) {
-							//System.out.println(hashtag);
-							
 							list_hashtag.add(hashtag);
 						}
+						// la position de fin devient la position de début
 						deb=fin;
 					}else {
+						
+						// si fin =-1 cela signifie que la hashtag se termine à la fin du contenu
 						hashtag=contenu.substring(deb,contenu.length()-1);
 						hashtag = hashtag.replace(",", "");
-						if ((hashtag != " ") && (hashtag != " # ")) {
-							//System.out.println(hashtag);
-							
+						if ((hashtag != " ") && (hashtag != " # ")) {		
 							list_hashtag.add(hashtag);
 						}	
 						break;
@@ -655,8 +734,8 @@ public class BaseDeTweets{
 	}
 	
 	/*
-	 * Cette fonction n'a pas �t� utilis� car elle aurait rendu
-	 * la complexit� du programme quadratique. Et nous n'avons pas trouv� de moyen 
+	 * Cette fonction n'a pas été utilisé car elle aurait rendu
+	 * la complexité du programme quadratique. Et nous n'avons pas trouvé de moyen 
 	 * de proceder autrement pour le moment
 	 */
 	/*
@@ -683,14 +762,14 @@ public class BaseDeTweets{
 
 		while (iterator.hasNext())
 		{
-			System.out.println("tweet nÂ° "+ i + " :" + iterator.next());
+			System.out.println("tweet nÃÂ° "+ i + " :" + iterator.next());
 
 			i=i+1;
 		}
 	}
 
 
-	public static int compterOccurrences(String maChaine, char recherche) // pompÃ© internet
+	public static int compterOccurrences(String maChaine, char recherche) // pompÃÂ© internet
 	{
 		int nb = 0;
 		for (int i=0; i < maChaine.length(); i++)

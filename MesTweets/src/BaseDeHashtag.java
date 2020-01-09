@@ -15,7 +15,7 @@ public class BaseDeHashtag {
 	
 	public ObservableList<hashtag>  ajouteHashtag_tableau() {
 		ObservableList<hashtag> topHashtag = FXCollections.observableArrayList();
-		//compteur pour réccuperer que les 10 premiers
+		//compteur pour rÃ©ccuperer que les 10 premiers
 		int i = 0;
 		Iterator  it=collec_hashtag.iterator();
 		while (it.hasNext() && i < 10) {

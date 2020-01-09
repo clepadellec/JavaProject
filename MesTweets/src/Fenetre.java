@@ -38,7 +38,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Fenetre extends Application {
-	//on cr�� nos objet utile pour creer l'interface
+	//i'm going to post a request on callmestudent 
+	//on créé nos objet utile pour creer l'interface
 	public BaseDeNombreTweet bar;
 	public BaseDeUtilisateurs tab_uti;
 	public BaseDeHashtag tab_hash;
@@ -50,7 +51,7 @@ public class Fenetre extends Application {
 		System.setProperty( "file.encoding", "UTF-8" );
 		System.out.println("Importation de la base en cours, veuillez patienter quelques instants...");
 		bdt.initialise();
-		bdt.importation("foot.txt");
+		//bdt.importation("foot.txt");
 		System.out.println("finis !");
 		
 		launch(args);
@@ -74,8 +75,8 @@ public class Fenetre extends Application {
 		GridPane grid_contenue = new GridPane();
 		MenuBar menuBar = new MenuBar();
 		
-		Button button_import_climat = new Button("Importer donn�es climat");
-		Button button_import_foot = new Button("Importer donn�es foot");
+		Button button_import_climat = new Button("Importer données climat");
+		Button button_import_foot = new Button("Importer données foot");
 		
 		Menu menu_edition = new Menu("Edition");
 		menuBar.getMenus().addAll(menu_edition);
@@ -133,7 +134,7 @@ public class Fenetre extends Application {
 				bdt.setF_jour("Aucun");
 				bdt.setF_semaine("Aucun");
 				bdt.setF_mois(choiceBox_mois.getValue());
-				//ici on crÃ©Ã© l'objet barchart et on affiche le graphiques
+				//ici on crÃƒÂ©ÃƒÂ© l'objet barchart et on affiche le graphiques
 				graph(barChart);
 			}
 		});
@@ -291,7 +292,7 @@ public class Fenetre extends Application {
 	/*Fonction pour les graphiques*/
 	public void graph(BarChart<String, Number> barChart) {
 		bar = bdt.creer_donnee_barchart();
-		/*Objet permettant d'alimenter les donnÃ©es du barchart*/
+		/*Objet permettant d'alimenter les donnÃƒÂ©es du barchart*/
 		barChart.getData().clear();
 		barChart.getData().add(bar.remplir_donnee());
 		
