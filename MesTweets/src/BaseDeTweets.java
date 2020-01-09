@@ -292,15 +292,15 @@ public class BaseDeTweets{
 		String titre;
 		//si il y a un filtre sur les jours
 		if (f_jour.equals("Aucun") == false) {
-			titre = "Nombre de tweet par heure le " + f_jour + " " + f_mois;
+			titre = "Nombre de tweet : " + f_jour + " " + f_mois;
 		} else {
 			//si il y a un filtre sur les semaines
 			if (f_semaine.equals("Aucun") == false) {
-				titre = "Nombre de tweet par jour de la semaine du " + f_semaine;
+				titre = "Nombre de tweet : " + f_semaine;
 			} else {
 				//si il y a un filtre sur les mois
 				if (f_mois.equals("Aucun") == false) {
-					titre =  "Nombre de tweet par jour du mois de " + f_mois;
+					titre =  "Nombre de tweet : " + f_mois;
 				} else {
 					//si il n'y a pas de filtre
 					titre = "Nombre de tweet par jour";

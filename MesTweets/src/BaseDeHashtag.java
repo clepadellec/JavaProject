@@ -20,7 +20,7 @@ public class BaseDeHashtag {
 		Iterator  it=collec_hashtag.iterator();
 		while (it.hasNext() && i < 10) {
 			hashtag infoHashtag = (hashtag)it.next();
-			System.out.println(infoHashtag.getNombre_occurence());
+			System.out.println(infoHashtag.getH_libele() + " : " + infoHashtag.getH_nombre_occurence());
 			topHashtag.add(infoHashtag);
 			i +=1;
 		}
