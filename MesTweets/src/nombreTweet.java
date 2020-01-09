@@ -1,13 +1,18 @@
 
 public class nombreTweet {
 
+		//la modalité servira à stocker la variable pour laquelle on souhaitera compter le nombre de tweet (ex: jour, mois...)
 		public String modalite;
+		//c'est le nombre de tweets qui correspondent à la modalité
 		public Integer valeur;
 		
+		//constructeur
 		public nombreTweet(String modalite, Integer valeur) {
 			this.modalite = modalite;
 			this.valeur = valeur;
 		}
+		
+		//getters et setters
 		public String getModalite() {
 			return modalite;
 		}
