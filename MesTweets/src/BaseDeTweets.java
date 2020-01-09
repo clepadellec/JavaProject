@@ -692,6 +692,7 @@ public class BaseDeTweets{
 						// si fin =-1 cela signifie que la hashtag se termine à la fin du contenu
 						hashtag=contenu.substring(deb,contenu.length()-1);
 						hashtag = hashtag.replace(",", "");
+						// les conditions sont les mêmes qu'au dessus
 						if ((hashtag != " ") && (hashtag != " # ")) {		
 							list_hashtag.add(hashtag);
 						}	
@@ -700,35 +701,53 @@ public class BaseDeTweets{
 				}else break;
 			}
 		}
+		// on tri ensuite notre liste grâce au Collections.sort
 		Collections.sort(list_hashtag);
 		System.out.println(cptlength);
 		return list_hashtag;
 	}
 	
+	
+	// Cette methode va nous servir à remplir la base de hashtag, elle prend en entrée la liste des hashtags triée avec doublons
 	public BaseDeHashtag rempli_bdh(ArrayList<String> list_hashtag) {
-		
+		//on stocke la longueur de la liste dans un integer
 		int long_list =list_hashtag.size();
+		//on déclare la base de hashtags 
 		BaseDeHashtag bdh = new BaseDeHashtag();
+		//la variable cpt nous servira à compter le nombre de fois que chaque hashtags apparaît
 		int cpt=1;
+		//on récupère la valeur du premier hashtag de la liste 
 		String h_comp= list_hashtag.get(0);
-		
+		//le principe est de parcourir la liste, de comparer chaque hashtag avec celui du dessus
+		//si les hashtags sont égaux, on incrémente le cpt
+		//si il est différent alors on récupère la valeur du cpt et on ajoute la hashtag dans la base de hashtag avec le nombre de fois qu'il a été cité (cpt)
 		for (int i=1; i <long_list; i++) {
-		
+			
+			//si il y a égalité entre le hashtag actuel et celui du dessus, on incrémente le cpt
 			if(h_comp.equals(list_hashtag.get(i))) {
 				cpt=cpt+1;
 			}else {
-
+				
+				//sinon on créer le hashtag avec sa valeur et le nombre de fois qu'il a été cité
 				hashtag h= new hashtag(h_comp, cpt);
+				
+				//comme vu dans la méthode d'avant, certains hashtags extraient n'en sont pas réellement, on rajoute donc une condition
 				if ((h.getH_libele() !=" #")&&(h.getH_libele() !=" ,")) {
+					//ajout du hashtag à la base de hashtag
 					bdh.ajouteHashtag(h);
+					
+					//on réinitialise le cpt à 1
 					cpt=1;
+					//on initialise la valeur du hashtag à comparer
 					h_comp=list_hashtag.get(i);
 				}
 
 			}
 		}
-
+		
+		//tri des hashtags en fonction du nombre d'occurences (décroissant)
 		bdh.tri_hashtag_occurence();
+		//on retourne la base de hashtags
 		return bdh;
 	}
 	
@@ -755,10 +774,10 @@ public class BaseDeTweets{
 	}
 	 */
 
-
+	// cette fonction a beaucoup servit pour effectuer des vérifications lors de l'importation
 	public void explore(int i) {
 		Iterator  iterator=maCollec.iterator();
-
+		// on parcourt la collection et on print chaque tweet
 		while (iterator.hasNext())
 		{
 			System.out.println("tweet nÃÂ° "+ i + " :" + iterator.next());
@@ -767,10 +786,13 @@ public class BaseDeTweets{
 		}
 	}
 
-
-	public static int compterOccurrences(String maChaine, char recherche) // pompÃÂ© internet
+	//Nous avons trouvé cette fonction sur internet
+	//lien : https://www.journaldunet.fr/web-tech/developpement/1203045-java-comment-compter-le-nombre-d-occurrences-de-caractere-dans-une-chaine-string/
+	public static int compterOccurrences(String maChaine, char recherche)
 	{
+		//initialisation du compteur "nb"
 		int nb = 0;
+		//on parcourt la chaîne 
 		for (int i=0; i < maChaine.length(); i++)
 		{
 			if (maChaine.charAt(i) == recherche)
@@ -778,7 +800,8 @@ public class BaseDeTweets{
 		}
 		return nb;
 	}
-
+	
+	//ça degage
 	public void trouveactu(String rech) {
 		Iterator  iterator=maCollec.iterator();
 		Pattern pattern;
@@ -798,22 +821,33 @@ public class BaseDeTweets{
 		}
 	}
 
+	//programme d'import qui prend en entrée le nom du fichier à importer
 	public void importation(String fic) throws IOException {
 		@SuppressWarnings("resource")
-
+		
+		//Initialisation du BufferedReader
 		BufferedReader reader = new BufferedReader(new FileReader("resources/"+fic));
+		//initialisation d'une variable qui récupérera la ligne lu
 		String ligne;
+		
+		//tant que le parcours des lignes n'est pas fini
 		while((ligne = reader.readLine()) != null){
+			
+			//on split la ligne en fonction des tabulations
 			String[] sepligne = ligne.split("\t");
+			
+			//on attribu chaque case de sepligne à une variable
 			String pseudo_users = sepligne[1];
 			String date_heure = sepligne[2];
 			String contenu = sepligne[3];
+			// on initialise des variables qu'on souhaite créer
 			String lien_dans_contenu="";
 			String pseudo_mentionne="";
-
 			int nb_hashtag=0;
 			int nb_pseudo_mentionne=0;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			
+			//on sépare la date et l'heure
 			String[] sep_date_heure = date_heure.split(" ");
 
 			String heure = sep_date_heure[1];
@@ -821,37 +855,55 @@ public class BaseDeTweets{
 
 			//cette variable sert uniquement a separer les jours mois et annee
 			String date_string = sep_date_heure[0];
+			// on split la date pour récupérer jour/mois/année
 			String[] sepdate_j = date_string.split("-");
 			String annee = sepdate_j[0];
+			
+			//on stocke le nom du mois qu'on récupère grâce à la fonction trouvemois
 			String mois = trouvemois(date);
 			//String jourSemaine_t = sepdate_j[];
 			String jour = sepdate_j[2];
-
+			//on stocke le nom du jour qu'on récupère grâce à la fonction trouvejour
 			String jour_semaine= trouvejour(date);
+			//conversion de la variable jour en integer pour utiliser "trouvenomsemaine"
 			int l = Integer.parseInt(jour);
+			//on stocke le nom de la semaine qu'on récupère grâce à la fonction trouvenomsemaine
 			String semaine=trouvenomsemaine(date,jour_semaine,l);
-
+			
+			//on test si il existe un hashtag dans le contenu
 			boolean exist = contenu.contains("#");
+			// si il y a des hashtags on utilise la fonction compterOccurrences pour compter le nombre de hashtags du tweets
 			if(exist==true) {
 				char c= '#';
 				int nb = compterOccurrences(contenu, c);
-				int deb=0;
+				//int deb=0;
 				nb_hashtag=nb;
 			}
-
+			
+			//on test si il existe un pseudo mentionné dans le contenu
 			boolean existb = contenu.contains("@");
 			if(existb==true) {
+				
+				//similaire au code du dessus
 				char c= '@';
 				int nb = compterOccurrences(contenu, c);
 				int deb=0;
 				nb_pseudo_mentionne=nb;
+				
+				// on boucle sur le nombre de pseudo mentionnés dans le contenu
 				for(int j = 1; j <= nb; j++) {
+					//on récupère la position du premier @
 					deb = contenu.indexOf(c,deb);
+					//si deb != -1 alors il existe au moins un @
 					if(deb != -1) {
+						// on récupère la position de fin du pseudo mentionne
 						int fin = contenu.indexOf(" ",deb);
 						if(fin != -1) {
+							//si fin est !=-1 on extrait le pseudo qui se situe entre début et fin 
+							//on concatène tous les pseudos mentionnés
 							pseudo_mentionne=pseudo_mentionne+contenu.substring(deb,fin);
 						}else {
+							//sinon on extrait de la position du début du pseudo mentionne à la fin du tweet
 							pseudo_mentionne=pseudo_mentionne+contenu.substring(deb,contenu.length()-1);
 						}
 						if(fin != -1) {
@@ -860,9 +912,11 @@ public class BaseDeTweets{
 					}else break;	
 				}
 			}else {
+				//sinon c'est qu'il n'y a pas de pseudos mentionnés
 				pseudo_mentionne="NA";
 			}
-
+			
+			//code similaire que ceux ci-dessus
 			boolean existc = contenu.contains("https://");
 			if(existc==true) {
 				String c="https://";
@@ -881,16 +935,20 @@ public class BaseDeTweets{
 
 
 			try {
+				// si il existe un pseudo retweet alors on affecte la valeur à pseudo_retweet
 				String pseudo_retweet = sepligne[4];
+				//on considère que si c'est un retweet alors il n'y a ni hashtag ni pseudo mentionné 
 				pseudo_mentionne="NA";
 				nb_hashtag=0;
 				nb_pseudo_mentionne=0;
-
+				//instanciation de tweet
 				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
 				//System.out.println(t+"\n");
+				//ajout à la collection 
 				maCollec.add(t);
 
 			} catch (Exception ex){
+				//sinon, ce n'est pas un retweet on affecte "NA" au pseudo_retweet
 				String pseudo_retweet = "NA";
 
 				tweet t = new tweet(pseudo_users,date,heure,contenu,lien_dans_contenu,pseudo_mentionne,pseudo_retweet,nb_hashtag,nb_pseudo_mentionne,annee,mois,jour,jour_semaine,semaine);
