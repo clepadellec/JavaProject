@@ -53,16 +53,16 @@ public class Fenetre extends Application {
 		bdt.initialise();
 
 		/*-----------------------------------------------------------------------------------------------------*/
-		// Cette partie du code a été inspiré d'internet
+		// Cette partie du code a ete inspire d'internet
 		// lien de la source :  https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/24770-gerez-des-menus-et-des-boites-de-dialogue
 		
-		//on créé deux 
+		//on cree deux 
 	    JOptionPane input_choix_fichier = new JOptionPane(), input_fichier_imprte = new JOptionPane();
 	    String fichier = input_choix_fichier.showInputDialog(null, "Entrez le nom de fichier que vous souhaitez importer (ex : climat )", JOptionPane.QUESTION_MESSAGE);
 	    // Import du fichier 
 	    bdt.importation(fichier + ".txt");
-	    //Fenetre qui annonce que l'importation s'est bien passé
-	    input_fichier_imprte.showMessageDialog(null, "Les données ont été importées avec succès");
+	    //Fenetre qui annonce que l'importation s'est bien passe
+	    input_fichier_imprte.showMessageDialog(null, "Les donnees ont ete importees avec succes");
 	    
 	    /*-------------------------------------------------------------------------------------------------------*/
 	    
@@ -84,11 +84,11 @@ public class Fenetre extends Application {
 	
 	public Scene construitScene_interface() {
 		
-		//gridPane generale dans lequelle le contenue et le menu seront integré
+		//gridPane generale dans lequelle le contenue et le menu seront integre
 		GridPane grid = new GridPane();
 		//gridPane du contenue de la fenetre courrante
 		GridPane grid_contenue = new GridPane();
-		//Hbox qui contient le menu bar afin de rendre le menu indépendant du contenue
+		//Hbox qui contient le menu bar afin de rendre le menu independant du contenue
 		HBox hbox_menu = new HBox();
 		
 		//bar de menu 
@@ -100,7 +100,7 @@ public class Fenetre extends Application {
 		//on ajoute la bare de menu au hbox de menu
 		hbox_menu.getChildren().add(menuBar);
 		
-		//Label qui annonces les liste déroulantes de filtres
+		//Label qui annonces les liste deroulantes de filtres
 		Label label_filtre_graph = new Label("Filtres :  ");
 		Label label_filtre_users = new Label("Filtres :  ");
 		//On ajoute des sous menu
@@ -109,11 +109,11 @@ public class Fenetre extends Application {
 		MenuItem menuItem_hashtag = new MenuItem("Hashtags");
 		menu_edition.getItems().addAll(menuItem_tweet, menuItem_utilisateur, menuItem_hashtag);
 		
-		// On créé des boites qui vont contenir les différents criteres de filtres
+		// On cree des boites qui vont contenir les differents criteres de filtres
 		HBox Hbox_filtre_graph = new HBox();
 		HBox Hbox_filtre_users = new HBox();
 		
-		// Instanciation et création dynamique des listes déroulante grace a la fonction setChoiceBox() 
+		// Instanciation et creation dynamique des listes deroulante grace a la fonction setChoiceBox() 
 		ChoiceBox<String> choiceBox_mois = bdt.setChoiceBox("mois");
 		ChoiceBox<String> choiceBox_semaine =bdt.setChoiceBox("semaine");
 		ChoiceBox<String> choiceBox_jour = bdt.setChoiceBox("jour");
@@ -121,7 +121,7 @@ public class Fenetre extends Application {
 		Hbox_filtre_graph.getChildren().clear();
 		Hbox_filtre_graph.getChildren().addAll(label_filtre_graph, choiceBox_mois);
 
-		// Création de la listes déroulante de filtre sur les utilisateur 
+		// Creation de la listes deroulante de filtre sur les utilisateur 
 		ChoiceBox<String> choiceBox_utilisateur = new ChoiceBox<>();
 		choiceBox_utilisateur.getItems().addAll("Nombre de tweet","Nombre de mentions","Nombre de retweet");
 		choiceBox_utilisateur.setValue("Nombre de tweet");
@@ -129,23 +129,23 @@ public class Fenetre extends Application {
 		//Ajout du filtre aux filtre des tableau d'utilisateur
 		Hbox_filtre_users.getChildren().addAll(label_filtre_users,choiceBox_utilisateur);
 		
-		// Création des axes d'abscies et d'ordoné du barchart
+		// Creation des axes d'abscies et d'ordone du barchart
 		CategoryAxis xAxis = new CategoryAxis();
 		xAxis.setLabel("Temps");
 		NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Nombre de tweet");
 
-		//Instanciation et création du Barchart 
+		//Instanciation et creation du Barchart 
 		BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
 		//Appel a la fonction de l'affichage du barchart 
 		this.print_barchart(barChart);
 		
-		//Instanciation et création du tableau des top utilisateurs
+		//Instanciation et creation du tableau des top utilisateurs
 		TableView<utilisateur> tableview_userTwitter = new TableView<>();
 		// appel a la fonction de l'affichage du tableau d'utilisateur
 		this.tableau_utilisateur(tableview_userTwitter,choiceBox_utilisateur.getValue());
 		
-		// Instanciation et création du tableau des top hashtag
+		// Instanciation et creation du tableau des top hashtag
 		TableView<hashtag> tableview_hashtag = new TableView<>();
 		// appel a la fonction de l'affichage du tableau de hashtag
 		tableau_hashtag(tableview_hashtag);
@@ -155,12 +155,12 @@ public class Fenetre extends Application {
 		/*************************** Barchart ********************************/
 		
 		
-		//Action effectué lors de la selection d'un filtre sur le choiceBox_mois
+		//Action effectue lors de la selection d'un filtre sur le choiceBox_mois
 		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent m) {
-				//si le filtre des semaine est affiché
+				//si le filtre des semaine est affiche
 				if (Hbox_filtre_graph.getChildren().contains(choiceBox_semaine)) {
-					//alors on le réinitialise a "Aucun" car on a modifi les filtres de mois
+					//alors on le reinitialise a "Aucun" car on a modifi les filtres de mois
 					choiceBox_semaine.setValue("Aucun");
 					Hbox_filtre_graph.getChildren().remove(choiceBox_jour);
 				} else {
@@ -178,12 +178,12 @@ public class Fenetre extends Application {
 			}
 		});
 		
-		//Action effectué lors de la selection d'un filtre sur le choiceBox_semaine
+		//Action effectue lors de la selection d'un filtre sur le choiceBox_semaine
 		choiceBox_semaine.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent s) {
-				//si le filtre des jour est affiché
+				//si le filtre des jour est affiche
 				if (Hbox_filtre_graph.getChildren().contains(choiceBox_jour)) {
-					//alors on le réinitialise a "Aucun" car on a modifi les filtres de semaine
+					//alors on le reinitialise a "Aucun" car on a modifi les filtres de semaine
 					choiceBox_jour.setValue("Aucun");
 				} else {
 					// Sinon on ajoute le filtre jour avec la valeur par defaut "Aucun"
@@ -198,7 +198,7 @@ public class Fenetre extends Application {
 			}
 		});
 
-		//Action effectué lors de la selection d'un filtre sur le choiceBox_jour
+		//Action effectue lors de la selection d'un filtre sur le choiceBox_jour
 		choiceBox_jour.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent j) {
 				//On met a jour les filtres de le base de tweet
@@ -211,12 +211,12 @@ public class Fenetre extends Application {
 		
 		/*************************** Tableau ********************************/
 		
-		//Action effectué lors de la selection d'un filtre sur le choiceBox_utilisateur
+		//Action effectue lors de la selection d'un filtre sur le choiceBox_utilisateur
 		choiceBox_utilisateur.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent j) {
 				//On vide dans un premier temps le contenue de la fenetre
 				grid_contenue.getChildren().clear();
-				//On cree le tableau en fonction du nouveau tri appliqué
+				//On cree le tableau en fonction du nouveau tri applique
 				tableau_utilisateur(tableview_userTwitter, choiceBox_utilisateur.getValue());
 				//On ajoute le nouveau tableau et liste deroulante dans le contenu de la fenetre
 				GridPane.setConstraints(Hbox_filtre_users, 0, 0);
@@ -229,7 +229,7 @@ public class Fenetre extends Application {
 	
 		/****************************** MENU *******************************/
 
-		//Action effectué lors de la selection du menu tweet
+		//Action effectue lors de la selection du menu tweet
 		menuItem_tweet.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
 				//On vide le contenu
@@ -244,7 +244,7 @@ public class Fenetre extends Application {
 			}
 		});
 		
-		//Action effectué lors de la selection du menu utilisateur
+		//Action effectue lors de la selection du menu utilisateur
 		menuItem_utilisateur.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
 				//On vide le contenu
@@ -258,7 +258,7 @@ public class Fenetre extends Application {
 			}
 		});
 		
-		//Action effectué lors de la selection du menu hashtag
+		//Action effectue lors de la selection du menu hashtag
 		menuItem_hashtag.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent me) {
 				//On vide le contenu
@@ -272,8 +272,8 @@ public class Fenetre extends Application {
 		
 		/********************* Affichage de l'interface *********************/
 		
-		//Création du contenue de l'interface par defaut lors du lancement du programme
-		//Lors de l'execution du programme l'utilisateur est donc dirigé directement vers la page de graphiques
+		//Creation du contenue de l'interface par defaut lors du lancement du programme
+		//Lors de l'execution du programme l'utilisateur est donc dirige directement vers la page de graphiques
 		grid_contenue.getChildren().clear();
 		GridPane.setConstraints(Hbox_filtre_graph, 0, 0);
 		GridPane.setConstraints(barChart, 0, 1);
@@ -294,23 +294,23 @@ public class Fenetre extends Application {
 	}
 
 	
-	/*Fonction permettant la création des graphiques*/
+	/*Fonction permettant la creation des graphiques*/
 	/*barchart : diagramme en bar a afficher sur l'interface*/
 	public void print_barchart(BarChart<String, Number> barChart) {
-		//objet de type baseDeNombreTweet contenant toutes les données necessaire a la création du graphique
+		//objet de type baseDeNombreTweet contenant toutes les donnees necessaire a la creation du graphique
 		bar = bdt.creer_donnee_barchart();
 		barChart.getData().clear();
-		//On ajoute les donnees pour la création du barchart
+		//On ajoute les donnees pour la creation du barchart
 		barChart.getData().add(bar.remplir_donnee());
-		//On ajoute un titre au graphique, generé dynamiquement en fonction des filtres avec la fonction getTitle_chart();
+		//On ajoute un titre au graphique, genere dynamiquement en fonction des filtres avec la fonction getTitle_chart();
 		barChart.setTitle(bar.getTitle_chart());
 	}
 
 
-	/*Fonction permettant la création du tableau des top Utilisateurs*/
+	/*Fonction permettant la creation du tableau des top Utilisateurs*/
 	@SuppressWarnings("unchecked")
 	public void tableau_utilisateur(TableView<utilisateur> tableview, String option_de_tri){
-		//on reinitialise les données et les nomn de colonne du tableau
+		//on reinitialise les donnees et les nomn de colonne du tableau
 		tableview.getItems().clear();
 		tableview.getColumns().clear();
 		
@@ -320,9 +320,9 @@ public class Fenetre extends Application {
 		TableColumn<utilisateur, Integer> nombre_retweet = new TableColumn<>("Nombre d'occurence");
 		nombre_retweet.setCellValueFactory(new PropertyValueFactory<>("u_nombre_tweet"));
 
-		//Objet de type BaseDeUtilisateur contenant toutes les informations necessaire a la création du tableau
+		//Objet de type BaseDeUtilisateur contenant toutes les informations necessaire a la creation du tableau
 		tab_uti = bdt.creer_donnee_tableau_utilisateurs(option_de_tri);
-		//on ajoute les données au tableau
+		//on ajoute les donnees au tableau
 		tableview.setItems(tab_uti.ajouteUtilisateur_tableau());
 		//ajout des noms de colonnes
 		tableview.getColumns().addAll(pseudoColumn, nombre_retweet);
@@ -330,11 +330,11 @@ public class Fenetre extends Application {
 	}
 
 	/*
-	 * Fonction permettant la création du tableau des top hashtag
+	 * Fonction permettant la creation du tableau des top hashtag
 	 */
 	@SuppressWarnings("unchecked")
 	public void tableau_hashtag(TableView<hashtag> tableview) {
-		//on reinitialise les données et les nomn de colonne du tableau
+		//on reinitialise les donnees et les nomn de colonne du tableau
 		tableview.getItems().clear();
 		tableview.getColumns().clear();
 		
@@ -344,9 +344,9 @@ public class Fenetre extends Application {
 		TableColumn<hashtag, Integer> nombre_hashtag = new TableColumn<>("Nombre d'occurence");
 		nombre_hashtag.setCellValueFactory(new PropertyValueFactory<>("h_nombre_occurence"));
 
-		//Objet de type BaseDeHashtag contenant toutes les informations necessaire a la création du tableau
+		//Objet de type BaseDeHashtag contenant toutes les informations necessaire a la creation du tableau
 		tab_hash = bdt.creer_donnee_tableau_hashtag(bdt.intermediaire_rempli_bdh());
-		//on ajoute les données au tableau
+		//on ajoute les donnees au tableau
 		tableview.setItems(tab_hash.ajouteHashtag_tableau());
 		//ajout des noms de colonnes
 		tableview.getColumns().addAll(libele_hashtag, nombre_hashtag);

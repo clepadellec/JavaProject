@@ -1,9 +1,9 @@
 
 public class nombreTweet {
 
-		//la modalité servira à stocker la variable pour laquelle on souhaitera compter le nombre de tweet (ex: jour, mois...)
+		//la modalite servira � stocker la variable pour laquelle on souhaitera compter le nombre de tweet (ex: jour, mois...)
 		public String modalite;
-		//c'est le nombre de tweets qui correspondent à la modalité
+		//c'est le nombre de tweets qui correspondent à la modalite
 		public Integer valeur;
 		
 		//constructeur

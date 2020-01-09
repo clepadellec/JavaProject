@@ -8,17 +8,17 @@ import javafx.collections.ObservableList;
 
 public class BaseDeUtilisateurs {
 
-	//on déclare un array list d'utilisateurs 
+	//on declare un array list d'utilisateurs 
 	public ArrayList<utilisateur> collec_utilisateur = new ArrayList<utilisateur>();
 	
-	//creation de la méthode d'ajout
+	//creation de la methode d'ajout
 	public void ajouteUtilisateur(utilisateur utilisateur) {
 		collec_utilisateur.add(utilisateur);
 	}
 	
 	
-	//cette méthode parcours base de utlisateurs et réupère les 10 premiers
-	//on aura, au préalable trié le tableau selon le souhait de l'utilisateur
+	//cette methode parcours base de utlisateurs et reupere les 10 premiers
+	//on aura, au prealable trié le tableau selon le souhait de l'utilisateur
 	public ObservableList<utilisateur>  ajouteUtilisateur_tableau() {
 		ObservableList<utilisateur> topUsers = FXCollections.observableArrayList();
 		//compteur pour recuperer que les 10 premiers

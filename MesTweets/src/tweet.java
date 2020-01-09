@@ -11,8 +11,8 @@ import java.util.Set;
 //@SuppressWarnings("serial")
 public class tweet{
 
-	//création des attributs
-	//dans un tweet le premier élément est le pseudo de l'utilisateur
+	//creation des attributs
+	//dans un tweet le premier element est le pseudo de l'utilisateur
 	protected String t_pseudo_users="";
 	//puis on trouve la date du tweet
 	protected LocalDate t_date;
@@ -22,14 +22,14 @@ public class tweet{
 	protected String t_contenu="";
 	//on va extraire les liens des tweets
 	protected String t_lien_dans_contenu="";
-	//on extrait également les pseudos mentonnés
+	//on extrait egalement les pseudos mentonnes
 	protected String t_pseudo_mentionne="";
 	// a la fin du tweet on retrouve le pseudo de l'utilisateur originaire du tweet (s'il s'agit d'un retweet)
 	protected String t_pseudo_retweet="";
-	// on créer des attributs qui stockeront les nb de hashtags et de pseudos mentionnés
+	// on creer des attributs qui stockeront les nb de hashtags et de pseudos mentionnes
 	protected int t_nb_hashtag = 0;
 	protected int t_nb_pseudo_mentionne=0;
-	//on séparera les dates en mois/année/jour/nom du jour/nom de la semaine
+	//on separera les dates en mois/annee/jour/nom du jour/nom de la semaine
 	protected String t_annee;
 	protected String t_mois;
 	protected String t_jour;
@@ -44,7 +44,7 @@ public class tweet{
 
 	
 	@Override
-	//méthode tostring générée automatiquement
+	//methode tostring generee automatiquement
 	public String toString() {
 		return "tweet [t_pseudo_users=" + t_pseudo_users + ", t_date=" + t_date + ", t_heure=" + t_heure
 				+ ", t_contenu=" + t_contenu + ", t_lien_dans_contenu=" + t_lien_dans_contenu + ", t_hashtag="
@@ -75,7 +75,7 @@ public class tweet{
 		this.t_semaine = t_semaine;
 	}
 
-	//génération des getters et setters
+	//generation des getters et setters
 	public String getT_pseudo_users() {
 		return t_pseudo_users;
 	}
@@ -188,7 +188,7 @@ public class tweet{
 		this.t_semaine = t_semaine;
 	}
 
-	// on créer des méthode de comparaison des tweets
+	// on creer des methode de comparaison des tweets
 	//ici on compare les dates
 	public static Comparator<tweet> triDate = new Comparator<tweet>() {
 		public int compare (tweet t1,tweet t2) {
@@ -198,7 +198,7 @@ public class tweet{
 			int resultat;
 			//on compare les dates
 			resultat=tdate1.compareTo(tdate2);
-			// si elles sont égales on compare les heures
+			// si elles sont egales on compare les heures
 			if (resultat==0) {
 				String h1 = t1.getT_heure();
 				String h2 = t2.getT_heure();
@@ -208,7 +208,7 @@ public class tweet{
 		}
 	};
 	
-	// cette méthode est similaire à celle du dessus
+	// cette methode est similaire a� celle du dessus
 	// on tri d'abord par pseudo utilisateurs puis par date
 	public static Comparator<tweet> triUsers = new Comparator<tweet>() {
 		public int compare (tweet t1,tweet t2) {
@@ -226,7 +226,7 @@ public class tweet{
 	};
 
 	
-	// cette méthode est similaire à celle du dessus
+	// cette methode est similaire a� celle du dessus
 	// on tri d'abord par pseudo pseudo retweet puis par date
 	public static Comparator<tweet> triRetweet = new Comparator<tweet>() {
 		public int compare (tweet t1,tweet t2) {

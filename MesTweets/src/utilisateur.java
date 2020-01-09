@@ -3,9 +3,9 @@ import java.util.Comparator;
 
 public class utilisateur  {
 
-	//un utilisateur possède un pseudo utilisateur
+	//un utilisateur possede un pseudo utilisateur
 	private String u_pseudo_users = "";
-	//il possède également un nombre de tweet, un nombre de retweet et un nombre de mention
+	//il possede egalement un nombre de tweet, un nombre de retweet et un nombre de mention
 	private Integer u_nombre_tweet = 0;	
 	private Integer u_nombre_retweet = 0;
 	private Integer u_nombre_mention = 0;
@@ -54,7 +54,7 @@ public class utilisateur  {
 		this.u_nombre_retweet = u_nombre_retweet;
 	}
 
-	//on créer des fonctions qui comparent les utilisateurs :
+	//on creer des fonctions qui comparent les utilisateurs :
 	
 	//selon le nombre de tweets
 	public static Comparator<utilisateur> triTweet = new Comparator<utilisateur>() {

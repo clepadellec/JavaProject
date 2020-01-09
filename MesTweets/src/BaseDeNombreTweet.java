@@ -6,7 +6,7 @@ import javafx.scene.chart.XYChart;
 
 public class BaseDeNombreTweet {
 
-		//on d√©clare un arraylist de nombre de tweets
+		//on declare un arraylist de nombre de tweets
 		public ArrayList<nombreTweet> collec_nombreTweet = new ArrayList<nombreTweet>();
 		//on initialise le titre du graphique
 		public String title_chart = "";
@@ -20,17 +20,19 @@ public class BaseDeNombreTweet {
 			this.title_chart = title_chart;
 		}
 
-		//m√©thode d'ajout d'un nombre tweet
+		//methode d'ajout d'un nombre tweet
 		public void ajouteNombreTweet(nombreTweet nt) {
 			collec_nombreTweet.add(nt);
 		}
 		
-		//m√©thode qui permet...
+		//methode qui permet de remplir les donnees du barchart
 		public XYChart.Series<String, Number> remplir_donnee(){
 			XYChart.Series<String, Number> donnee_Barchart = new XYChart.Series<String, Number>();
-			
+			//on boucle sur la collection pour ajouter chaque element au barchart
 			for (int i=0; i<collec_nombreTweet.size(); i++){
+				//on crÈÈ l'objet courrant
 				nombreTweet barre = (nombreTweet)(collec_nombreTweet.get(i));
+				//on ajoute ces attributs au barchart
 				donnee_Barchart.getData().add(new XYChart.Data<String, Number>(barre.getModalite(), barre.getValeur()));
 			}
 			return donnee_Barchart;

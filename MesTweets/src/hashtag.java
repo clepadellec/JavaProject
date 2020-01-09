@@ -2,12 +2,12 @@ import java.util.Comparator;
 
 public class hashtag {
 
-		// un hashtag possède un libellé et le nombre d'occurences correspondant
+		// un hashtag possede un libelle et le nombre d'occurences correspondant
 		private String h_libele;
 		private Integer h_nombre_occurence;
 		
 		@Override
-		//méthode tostring
+		//methode tostring
 		public String toString() {
 			return "hashtag [h_libele=" + h_libele + ", h_nombre_occurence=" + h_nombre_occurence + "]";
 		}
@@ -37,7 +37,7 @@ public class hashtag {
 		}
 
 
-		//on créer une fonction de tri des hashtags en fonction du nombre d'occurences
+		//on creer une fonction de tri des hashtags en fonction du nombre d'occurences
 		public static Comparator<hashtag> triHashtag = new Comparator<hashtag>() {
 			public int compare (hashtag t2,hashtag t1) {
 				Integer nbh1 = t1.getH_nombre_occurence();
