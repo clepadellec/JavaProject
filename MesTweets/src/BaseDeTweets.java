@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.io.Serializable;
 
-
+//
 public class BaseDeTweets{
 
 	//BaseDeTweets possède plusieurs attributs : voir avec Charlie
