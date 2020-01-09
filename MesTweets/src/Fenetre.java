@@ -50,7 +50,7 @@ public class Fenetre extends Application {
 		System.setProperty( "file.encoding", "UTF-8" );
 		System.out.println("Importation de la base en cours, veuillez patienter quelques instants...");
 		bdt.initialise();
-		bdt.importation("climat.txt");
+		bdt.importation("foot.txt");
 		System.out.println("finis !");
 		
 		launch(args);
@@ -98,7 +98,8 @@ public class Fenetre extends Application {
 		choiceBox_mois = bdt.setChoiceBox("mois");
 		choiceBox_semaine =  bdt.setChoiceBox("semaine");
 		choiceBox_jour = bdt.setChoiceBox("jour");
-		
+
+		Hbox_filtre_graph.getChildren().add(choiceBox_mois);
 
 		ChoiceBox<String> choiceBox_utilisateur = new ChoiceBox<>();
 		choiceBox_utilisateur.getItems().addAll("Nombre de tweet","Nombre de mentions","Nombre de retweet");
@@ -120,7 +121,6 @@ public class Fenetre extends Application {
 		
 		choiceBox_mois.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent m) {
-				System.out.println("TEST");
 				if (Hbox_filtre_graph.getChildren().contains(choiceBox_semaine)) {
 					choiceBox_semaine.setValue("Aucun");
 					Hbox_filtre_graph.getChildren().remove(choiceBox_jour);
